@@ -1,3 +1,20 @@
 # ninja log v5
-0	361	7165029004029669	CMakeFiles/Assignment_1.dir/Assignment_1.cpp.obj	57e9c9a4b5fb5d0
-363	736	7165029007419669	Assignment_1.exe	9369f0018b041e54
+0	387	7165250147659669	CMakeFiles/Assignment_1.dir/Assignment_1.cpp.obj	57e9c9a4b5fb5d0
+7	414	7165249720019669	CMakeFiles/Assignment_1.dir/Cards.cpp.obj	33beb09c8110a237
+387	552	7165250148979669	Assignment_1.exe	8595a695d43f8a29
+1	10	0	clean	9992afb1f91dc381
+0	430	7165251081499669	CMakeFiles/Assignment_1.dir/Assignment_1.cpp.obj	57e9c9a4b5fb5d0
+7	440	7165251081589669	CMakeFiles/Assignment_1.dir/Cards.cpp.obj	33beb09c8110a237
+440	987	7165251086699669	Assignment_1.exe	8595a695d43f8a29
+0	411	7165251220449669	CMakeFiles/Assignment_1.dir/Assignment_1.cpp.obj	57e9c9a4b5fb5d0
+411	570	7165251221689669	Assignment_1.exe	8595a695d43f8a29
+0	376	7165251638169669	CMakeFiles/Assignment_1.dir/Assignment_1.cpp.obj	57e9c9a4b5fb5d0
+376	613	7165251640109669	Assignment_1.exe	8595a695d43f8a29
+0	367	7165252351889669	CMakeFiles/Assignment_1.dir/Assignment_1.cpp.obj	57e9c9a4b5fb5d0
+368	541	7165252353269669	Assignment_1.exe	8595a695d43f8a29
+0	366	7165252505539669	CMakeFiles/Assignment_1.dir/Assignment_1.cpp.obj	57e9c9a4b5fb5d0
+366	525	7165252506809669	Assignment_1.exe	8595a695d43f8a29
+0	449	7165253106799669	CMakeFiles/Assignment_1.dir/Cards.cpp.obj	33beb09c8110a237
+449	664	7165253108449669	Assignment_1.exe	8595a695d43f8a29
+0	432	7165253436629669	CMakeFiles/Assignment_1.dir/Cards.cpp.obj	33beb09c8110a237
+433	625	7165253438189669	Assignment_1.exe	8595a695d43f8a29
