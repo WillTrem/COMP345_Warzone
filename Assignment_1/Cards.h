@@ -8,6 +8,7 @@
 // Implement a group of C++ classes that implements a deck and hand of Warzone cards. 
 // All the classes / functions that you implement for this component must all reside in a single.cpp / .h file duo named Cards.cpp / Cards.h.
 
+// Written by Roxane Morin, 40191881.
 
 
 // VS got prickly if I didn't list these beforehand.
@@ -50,26 +51,41 @@ class Card
 // Making these into different child classes as I imagine they'll have different purposes.
 class Card_Bomb : public Card
 {
+	public:
+	Card_Bomb(Deck* deck);
+	Card_Bomb(Hand* owner, Deck* deck);
 	void play();
 };
 
 class Card_Reinforcement : public Card
 {
+	public:
+	Card_Reinforcement(Deck* deck);
+	Card_Reinforcement(Hand* owner, Deck* deck);
 	void play();
 };
 
 class Card_Blockade : public Card
 {
+	public:
+	Card_Blockade(Deck* deck);
+	Card_Blockade(Hand* owner, Deck* deck);
 	void play();
 };
 
 class Card_Airlift : public Card
 {
+	public:
+	Card_Airlift(Deck* deck);
+	Card_Airlift(Hand* owner, Deck* deck);
 	void play();
 };
 
 class Card_Diplomacy : public Card
 {
+	public:
+	Card_Diplomacy(Deck* deck);
+	Card_Diplomacy(Hand* owner, Deck* deck);
 	void play();
 };
 
@@ -86,6 +102,7 @@ class Hand
 	void addCard(Card* card);
 	void removeCard(Card* card);
 	void printCards();
+	std::vector<Card*> returnMyCards();
 };
 
 
@@ -125,5 +142,3 @@ class Deck
 
 
 
-// You must deliver a file named CardsDriver.cpp file that contains a free function named testCards() that creates a deck of Warzone cards, then create a hand object that is filled by drawing cards from the deck.
-// A free function named testCards() that creates a deck of cards of all different kinds, then creates a hand object that is filled by drawing cards from the deck by repeatedly calling its draw() method, then calls the play() method of all cards in the hand, resulting in the cards being put back in the deck

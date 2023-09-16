@@ -9,6 +9,7 @@ using namespace std;
 // Implement a group of C++ classes that implements a deck and hand of Warzone cards. 
 // All the classes / functions that you implement for this component must all reside in a single.cpp / .h file duo named Cards.cpp / Cards.h.
 
+// Written by Roxane Morin, 40191881.
 
 
 // CARD.
@@ -40,6 +41,8 @@ Card::Card(Deck* deck)
 	myDeck->addCard(this);
 
 	currentOwner = nullptr; // By default, the card is unowned.
+
+	cout << "Creating a card." << endl;
 };
 Card::Card(Hand* owner, Deck* deck) // If needed, a card could be created directly into a player's hand.
 {
@@ -47,6 +50,8 @@ Card::Card(Hand* owner, Deck* deck) // If needed, a card could be created direct
 	myDeck->addCardUniversal(this);
 
 	owner->addCard(this);
+
+	cout << "Creating a card." << endl;
 }
 // To do: add more for cards of specific types?
 
@@ -72,6 +77,15 @@ void Card::play()
 
 // Each card has a type from: bomb, reinforcement, blockade, airlift and diplomacy.
 // Making these into different child classes as I imagine they'll have different purposes.
+
+Card_Bomb::Card_Bomb(Deck* deck) : Card::Card(deck)
+{
+	cout << "It is a Bomb card.\n" << endl;
+};
+Card_Bomb::Card_Bomb(Hand* owner, Deck* deck) : Card::Card(owner, deck) 
+{
+	cout << "It is a Bomb card.\n" << endl;
+};
 void Card_Bomb::play() 
 {
 	// Actions specific to this type of card.
@@ -82,6 +96,14 @@ void Card_Bomb::play()
 	return;
 };
 
+Card_Reinforcement::Card_Reinforcement(Deck* deck) : Card::Card(deck)
+{
+	cout << "It is a Reinforcement card.\n" << endl;
+};
+Card_Reinforcement::Card_Reinforcement(Hand* owner, Deck* deck) : Card::Card(owner, deck)
+{
+	cout << "It is a Reinforcement card.\n" << endl;
+};
 void Card_Reinforcement::play() 
 {
 	cout << "Playing a Reinforcement card." << endl;
@@ -90,6 +112,14 @@ void Card_Reinforcement::play()
 	return;
 };
 
+Card_Blockade::Card_Blockade(Deck* deck) : Card::Card(deck)
+{
+	cout << "It is a Blockade card.\n" << endl;
+};
+Card_Blockade::Card_Blockade(Hand* owner, Deck* deck) : Card::Card(owner, deck)
+{
+	cout << "It is a Blockade card.\n" << endl;
+};
 void Card_Blockade::play() 
 {
 	cout << "Playing a Blockade card." << endl;
@@ -98,6 +128,14 @@ void Card_Blockade::play()
 	return;
 };
 
+Card_Airlift::Card_Airlift(Deck* deck) : Card::Card(deck)
+{
+	cout << "It is an Airlift card.\n" << endl;
+};
+Card_Airlift::Card_Airlift(Hand* owner, Deck* deck) : Card::Card(owner, deck)
+{
+	cout << "It is an Airlift card.\n" << endl;
+};
 void Card_Airlift::play() 
 {
 	cout << "Playing an Airlift card." << endl;
@@ -106,6 +144,14 @@ void Card_Airlift::play()
 	return;
 };
 
+Card_Diplomacy::Card_Diplomacy(Deck* deck) : Card::Card(deck)
+{
+	cout << "It is a Diplomacy card.\n" << endl;
+};
+Card_Diplomacy::Card_Diplomacy(Hand* owner, Deck* deck) : Card::Card(owner, deck)
+{
+	cout << "It is a Diplomacy card.\n" << endl;
+};
 void Card_Diplomacy::play() 
 {
 	cout << "Playing a Diplomacy card." << endl;
@@ -122,8 +168,14 @@ Hand::Hand()
 {
 	myCards = {};
 
+	cout << "\nA hand has been created.\n\n" << endl;
+
 	//cout << "\nIs myCards empty? " << myCards.empty() << endl;
 	//cout << "Size of myCards: " << myCards.size() << endl;
+};
+vector<Card*> Hand::returnMyCards()
+{
+	return myCards;
 };
 void Hand::addCard(Card* card)
 {
@@ -161,16 +213,20 @@ void Hand::removeCard(Card* card)
 
 void Hand::printCards()
 {
+	cout << "\n\nHand information." << endl;
+	
 	cout << "\nIs myCards empty? " << myCards.empty() << endl;
 	cout << "Size of myCards: " << myCards.size() << endl;
 
-	cout << "\nAll cards in the hand:" << endl;
+	cout << "\nCards currently in the hand:" << endl;
 	for (Card* card : myCards)
 	{
 		cout << "\nA new card:" << endl;
 		cout << "Card object: " << &card << endl;
 		cout << "Card address: " << card << endl;
 	}
+
+	cout << "\n" << endl;
 };
 
 
@@ -183,6 +239,8 @@ Deck::Deck()
 	
 	allCards = {};
 	deckCards = {};
+
+	cout << "\nA Deck has been created.\n\n" << endl;
 
 	//cout << "\nIs the allCards empty? " << allCards.empty() << endl;
 	//cout << "Is the deckCards empty? " << deckCards.empty() << endl;
@@ -211,17 +269,26 @@ void Deck::removeCard(Card* card)
 // The Deck class must have a draw() method that allows a player to draw a card at random from the cards remaining in the deck and place it in their hand of cards.
 void Deck::draw(Hand* drawingHand)
 {
-	// Get a random card's index.
-	int index = rand() % deckCards.size();
-	cout << "\nDrew the card at index: " << index << endl;
+	if (deckCards.size() != 0)
+	{
+		// Get a random card's index.
+		int index = rand() % deckCards.size();
+		cout << "\nDrew the card at index: " << index << endl;
 
-	drawingHand->addCard(deckCards.at(index));
-
+		drawingHand->addCard(deckCards.at(index));
+	}
+	else
+	{
+		cout << "\nNo card could be drawn as the deck is empty." << endl;
+	}
+	
 	return;
 };
 
 void Deck::printCards()
 {
+	cout << "\n\nDeck information." << endl;
+	
 	cout << "\nIs deckCards empty? " << deckCards.empty() << endl;
 	cout << "Size of deckCards: " << deckCards.size() << endl;
 	cout << "Size of allCards: " << allCards.size() << endl;
@@ -241,4 +308,6 @@ void Deck::printCards()
 		cout << "Card object: " << &card << endl;
 		cout << "Card address: " << card << endl;
 	}
+
+	cout << "\n" << endl;
 };
