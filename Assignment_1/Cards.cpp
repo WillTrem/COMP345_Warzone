@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Cards.h"
+#include <algorithm>
 
 using namespace std;
 
