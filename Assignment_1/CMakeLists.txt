@@ -8,6 +8,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED true)
 project ("Assignment_1")
 
 # Add source to this project's executable.
-add_executable (Assignment_1 "Assignment_1.cpp" "Assignment_1.h" "Cards.h" "Temp.h" "Cards.cpp" "CardsDriver.h" "CardsDriver.cpp")
+add_executable (Assignment_1 "Assignment_1.cpp" "Assignment_1.h" "Cards.h" "Temp.h" "Cards.cpp" "CardsDriver.h" "CardsDriver.cpp" "Player.h" "Player.cpp")
 
 # TODO: Add tests and install targets if needed.
