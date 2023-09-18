@@ -2,7 +2,7 @@
 
 COMP345 project for Fall 2023
 
-## Building the project for the first time
+## Building the project for the first time (from the command line)
 
 Here are the sequence of commands to build the project for the first time, given that you are in the Assignment_1 directory within your terminal:
 
