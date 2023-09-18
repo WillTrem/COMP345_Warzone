@@ -12,6 +12,8 @@ Here are the sequence of commands to build the project for the first time, given
 
 Then, for the subsequent builds, run the 3rd command from the `./out/build` directory.
 
+> Don't forget to add your files to **CMakeLists.txt** so that they compile and build.
+
 ## Running the project
 
 ### On Windows
