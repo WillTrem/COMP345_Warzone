@@ -59,7 +59,11 @@ Card::Card(Hand* owner, Deck* deck) // If needed, a card could be created direct
 // Destructor.
 Card::~Card()
 {
+	// Not sure these are needed, adding just to be safe.
+	myDeck = nullptr;
 	currentOwner = nullptr;
+
+	delete myDeck;
 	delete currentOwner;
 };
 
@@ -174,6 +178,11 @@ Hand::Hand()
 	//cout << "\nIs myCards empty? " << myCards.empty() << endl;
 	//cout << "Size of myCards: " << myCards.size() << endl;
 };
+Hand::~Hand()
+{
+	myCards.clear();
+	//delete myCards; Aparently done automatically.
+}
 vector<Card*> Hand::returnMyCards()
 {
 	return myCards;
@@ -246,6 +255,11 @@ Deck::Deck()
 	//cout << "\nIs the allCards empty? " << allCards.empty() << endl;
 	//cout << "Is the deckCards empty? " << deckCards.empty() << endl;
 };
+Deck::~Deck()
+{
+	allCards.clear();
+	deckCards.clear();
+}
 void Deck::addCardUniversal(Card* card)
 {
 	// Insert the given card in the reference vector.

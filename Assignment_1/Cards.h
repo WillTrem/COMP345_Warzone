@@ -99,6 +99,8 @@ class Hand
 
 	public:
 	Hand();
+	~Hand();
+
 	void addCard(Card* card);
 	void removeCard(Card* card);
 	void printCards();
@@ -119,6 +121,8 @@ class Deck
 		
 	public:
 	Deck();
+	~Deck();
+
 	void addCardUniversal(Card* card); // Insert the given card in both vectors.
 	void addCard(Card* card); // Add the given card to the deckCards vector.
 	void removeCard(Card* card); // Remove the given card from the deckCards vector.
