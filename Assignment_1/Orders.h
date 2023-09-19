@@ -91,12 +91,12 @@ class OrdersList
     std::vector(Order*) ordersList;
 
     public:
-	//constructor
+    //constructor
     OrdersList();
-	// method to add an order to the list
-	void addOrder(Order* order);
-	// get first order on the list
-	Order* getNextOrder();
+    // method to add an order to the list
+    void addOrder(Order* order);
+    // get first order on the list
+    Order* getNextOrder();
     // delete an order from the list
     void remove();
     // move around an order in the list
