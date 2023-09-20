@@ -60,6 +60,12 @@ void testCards()
 	// Show hand and deck information.
 	testDeck.printCards();
 	testHand.printCards();
+
+
+	// Test Deck's copy constructor.
+	Deck copyDeck = Deck(testDeck);
+
+	copyDeck.printCards();
 };
 
 

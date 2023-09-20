@@ -54,7 +54,20 @@ Card::Card(Hand* owner, Deck* deck) // If needed, a card could be created direct
 
 	cout << "Creating a card." << endl;
 }
-// To do: add more for cards of specific types?
+// Copy constructor.
+Card::Card(Card* sourceCard)
+{
+	myDeck = sourceCard->myDeck
+	myDeck->addCardUniversal(this);
+
+	currentOwner = sourceCard->currentOwner;
+	if (currentOwner == nullptr) :
+	{
+		myDeck->addCard(this);
+	}
+
+	cout << "Creating a card by copying another." << endl;
+};
 
 // Destructor.
 Card::~Card()
@@ -178,6 +191,16 @@ Hand::Hand()
 	//cout << "\nIs myCards empty? " << myCards.empty() << endl;
 	//cout << "Size of myCards: " << myCards.size() << endl;
 };
+// Copy constructor.
+Hand::Hand(Hand* sourceHand)
+{
+	myCards = sourceHand->myCards;
+
+	cout << "\nA hand has been created by copying another.\n\n" << endl;
+
+	//cout << "\nIs myCards empty? " << myCards.empty() << endl;
+	//cout << "Size of myCards: " << myCards.size() << endl;
+};
 Hand::~Hand()
 {
 	myCards.clear();
@@ -255,6 +278,17 @@ Deck::Deck()
 	//cout << "\nIs the allCards empty? " << allCards.empty() << endl;
 	//cout << "Is the deckCards empty? " << deckCards.empty() << endl;
 };
+// Copy constructor.
+Deck::Deck(Deck* sourceDeck)
+{
+	srand(time(0));
+
+	allCards = sourceDeck->allCards;
+	deckCards = sourceDeck->deckCards;
+
+	cout << "\nA Deck has been created by copying another.\n\n" << endl;
+};
+// Destructor.
 Deck::~Deck()
 {
 	allCards.clear();

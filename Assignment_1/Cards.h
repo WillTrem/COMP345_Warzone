@@ -38,6 +38,7 @@ class Card
 	// Constructors.
 	Card(Deck* deck);
 	Card(Hand* owner, Deck* deck);
+	Card(Card* sourceCard);
 
 	// Destructor.
 	~Card();
@@ -54,6 +55,7 @@ class Card_Bomb : public Card
 	public:
 	Card_Bomb(Deck* deck);
 	Card_Bomb(Hand* owner, Deck* deck);
+	Card_Bomb(Card_Bomb* sourceCard);
 	void play();
 };
 
@@ -62,6 +64,7 @@ class Card_Reinforcement : public Card
 	public:
 	Card_Reinforcement(Deck* deck);
 	Card_Reinforcement(Hand* owner, Deck* deck);
+	Card_Reinforcement(Card_Reinforcement* sourceCard);
 	void play();
 };
 
@@ -70,6 +73,7 @@ class Card_Blockade : public Card
 	public:
 	Card_Blockade(Deck* deck);
 	Card_Blockade(Hand* owner, Deck* deck);
+	Card_Blockade(Card_Blockade* sourceCard);
 	void play();
 };
 
@@ -78,6 +82,7 @@ class Card_Airlift : public Card
 	public:
 	Card_Airlift(Deck* deck);
 	Card_Airlift(Hand* owner, Deck* deck);
+	Card_Airlift(Card_Airlift* sourceCard);
 	void play();
 };
 
@@ -86,6 +91,7 @@ class Card_Diplomacy : public Card
 	public:
 	Card_Diplomacy(Deck* deck);
 	Card_Diplomacy(Hand* owner, Deck* deck);
+	Card_Diplomacy(Card_Diplomacy* sourceCard);
 	void play();
 };
 
@@ -99,6 +105,7 @@ class Hand
 
 	public:
 	Hand();
+	Hand(Hand* sourceHand);
 	~Hand();
 
 	void addCard(Card* card);
@@ -121,6 +128,7 @@ class Deck
 		
 	public:
 	Deck();
+	Deck(Deck* sourceDeck);
 	~Deck();
 
 	void addCardUniversal(Card* card); // Insert the given card in both vectors.
