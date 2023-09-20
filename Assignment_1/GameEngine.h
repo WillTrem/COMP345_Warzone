@@ -21,19 +21,19 @@ enum GameState
     END
 };
 
-struct GameStateAction
+struct ActionState
 {
 public:
     GameState nextState;
     void (*action)();
 
-    GameStateAction(void (*a)(), GameState ns );
+    ActionState(void (*a)(), GameState ns);
 };
 
 class GameEngine
 {
 private:
-    std::map<GameState, std::list<GameStateAction>> stateTransitions;
+    std::map<GameState, std::list<ActionState>> stateTransitions;
     GameState currentState;
 
 public:
