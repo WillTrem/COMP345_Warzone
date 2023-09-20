@@ -28,14 +28,27 @@ class Command
 public:
     std::string cmdName;
     GameState nextState;
-    void (*action)();
-    Command(std::string _cmdName, void (*_action)(), GameState _nextState);
+    std::function<void()> action;
+
+    Command(std::string _cmdName, std::function<void()> _action, GameState _nextState);
 };
 
 class GameEngine
 {
 private:
     std::map<GameState, std::list<Command>> stateTransitions;
+
+    void start();
+    void loadMap();
+    void validateMap();
+    void addPlayer();
+    void assignCountries();
+    void issueOrder();
+    void endIssueOrders();
+    void executeOrder();
+    void endExecuteOrders();
+    void win();
+    void end();
 
 public:
     GameState currentState;

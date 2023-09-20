@@ -1,6 +1,6 @@
 #include "GameEngine.h"
 
-Command::Command(std::string _cmdName, void (*_action)(), GameState _nextState)
+Command::Command(std::string _cmdName, std::function<void()> _action, GameState _nextState)
 {
     cmdName = _cmdName;
     action = _action;
@@ -9,59 +9,70 @@ Command::Command(std::string _cmdName, void (*_action)(), GameState _nextState)
 
 // Temporary so that compiler doesn't complain
 // TODO: Implement/replace the actual functions
-void start()
+void GameEngine::start()
 {
-    std::cout << "Started game" << std::endl;
+    std::cout << "Started game\n"
+              << std::endl;
     std::cout << "Available commands: 'loadMap'" << std::endl;
 }
-void loadMap()
+void GameEngine::loadMap()
 {
-    std::cout << "Loaded map sucessfully" << std::endl;
+    std::cout << "Loaded map sucessfully\n"
+              << std::endl;
     std::cout << "Available commands: 'loadMap' , 'validateMap'" << std::endl;
 }
-void validateMap()
+void GameEngine::validateMap()
 {
-    std::cout << "Validated map sucessfully" << std::endl;
+    std::cout << "Validated map sucessfully\n"
+              << std::endl;
     std::cout << "Available commands: 'addPlayer'" << std::endl;
 }
-void addPlayer()
+void GameEngine::addPlayer()
 {
-    std::cout << "Added player" << std::endl;
+    std::cout << "Added player\n"
+              << std::endl;
     std::cout << "Available commands: 'addPlayer' , 'assignCountries'" << std::endl;
 }
-void assignCountries()
+void GameEngine::assignCountries()
 {
-    std::cout << "Assigned countries" << std::endl;
+    std::cout << "Assigned countries\n"
+              << std::endl;
     std::cout << "Available commands: 'issueOrder'" << std::endl;
 }
-void issueOrder()
+void GameEngine::issueOrder()
 {
-    std::cout << "Issue ordered sucessfully" << std::endl;
+    std::cout << "Order issued sucessfully\n"
+              << std::endl;
     std::cout << "Available commands: 'issueOrder' , 'endIssueOrders'" << std::endl;
 }
-void endIssueOrders()
+void GameEngine::endIssueOrders()
 {
-    std::cout << "Done issuing orders" << std::endl;
+    std::cout << "Done issuing orders\n"
+              << std::endl;
     std::cout << "Available commands: 'executeOrder' , 'endExecuteOrders' , 'win'" << std::endl;
 }
-void executeOrder()
+void GameEngine::executeOrder()
 {
-    std::cout << "Executed order sucessfully" << std::endl;
+    std::cout << "Order executed sucessfully\n"
+              << std::endl;
     std::cout << "Available commands: 'executeOrder' , 'endExecuteOrders' , 'win'" << std::endl;
 }
-void endExecuteOrders()
+void GameEngine::endExecuteOrders()
 {
-    std::cout << "Done executing orders" << std::endl;
+    std::cout << "Done executing orders\n"
+              << std::endl;
     std::cout << "Available commands: 'issueOrder'" << std::endl;
 }
-void win()
+void GameEngine::win()
 {
-    std::cout << "You win!" << std::endl;
+    std::cout << "You win!\n"
+              << std::endl;
     std::cout << "Available commands: 'play' , 'end'" << std::endl;
 }
-void end()
+void GameEngine::end()
 {
-    std::cout << "Thank you for playing!" << std::endl;
+    std::cout << "Thank you for playing!\n"
+              << std::endl;
 }
 
 GameEngine::GameEngine()
@@ -73,28 +84,70 @@ GameEngine::GameEngine()
     stateTransitions = {
         // Start states
         {GameState::START,
-         {Command("loadMap", &loadMap, GameState::MAP_LOADED)}},
+         {Command(
+             "loadMap", [&]()
+             { loadMap(); },
+             GameState::MAP_LOADED)}},
         {GameState::MAP_LOADED,
-         {Command("loadMap", &loadMap, GameState::MAP_LOADED),
-          Command("validateMap", &validateMap, GameState::MAP_VALIDATED)}},
+         {Command(
+              "loadMap", [&]()
+              { loadMap(); },
+              GameState::MAP_LOADED),
+          Command(
+              "validateMap", [&]()
+              { validateMap(); },
+              GameState::MAP_VALIDATED)}},
         {GameState::MAP_VALIDATED,
-         {Command("addPlayer", &addPlayer, GameState::PLAYERS_ADDED)}},
+         {Command(
+             "addPlayer", [&]()
+             { addPlayer(); },
+             GameState::PLAYERS_ADDED)}},
         {GameState::PLAYERS_ADDED,
-         {Command("addPlayer", &addPlayer, GameState::PLAYERS_ADDED),
-          Command("assignCountries", &assignCountries, GameState::ASSIGN_REINFORCEMENTS)}},
+         {Command(
+              "addPlayer", [&]()
+              { addPlayer(); },
+              GameState::PLAYERS_ADDED),
+          Command(
+              "assignCountries", [&]()
+              { assignCountries(); },
+              GameState::ASSIGN_REINFORCEMENTS)}},
         // Play states
         {GameState::ASSIGN_REINFORCEMENTS,
-         {Command("issueOrder", &issueOrder, GameState::ISSUE_ORDERS)}},
+         {Command(
+             "issueOrder", [&]()
+             { issueOrder(); },
+             GameState::ISSUE_ORDERS)}},
         {GameState::ISSUE_ORDERS,
-         {Command("issueOrder", &issueOrder, GameState::ISSUE_ORDERS),
-          Command("endIssueOrders", &endIssueOrders, GameState::EXECUTE_ORDERS)}},
+         {Command(
+              "issueOrder", [&]()
+              { issueOrder(); },
+              GameState::ISSUE_ORDERS),
+          Command(
+              "endIssueOrders", [&]()
+              { endIssueOrders(); },
+              GameState::EXECUTE_ORDERS)}},
         {GameState::EXECUTE_ORDERS,
-         {Command("executeOrder", &executeOrder, GameState::EXECUTE_ORDERS),
-          Command("endExecuteOrders", &endExecuteOrders, GameState::ASSIGN_REINFORCEMENTS),
-          Command("win", &win, GameState::WIN)}},
+         {Command(
+              "executeOrder", [&]()
+              { executeOrder(); },
+              GameState::EXECUTE_ORDERS),
+          Command(
+              "endExecuteOrders", [&]()
+              { endExecuteOrders(); },
+              GameState::ASSIGN_REINFORCEMENTS),
+          Command(
+              "win", [&]()
+              { win(); },
+              GameState::WIN)}},
         {GameState::WIN,
-         {Command("play", &start, GameState::EXECUTE_ORDERS),
-          Command("end", &end, GameState::END)}},
+         {Command(
+              "play", [&]()
+              { start(); },
+              GameState::EXECUTE_ORDERS),
+          Command(
+              "end", [&]()
+              { end(); },
+              GameState::END)}},
 
     };
 }
