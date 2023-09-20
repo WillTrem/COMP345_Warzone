@@ -2,6 +2,8 @@
 
 #include <map>
 #include <list>
+#include <string>
+#include <iostream>
 #include "Orders.h"
 #include "Cards.h"
 #include "Player.h"
@@ -21,22 +23,22 @@ enum GameState
     END
 };
 
-struct ActionState
+class Command
 {
 public:
+    std::string cmdName;
     GameState nextState;
     void (*action)();
-
-    ActionState(void (*a)(), GameState ns);
+    Command(std::string _cmdName, void (*_action)(), GameState _nextState);
 };
 
 class GameEngine
 {
 private:
-    std::map<GameState, std::list<ActionState>> stateTransitions;
+    std::map<GameState, std::list<Command>> stateTransitions;
     GameState currentState;
 
 public:
     GameEngine();
-    void transitionToNextState();
+    void executeCommand(std::string command);
 };
