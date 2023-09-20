@@ -4,7 +4,7 @@
 #include <list>
 #include <string>
 #include <iostream>
-#include "Orders.h"
+// #include "Orders.h"
 #include "Cards.h"
 #include "Player.h"
 
@@ -36,9 +36,9 @@ class GameEngine
 {
 private:
     std::map<GameState, std::list<Command>> stateTransitions;
-    GameState currentState;
 
 public:
+    GameState currentState;
     GameEngine();
     void executeCommand(std::string command);
 };

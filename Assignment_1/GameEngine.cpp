@@ -94,7 +94,7 @@ GameEngine::GameEngine()
           Command("win", &win, GameState::WIN)}},
         {GameState::WIN,
          {Command("play", &start, GameState::EXECUTE_ORDERS),
-          Command("endExecuteOrders", &endExecuteOrders, GameState::ASSIGN_REINFORCEMENTS)}},
+          Command("end", &end, GameState::END)}},
 
     };
 }

@@ -18,9 +18,14 @@ add_executable (Assignment_1
     "CardsDriver.cpp" 
     "Player.h" 
     "Player.cpp" 
-    "Orders.h" 
-    "Orders.cpp" 
-    "OrdersDriver.h" 
-    "OrdersDriver.cpp")
+    # "Orders.h" 
+    # "Orders.cpp" 
+    # "OrdersDriver.h" 
+    # "OrdersDriver.cpp"
+    "GameEngine.h"
+    "GameEngine.cpp"
+    "GameEngineDriver.cpp"
+    "GameEngineDriver.h"
+    )
 
 # TODO: Add tests and install targets if needed.
