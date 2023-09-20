@@ -5,22 +5,36 @@
 
 #include "Player.h"
 #include "Cards.h"
+#include "Orders.h"
 
-// Warzone player
+// Default constructor
 Player::Player(){
-	hand = Hand();
+	hand = new Hand();
+	ordersList = new OrdersList();
 }
 
-// Warzone player
+// Parametrized connstructor
 Player::Player(Hand* initialHand){
-	hand = *initialHand;
+	hand = initialHand;
+	ordersList = new OrdersList();
 }
 
 // Returns the hand of the player
-Hand Player::getHand(){
+Hand* Player::getHand(){
 	return hand;
+}
+
+// Returns the player's current orders list
+OrdersList* Player::getOrdersList(){
+	return ordersList;
 }
 
 // TODO: Implement toDefend()
 // TODO: Implement toAttack()
-// TODO: Implement issueOrder()
+void Player::issueOrder(){
+	Order* newOrder = new Order();
+
+	ordersList->addOrder(newOrder);
+
+	std::cout << "An order has been issued" << std::endl;
+}
