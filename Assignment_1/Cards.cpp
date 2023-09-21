@@ -57,7 +57,7 @@ Card::Card(Hand* owner, Deck* deck) // If needed, a card could be created direct
 // Copy constructor.
 Card::Card(Card* sourceCard)
 {
-	myDeck = sourceCard->myDeck
+	myDeck = sourceCard->myDeck;
 	myDeck->addCardUniversal(this);
 
 	currentOwner = sourceCard->currentOwner;

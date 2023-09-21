@@ -16,10 +16,14 @@ class Player {
 	// TODO: Declare toDefend()
 	// TODO: Declare toAttack()
 
+	// Default constructor
 	Player();
 
 	// TODO: Add territories to the constructor's parameters
 	Player(Hand* initialHand);
+
+	// Copy constructor
+	Player(Player* player);
 
 	Hand* getHand();
 
@@ -27,7 +31,5 @@ class Player {
 
 	void issueOrder();
 	
-
-
-
+	void operator=(Player* player);
 };

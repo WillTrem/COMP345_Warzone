@@ -17,4 +17,6 @@ void testPlayers(){
 	cout<<"P1 next order: "<< p1.getOrdersList()->getNextOrder()<<endl;
 
 	cout<<"P2 hand object: "<<p2.getHand()<<endl;
+
+	//TODO: add copy constructor and assignment operator to driver
 }

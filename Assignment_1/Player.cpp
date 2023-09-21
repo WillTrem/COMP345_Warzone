@@ -13,10 +13,16 @@ Player::Player(){
 	ordersList = new OrdersList();
 }
 
-// Parametrized connstructor
+// Parametrized constructor
 Player::Player(Hand* initialHand){
 	hand = initialHand;
 	ordersList = new OrdersList();
+}
+
+Player::Player(Player* player){
+	//TODO: Add Territories list
+	hand = new Hand(player->hand);
+	// ordersList = new OrdersList(player->ordersList); Waiting for copy constructor to be implemented
 }
 
 // Returns the hand of the player
@@ -31,10 +37,19 @@ OrdersList* Player::getOrdersList(){
 
 // TODO: Implement toDefend()
 // TODO: Implement toAttack()
+
+// Creates a new order and adds it to the player's list of current orders
 void Player::issueOrder(){
 	Order* newOrder = new Order();
 
 	ordersList->addOrder(newOrder);
 
 	std::cout << "An order has been issued" << std::endl;
+}
+
+// Assignment operator overload
+void Player::operator=(Player* player){
+	hand = player->hand;
+	ordersList = player->ordersList;
+	//TODO: add territories 
 }
