@@ -9,6 +9,16 @@
 #include "Orders.h"
 #include <iostream>
 
+void Order::execute()
+{
+    
+}
+
+void Order::validate()
+{
+
+}
+
 // default constructor
 OrdersList::OrdersList()
 {
