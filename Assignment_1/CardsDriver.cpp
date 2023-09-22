@@ -65,6 +65,7 @@ void testCards()
 	// Test Deck's copy constructor.
 	Deck copyDeck = Deck(testDeck);
 
+	cout << "Now printing the copied deck:" << endl;
 	copyDeck.printCards();
 };
 
