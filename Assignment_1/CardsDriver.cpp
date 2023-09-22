@@ -67,6 +67,14 @@ void testCards()
 
 	cout << "Now printing the copied deck:" << endl;
 	copyDeck.printCards();
+
+	// Test Card's copy constructor.
+	Card_Bomb copyCardBomb = Card_Bomb(cardBombTest);
+
+	// Test Hand's copy constructor.
+	Hand copyHand = Hand(testHand);
+	cout << "Now printing the copied hand:" << endl;
+	copyHand.printCards();
 };
 
 

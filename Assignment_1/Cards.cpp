@@ -93,6 +93,24 @@ void Card::play()
 	return;
 };
 
+// Assignment operator overload
+void Card::operator=(Card& Card) {
+	cout << "Card assignment operator called." << endl;
+	myDeck = Card.myDeck;
+	currentOwner = Card.currentOwner;
+	
+	// Should it also be added to the deck's lists?
+}
+
+// Stream insertion operator overload.
+ostream& operator<<(ostream&, const Card& c) {
+	cout << "Card stream insertion operator called\n" << endl;
+	cout << "Card information:" << endl;
+	cout << "\nThe card belongs to the deck" << c.myDeck << endl;
+	cout << "\nThe card belongs to the hand" << c.currentOwner << endl;
+	return;
+}
+
 
 // Each card has a type from: bomb, reinforcement, blockade, airlift and diplomacy.
 // Making these into different child classes as I imagine they'll have different purposes.
@@ -283,6 +301,26 @@ void Hand::printCards()
 	cout << "\n" << endl;
 };
 
+// Assignment operator overload.
+void Hand::operator=(Hand& Hand) {
+	cout << "Hand assignment operator called." << endl;
+	myCards = Hand.myCards;
+}
+
+// Stream insertion operator overload.
+ostream& operator<<(ostream&, const Hand& h) {
+	cout << "Hand stream insertion operator called\n" << endl;
+	cout << "Hand information:" << endl;
+	cout << "\nCards currently in the hand:" << endl;
+	for (Card* card : h.myCards)
+	{
+		cout << "\nA new card:" << endl;
+		cout << "Card object: " << &card << endl;
+		cout << "Card address: " << card << endl;
+	}
+	return;
+}
+
 
 
 // DECK
@@ -381,3 +419,26 @@ void Deck::printCards()
 
 	cout << "\n" << endl;
 };
+
+// Assignment operator overload
+void Deck::operator=(Deck& Deck) {
+	cout << "Deck assignment operator called." << endl;
+	allCards = Deck.allCards;
+	deckCards = Deck.deckCards;
+}
+
+// Stream insertion operator overload.
+ostream& operator<<(ostream&, const Deck& d) {
+	cout << "Deck stream insertion operator called\n" << endl;
+	cout << "Deck information:" << endl;
+
+	cout << "\nCards currently in the deck:" << endl;
+	for (Card* card : d.deckCards)
+	{
+		cout << "\nA card:" << endl;
+		cout << "Card object: " << &card << endl;
+		cout << "Card address: " << card << endl;
+	}
+
+	return;
+}
