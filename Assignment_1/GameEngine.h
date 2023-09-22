@@ -4,6 +4,8 @@
 #include <list>
 #include <string>
 #include <iostream>
+#include <functional>
+
 // #include "Orders.h"
 #include "Cards.h"
 #include "Player.h"
