@@ -31,6 +31,9 @@
 *.out
 *.app
 
+# Mac
+*.DS_Store
+
 build/
 .vscode/
 
