@@ -3,6 +3,7 @@
 #include "Cards.h"
 #include <algorithm>
 
+
 using namespace std;
 
 // PART 4.
@@ -61,7 +62,7 @@ Card::Card(Card* sourceCard)
 	myDeck->addCardUniversal(this);
 
 	currentOwner = sourceCard->currentOwner;
-	if (currentOwner == nullptr) :
+	if (currentOwner == nullptr)
 	{
 		myDeck->addCard(this);
 	}
@@ -104,6 +105,10 @@ Card_Bomb::Card_Bomb(Hand* owner, Deck* deck) : Card::Card(owner, deck)
 {
 	cout << "It is a Bomb card.\n" << endl;
 };
+Card_Bomb::Card_Bomb(Card_Bomb* sourceCard) : Card::Card(sourceCard)
+{
+	cout << "It is a Bomb card.\n" << endl;
+};
 void Card_Bomb::play() 
 {
 	// Actions specific to this type of card.
@@ -119,6 +124,10 @@ Card_Reinforcement::Card_Reinforcement(Deck* deck) : Card::Card(deck)
 	cout << "It is a Reinforcement card.\n" << endl;
 };
 Card_Reinforcement::Card_Reinforcement(Hand* owner, Deck* deck) : Card::Card(owner, deck)
+{
+	cout << "It is a Reinforcement card.\n" << endl;
+};
+Card_Reinforcement::Card_Reinforcement(Card_Reinforcement* sourceCard) : Card::Card(sourceCard)
 {
 	cout << "It is a Reinforcement card.\n" << endl;
 };
@@ -138,6 +147,10 @@ Card_Blockade::Card_Blockade(Hand* owner, Deck* deck) : Card::Card(owner, deck)
 {
 	cout << "It is a Blockade card.\n" << endl;
 };
+Card_Blockade::Card_Blockade(Card_Blockade* sourceCard) : Card::Card(sourceCard)
+{
+	cout << "It is a Blockade card.\n" << endl;
+};
 void Card_Blockade::play() 
 {
 	cout << "Playing a Blockade card." << endl;
@@ -154,6 +167,10 @@ Card_Airlift::Card_Airlift(Hand* owner, Deck* deck) : Card::Card(owner, deck)
 {
 	cout << "It is an Airlift card.\n" << endl;
 };
+Card_Airlift::Card_Airlift(Card_Airlift* sourceCard) : Card::Card(sourceCard)
+{
+	cout << "It is an Airlift card.\n" << endl;
+};
 void Card_Airlift::play() 
 {
 	cout << "Playing an Airlift card." << endl;
@@ -167,6 +184,10 @@ Card_Diplomacy::Card_Diplomacy(Deck* deck) : Card::Card(deck)
 	cout << "It is a Diplomacy card.\n" << endl;
 };
 Card_Diplomacy::Card_Diplomacy(Hand* owner, Deck* deck) : Card::Card(owner, deck)
+{
+	cout << "It is a Diplomacy card.\n" << endl;
+};
+Card_Diplomacy::Card_Diplomacy(Card_Diplomacy* sourceCard) : Card::Card(sourceCard)
 {
 	cout << "It is a Diplomacy card.\n" << endl;
 };

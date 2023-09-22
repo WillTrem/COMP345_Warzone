@@ -12,7 +12,6 @@ add_executable (Assignment_1
     "Assignment_1.cpp" 
     "Assignment_1.h" 
     "Cards.h" 
-    "Temp.h" 
     "Cards.cpp" 
     "CardsDriver.h" 
     "CardsDriver.cpp" 
