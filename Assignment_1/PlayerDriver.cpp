@@ -5,6 +5,7 @@
 #pragma once
 #include "Player.h"
 #include "Cards.h"
+#include "PlayerDriver.h"
 
 using namespace std;
 void testPlayers(){
@@ -18,5 +19,14 @@ void testPlayers(){
 
 	cout<<"P2 hand object: "<<p2.getHand()<<endl;
 
+	// Copy constructor demo
+	Player p3(p2);
+
+	// Assignment operator demo
+	Player p4 = p1;
+
+	//Stream insertion operator demo
+
+	cout << p4;
 	//TODO: add copy constructor and assignment operator to driver
 }

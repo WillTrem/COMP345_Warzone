@@ -7,6 +7,7 @@
 #include "Cards.h"
 #include "Orders.h"
 
+using namespace std;
 // Default constructor
 Player::Player(){
 	hand = new Hand();
@@ -19,9 +20,9 @@ Player::Player(Hand* initialHand){
 	ordersList = new OrdersList();
 }
 
-Player::Player(Player* player){
+Player::Player(Player& player){
 	//TODO: Add Territories list
-	hand = new Hand(player->hand);
+	hand = new Hand(player.hand);
 	// ordersList = new OrdersList(player->ordersList); Waiting for copy constructor to be implemented
 }
 
@@ -44,12 +45,22 @@ void Player::issueOrder(){
 
 	ordersList->addOrder(newOrder);
 
-	std::cout << "An order has been issued" << std::endl;
+	cout << "An order has been issued" << endl;
 }
 
 // Assignment operator overload
-void Player::operator=(Player* player){
-	hand = player->hand;
-	ordersList = player->ordersList;
+void Player::operator=(Player& player){
+	cout << "Player assignment operator called."<<endl;
+	hand = player.hand;
+	ordersList = player.ordersList;
 	//TODO: add territories 
+}
+
+// Stream insertion operator overload for class Player
+ostream& operator<<(ostream&, const Player &p){
+	cout << "Player stream insertion operator called\n"<< endl;
+	cout << "Player information:"<<endl;
+	cout << "\t Current hand: "<<p.hand<<endl;
+	cout << "\t Current orders list: "<<p.ordersList<<endl;
+	// TODO: add territories
 }

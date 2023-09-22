@@ -23,7 +23,7 @@ class Player {
 	Player(Hand* initialHand);
 
 	// Copy constructor
-	Player(Player* player);
+	Player(Player& player);
 
 	Hand* getHand();
 
@@ -31,5 +31,11 @@ class Player {
 
 	void issueOrder();
 	
-	void operator=(Player* player);
+	// Assignment operator overload
+	void operator=(Player& player);
+
+	// Stream insertion operator overload
+	friend std::ostream& operator<<(std::ostream &out, const Player &p);
 };
+
+
