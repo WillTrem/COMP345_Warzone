@@ -4,13 +4,13 @@
 // implement a group of C++ classes that implement a Warzone player orders using the following design:
 // orders are created by the player during their turn and placed into the player’s list of orders
 
-// written by Chris Anglin --- 40216346   :)
+// written by Chris Anglin --- 40216346 
 
 #ifndef ORDERS_H
 #define ORDERS_H
 
 #include <iostream>
-#include <vector>
+#include <queue>
 
 // an abstract ORDER class --- each ORDER type (below) inherits from this class and overrides execute() and validate()
 class Order
@@ -88,20 +88,27 @@ class OrdersList
 {
     private:
     // a list of pointers to Order objects
-    std::vector(Order*) ordersList;
+    std::queue<Order*> ordersList;
 
     public:
-    //constructor
+    
+    // default constructor
     OrdersList();
-    // method to add an order to the list
+
+    // copy constructor
+    OrdersList(OrdersList& order);
+    
+    // add an order to the list
     void addOrder(Order* order);
-    // get first order on the list
+    
+    // get next order on the list
     Order* getNextOrder();
+    
     // delete an order from the list
     void remove();
+    
     // move around an order in the list
     void move();
-    
 };
 
 #endif
