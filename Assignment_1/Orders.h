@@ -12,7 +12,8 @@
 #include <iostream>
 #include <queue>
 
-// an abstract ORDER class --- each ORDER type (below) inherits from this class and overrides execute() and validate()
+//   ---   Order class    ---   [each ORDER type (below) inherits from this class and overrides execute() and validate()]
+
 class Order
 {
     private:
@@ -30,15 +31,16 @@ class Order
     virtual void execute() = 0;
 
     // pure virtual method to validate order (only implemented in subclasses)
-    virtual void validate() = 0;
+    virtual bool validate() = 0;
     
     //stream insertion operator
     
 };
 
-// ORDER types:
+// order types:
 
-//   ---   Deploy   ---
+//   ---   Deploy class   ---
+
 class Deploy : public Order
 {   
     private:
@@ -53,10 +55,11 @@ class Deploy : public Order
     Deploy(Deploy& existingDeploy);
 
     void execute() override;
-    void validate() override;
+    bool validate() override;
 };
 
-//   ---   Advance   --- 
+//   ---   Advance class   --- 
+
 class Advance : public Order
 {
     private:
@@ -71,10 +74,11 @@ class Advance : public Order
     Advance(Advance& existingAdvance);
 
     void execute() override;
-    void validate() override;
+    bool validate() override;
 };
 
-//   ---   Bomb   --- 
+//   ---   Bomb class   --- 
+
 class Bomb : public Order
 {
     private:
@@ -89,10 +93,11 @@ class Bomb : public Order
     Bomb(Bomb& existingBomb);
     
     void execute() override;
-    void validate() override;
+    bool validate() override;
 };
 
-//   ---   Blockade   --- 
+//   ---   Blockade class   --- 
+
 class Blockade : public Order
 {
     private:
@@ -107,10 +112,11 @@ class Blockade : public Order
     Blockade(Blockade& existingBlockade);
     
     void execute() override;
-    void validate() override;
+    bool validate() override;
 };
 
-//   ---   Airlift  --- 
+//   ---   Airlift class  --- 
+
 class Airlift : public Order
 {
     private:
@@ -125,10 +131,11 @@ class Airlift : public Order
     Airlift(Airlift& existingAirlift);
     
     void execute() override;
-    void validate() override;
+    bool validate() override;
 };
 
-//   ---   Negotiate  --- 
+//   ---   Negotiate class  --- 
+
 class Negotiate : public Order
 {
     private:
@@ -143,13 +150,14 @@ class Negotiate : public Order
     Negotiate(Negotiate& existingNegotiate);
     
     void execute() override;
-    void validate() override;
+    bool validate() override;
 };
 
-// end of ORDER types!
+// end of order types!
 
 
-// a class to create and manage a list of ORDERS
+//   ---   OrdersList class   ---   [a class to create and manage a list of orders]
+
 class OrdersList
 {
     private:

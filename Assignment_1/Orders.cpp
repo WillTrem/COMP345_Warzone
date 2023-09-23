@@ -7,8 +7,11 @@
 // written by Chris Anglin --- 40216346 
 
 #include "Orders.h"
+#include <iostream>
 
-//   ---   Order   ---   
+using namespace std;
+
+//   ---   Order class   ---   
 
 // default constructor
 Order::Order() {}
@@ -19,7 +22,7 @@ Order::Order(Order& existingOrder)
     this->effect = existingOrder.effect;
 }
 
-//   ---   Deploy   ---  
+//   ---   Deploy class   ---  
 
 // default constructor
 Deploy::Deploy() {}
@@ -30,17 +33,22 @@ Deploy::Deploy(Deploy& existingDeploy)
     this->effect = existingDeploy.effect;
 }
 
-void Deploy::validate()
+bool Deploy::validate()
 {
-
+    cout << "validate() called in Deploy class" << endl;
+    return true;
 }
 
 void Deploy::execute()
 {
-    this->validate();
+    if (this->validate())
+    {
+        cout << "execute() called in Deploy class" << endl;
+        cout << "Deploy effect: " + this->effect;
+    }
 }
 
-//   ---   Advance   ---  
+//   ---   Advance class   ---  
 
 // default constructor
 Advance::Advance() {}
@@ -51,17 +59,22 @@ Advance::Advance(Advance& existingAdvance)
     this->effect = existingAdvance.effect;
 }
 
-void Deploy::validate()
+bool Advance::validate()
 {
-
+    cout << "validate() called in Advance class" << endl;
+    return true;
 }
 
-void Deploy::execute()
+void Advance::execute()
 {
-    this->validate();
+    if (this->validate())
+    {
+        cout << "execute() called in Advance class" << endl;
+        cout << "Advance effect: " + this->effect;
+    }
 }
 
-//   ---   Bomb   ---  
+//   ---   Bomb class   ---  
 
 // default constructor
 Bomb::Bomb() {}
@@ -72,17 +85,22 @@ Bomb::Bomb(Bomb& existingBomb)
     this->effect = existingBomb.effect;
 }
 
-void Bomb::validate()
+bool Bomb::validate()
 {
-
+    cout << "validate() called in Bomb class" << endl;
+    return true;
 }
 
 void Bomb::execute()
 {
-    this->validate();
+    if (this->validate())
+    {
+        cout << "execute() called in Bomb class" << endl;
+        cout << "Bomb effect: " + this->effect;
+    }
 }
 
-//   ---   Blockade   ---  
+//   ---   Blockade class   ---  
 
 // default constructor
 Blockade::Blockade() {}
@@ -93,17 +111,22 @@ Blockade::Blockade(Blockade& existingBlockade)
     this->effect = existingBlockade.effect;
 }
 
-void Blockade::validate()
+bool Blockade::validate()
 {
-
+    cout << "validate() called in Blockade class" << endl;
+    return true;
 }
 
 void Blockade::execute()
 {
-    this->validate();
+    if (this->validate())
+    {
+        cout << "execute() called in Blockade class" << endl;
+        cout << "Blockade effect: " + this->effect;
+    }
 }
 
-//   ---   Airlift   ---  
+//   ---   Airlift class   ---  
 
 // default constructor
 Airlift::Airlift() {}
@@ -114,17 +137,22 @@ Airlift::Airlift(Airlift& existingAirlift)
     this->effect = existingAirlift.effect;
 }
 
-void Airlift::validate()
+bool Airlift::validate()
 {
-
+    cout << "validate() called in Airlift class" << endl;
+    return true;
 }
 
 void Airlift::execute()
 {
-    this->validate();
+    if (this->validate())
+    {
+        cout << "execute() called in Airlift class" << endl;
+        cout << "Airlift effect: " + this->effect;
+    }
 }
 
-//   ---   Negotiate   ---  
+//   ---   Negotiate class   ---  
 
 // default constructor
 Negotiate::Negotiate() {}
@@ -135,17 +163,22 @@ Negotiate::Negotiate(Negotiate& existingNegotiate)
     this->effect = existingNegotiate.effect;
 }
 
-void Negotiate::validate()
+bool Negotiate::validate()
 {
-
+    cout << "validate() called in Negotiate class" << endl;
+    return true;
 }
 
 void Negotiate::execute()
 {
-    this->validate();
+    if (this->validate())
+    {
+        cout << "execute() called in Negotiate class" << endl;
+        cout << "Negotiate effect: " + this->effect;
+    }
 }
 
-//   ---   OrdersList   ---   
+//   ---   OrdersList class   ---   
 
 // default constructor
 OrdersList::OrdersList() {}
