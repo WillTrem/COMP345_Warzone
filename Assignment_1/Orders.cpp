@@ -22,6 +22,12 @@ Order::Order(Order& existingOrder)
     this->effect = existingOrder.effect;
 }
 
+// validate method
+bool Order::validate() {return true;}
+
+// execute method
+void Order::execute() {}
+
 //   ---   Deploy class   ---  
 
 // default constructor

@@ -27,11 +27,11 @@ class Order
     // copy constructor
     Order(Order& existingOrder);
 
-    // pure virtual method to execute order (only implemented in subclasses)
-    virtual void execute() = 0;
+    // virtual method to execute order (implemented in subclasses)
+    virtual void execute();
 
-    // pure virtual method to validate order (only implemented in subclasses)
-    virtual bool validate() = 0;
+    // virtual method to validate order (implemented in subclasses)
+    virtual bool validate();
     
     //stream insertion operator
     
