@@ -6,6 +6,7 @@
 #include <iostream>
 #include <functional>
 
+
 // #include "Orders.h"
 #include "Cards.h"
 #include "Player.h"
@@ -33,6 +34,7 @@ public:
     std::function<void()> *action;
 
     Command(std::string _cmdName, std::function<void()> _action, GameState _nextState);
+    ~Command();
 };
 
 class GameEngine
@@ -55,5 +57,6 @@ private:
 public:
     GameState *currentState;
     GameEngine();
+    ~GameEngine();
     void executeCommand(std::string command);
 };

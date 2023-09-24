@@ -1,11 +1,5 @@
 #include "GameEngine.h"
 
-Command::Command(std::string _cmdName, std::function<void()> _action, GameState _nextState)
-{
-    cmdName = &_cmdName;
-    action = &_action;
-    nextState = &_nextState;
-}
 
 // Temporary so that compiler doesn't complain
 // TODO: Implement/replace the actual functions
@@ -75,89 +69,62 @@ void GameEngine::end()
               << std::endl;
 }
 
+Command::Command(std::string _cmdName, std::function<void()> _action, GameState _nextState)
+{
+    cmdName = new std::string(_cmdName);
+    action = new  std::function<void()>(_action);
+    nextState = new GameState(_nextState);
+}
+
+Command::~Command()
+{
+    delete cmdName;
+    delete action;
+    delete nextState;
+}
+
+
 GameEngine::GameEngine()
 {
-    GameState startState = GameState::START;
-    currentState = &startState;
+    
+    currentState = new GameState(GameState::START);
 
     start();
 
-    std::map<GameState, std::list<Command>> transitions = {
-        // Start states
-        {GameState::START,
-         {Command(
-             "loadMap", [&]()
-             { loadMap(); },
-             GameState::MAP_LOADED)}},
-        {GameState::MAP_LOADED,
-         {Command(
-              "loadMap", [&]()
-              { loadMap(); },
-              GameState::MAP_LOADED),
-          Command(
-              "validateMap", [&]()
-              { validateMap(); },
-              GameState::MAP_VALIDATED)}},
-        {GameState::MAP_VALIDATED,
-         {Command(
-             "addPlayer", [&]()
-             { addPlayer(); },
-             GameState::PLAYERS_ADDED)}},
-        {GameState::PLAYERS_ADDED,
-         {Command(
-              "addPlayer", [&]()
-              { addPlayer(); },
-              GameState::PLAYERS_ADDED),
-          Command(
-              "assignCountries", [&]()
-              { assignCountries(); },
-              GameState::ASSIGN_REINFORCEMENTS)}},
-        // Play states
-        {GameState::ASSIGN_REINFORCEMENTS,
-         {Command(
-             "issueOrder", [&]()
-             { issueOrder(); },
-             GameState::ISSUE_ORDERS)}},
-        {GameState::ISSUE_ORDERS,
-         {Command(
-              "issueOrder", [&]()
-              { issueOrder(); },
-              GameState::ISSUE_ORDERS),
-          Command(
-              "endIssueOrders", [&]()
-              { endIssueOrders(); },
-              GameState::EXECUTE_ORDERS)}},
-        {GameState::EXECUTE_ORDERS,
-         {Command(
-              "executeOrder", [&]()
-              { executeOrder(); },
-              GameState::EXECUTE_ORDERS),
-          Command(
-              "endExecuteOrders", [&]()
-              { endExecuteOrders(); },
-              GameState::ASSIGN_REINFORCEMENTS),
-          Command(
-              "win", [&]()
-              { win(); },
-              GameState::WIN)}},
-        {GameState::WIN,
-         {Command(
-              "play", [&]()
-              { start(); },
-              GameState::EXECUTE_ORDERS),
-          Command(
-              "end", [&]()
-              { end(); },
-              GameState::END)}},
+    stateTransitions->insert(std::pair<GameState, std::list<Command>>(GameState::START, {
+        Command("loadMap", [&](){ loadMap(); }, GameState::MAP_LOADED)}));
+    stateTransitions->insert(std::pair<GameState, std::list<Command>>(GameState::MAP_LOADED, {
+        Command("loadMap", [&](){ loadMap(); }, GameState::MAP_LOADED), 
+        Command("validateMap", [&]() { validateMap(); }, GameState::MAP_VALIDATED)}));
+    stateTransitions->insert(std::pair<GameState, std::list<Command>>(GameState::MAP_VALIDATED, {
+        Command("addPlayer", [&]() { addPlayer(); },GameState::PLAYERS_ADDED)}));
+    stateTransitions->insert(std::pair<GameState, std::list<Command>>(GameState::PLAYERS_ADDED, {
+        Command("addPlayer", [&]() { addPlayer(); }, GameState::PLAYERS_ADDED),
+        Command("assignCountries", [&]() { assignCountries(); }, GameState::ASSIGN_REINFORCEMENTS)}));
+    // Play states
+    stateTransitions->insert(std::pair<GameState, std::list<Command>>(GameState::ASSIGN_REINFORCEMENTS, {
+        Command("issueOrder", [&](){ issueOrder(); }, GameState::ISSUE_ORDERS)}));
+    stateTransitions->insert(std::pair<GameState, std::list<Command>>(GameState::ISSUE_ORDERS, {
+        Command("issueOrder", [&]() { issueOrder(); }, GameState::ISSUE_ORDERS),
+        Command("endIssueOrders", [&]() { endIssueOrders(); }, GameState::EXECUTE_ORDERS)}));
+    stateTransitions->insert(std::pair<GameState, std::list<Command>>(GameState::EXECUTE_ORDERS, {
+        Command("executeOrder", [&]() { executeOrder(); }, GameState::EXECUTE_ORDERS),
+        Command("endExecuteOrders", [&]() { endExecuteOrders(); }, GameState::ASSIGN_REINFORCEMENTS),
+        Command("win", [&]() { win(); }, GameState::WIN)}));
+    stateTransitions->insert(std::pair<GameState, std::list<Command>>(GameState::WIN, {
+        Command("play", [&]() { start(); }, GameState::EXECUTE_ORDERS),
+        Command("end", [&](){ end(); }, GameState::END)}));
 
-    };
+}
 
-    stateTransitions = &transitions;
+GameEngine::~GameEngine()
+{
+    delete currentState;
+    delete stateTransitions;
 }
 
 void GameEngine::executeCommand(std::string commandArg)
 {
-    std::cout << "executeCommand";
     // Dereference pointers
     GameState cs = *(currentState);
     std::map<GameState, std::list<Command>> transitions = *(stateTransitions);
@@ -167,7 +134,8 @@ void GameEngine::executeCommand(std::string commandArg)
 
     for (auto cmd : commands)
     {
-        if (*(cmd.cmdName) == commandArg)
+        std::string* cmdName = cmd.cmdName;
+        if (*cmdName == commandArg)
         {
             std::function<void()> a = *(cmd.action);
             a();
