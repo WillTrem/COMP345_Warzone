@@ -5,7 +5,7 @@ void testGameEngine()
 {
     GameEngine gameEngine;
 
-    while (gameEngine.currentState != GameState::END)
+    while (*(gameEngine.currentState) != GameState::END)
     {
         std::cout << "> ";
         std::string command;

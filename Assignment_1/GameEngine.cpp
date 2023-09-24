@@ -2,9 +2,9 @@
 
 Command::Command(std::string _cmdName, std::function<void()> _action, GameState _nextState)
 {
-    cmdName = _cmdName;
-    action = _action;
-    nextState = _nextState;
+    cmdName = &_cmdName;
+    action = &_action;
+    nextState = &_nextState;
 }
 
 // Temporary so that compiler doesn't complain
@@ -77,11 +77,12 @@ void GameEngine::end()
 
 GameEngine::GameEngine()
 {
-    currentState = GameState::START;
+    GameState startState = GameState::START;
+    currentState = &startState;
 
     start();
 
-    stateTransitions = {
+    std::map<GameState, std::list<Command>> transitions = {
         // Start states
         {GameState::START,
          {Command(
@@ -150,18 +151,27 @@ GameEngine::GameEngine()
               GameState::END)}},
 
     };
+
+    stateTransitions = &transitions;
 }
 
 void GameEngine::executeCommand(std::string commandArg)
 {
-    std::list<Command> commands = stateTransitions[currentState];
+    std::cout << "executeCommand";
+    // Dereference pointers
+    GameState cs = *(currentState);
+    std::map<GameState, std::list<Command>> transitions = *(stateTransitions);
+
+    std::list<Command> commands = transitions[cs];
     bool cmdSucessful = false;
 
     for (auto cmd : commands)
     {
-        if (cmd.cmdName == commandArg)
+        if (*(cmd.cmdName) == commandArg)
         {
-            cmd.action();
+            std::function<void()> a = *(cmd.action);
+            a();
+            // cmd.nextState is already a pointer don't need to dereference
             currentState = cmd.nextState;
             cmdSucessful = true;
         }
