@@ -17,12 +17,13 @@ void GameEngine::executeCommand(std::string commandArg)
     GameState cs = *(currentState);
     bool cmdSucessful = false;
 
+    // passed by reference instead of value there's no scope issues
     for (auto &cmd : (*stateTransitions)[cs])
     {
         if (cmd.cmdName == commandArg)
         {
             cmd.action();
-            // cmd.nextState is already a pointer don't need to dereference
+            // now cmd.next
             currentState = &cmd.nextState;
             cmdSucessful = true;
         }

@@ -2,7 +2,7 @@
 #include <string>
 
 
-// Temporary so that compiler doesn't complain
+// Sample actions
 // TODO: Implement/replace the actual functions
 void start()
 {
@@ -77,28 +77,28 @@ void testGameEngine()
     std::map<GameState, std::list<Command>> stateTransitions = {
         // Start states
         {GameState::START, {
-            Command("loadMap", [&]() { loadMap(); }, GameState::MAP_LOADED)}},
+            Command("loadMap", loadMap, GameState::MAP_LOADED)}},
         {GameState::MAP_LOADED, {
-            Command( "loadMap", [&]() { loadMap(); }, GameState::MAP_LOADED),
-            Command("validateMap", [&]() { validateMap(); }, GameState::MAP_VALIDATED)}},
+            Command( "loadMap", loadMap, GameState::MAP_LOADED),
+            Command("validateMap", validateMap, GameState::MAP_VALIDATED)}},
         {GameState::MAP_VALIDATED, {
-            Command("addPlayer", [&]() { addPlayer(); }, GameState::PLAYERS_ADDED)}},
+            Command("addPlayer", addPlayer, GameState::PLAYERS_ADDED)}},
         {GameState::PLAYERS_ADDED, {
-            Command("addPlayer", [&]() { addPlayer(); }, GameState::PLAYERS_ADDED),
-          Command("assignCountries", [&]() { assignCountries(); }, GameState::ASSIGN_REINFORCEMENTS)}},
+            Command("addPlayer", addPlayer, GameState::PLAYERS_ADDED),
+          Command("assignCountries", assignCountries, GameState::ASSIGN_REINFORCEMENTS)}},
         // Play states
         {GameState::ASSIGN_REINFORCEMENTS, std::list<Command>{
-            Command("issueOrder", [&]() { issueOrder(); }, GameState::ISSUE_ORDERS)}},
+            Command("issueOrder", issueOrder, GameState::ISSUE_ORDERS)}},
         {GameState::ISSUE_ORDERS,{
-            Command("issueOrder", [&]() { issueOrder(); }, GameState::ISSUE_ORDERS),
-            Command("endIssueOrders", [&]() { endIssueOrders(); }, GameState::EXECUTE_ORDERS)}},
+            Command("issueOrder", issueOrder, GameState::ISSUE_ORDERS),
+            Command("endIssueOrders", endIssueOrders, GameState::EXECUTE_ORDERS)}},
         {GameState::EXECUTE_ORDERS, {
-            Command("executeOrder", [&]() { executeOrder(); }, GameState::EXECUTE_ORDERS),
-            Command("endExecuteOrders", [&]() { endExecuteOrders(); }, GameState::ASSIGN_REINFORCEMENTS),
-            Command("win", [&]() { win(); }, GameState::WIN)}},
+            Command("executeOrder", executeOrder, GameState::EXECUTE_ORDERS),
+            Command("endExecuteOrders", endExecuteOrders, GameState::ASSIGN_REINFORCEMENTS),
+            Command("win", win, GameState::WIN)}},
         {GameState::WIN, {
-            Command("play", [&]() { start(); }, GameState::EXECUTE_ORDERS),
-            Command("end", [&]() { end(); }, GameState::END)}},
+            Command("play", start, GameState::EXECUTE_ORDERS),
+            Command("end", end, GameState::END)}},
     };
 
     GameState currentState = GameState::START;
