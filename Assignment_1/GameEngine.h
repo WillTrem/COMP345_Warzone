@@ -30,10 +30,10 @@ class Command
 {
 public:
     std::string *cmdName;
-    GameState *nextState;
     std::function<void()> *action;
+    GameState *nextState;
 
-    Command(std::string _cmdName, std::function<void()> _action, GameState _nextState);
+    Command(std::string cmdName, std::function<void()> action, GameState nextState);
     ~Command();
 };
 
@@ -42,21 +42,11 @@ class GameEngine
 private:
     std::map<GameState, std::list<Command>> *stateTransitions;
 
-    void start();
-    void loadMap();
-    void validateMap();
-    void addPlayer();
-    void assignCountries();
-    void issueOrder();
-    void endIssueOrders();
-    void executeOrder();
-    void endExecuteOrders();
-    void win();
-    void end();
-
 public:
-    GameState *currentState;
-    GameEngine();
+    const GameState *currentState;
+
+    GameEngine(GameState currentState, std::map<GameState, std::list<Command>> stateTransitions);
     ~GameEngine();
+
     void executeCommand(std::string command);
 };
