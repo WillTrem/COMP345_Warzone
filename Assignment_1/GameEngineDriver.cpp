@@ -73,11 +73,14 @@ void end()
 
 void testGameEngine()
 {
+    GameState START = GameState::START;
+    GameState MAP_LOADED = GameState::MAP_LOADED;
+
     // Game Engine FSM
     std::map<GameState, std::list<Command>> stateTransitions = {
         // Start states
-        {GameState::START, {
-            Command("loadMap", loadMap, GameState::MAP_LOADED)}},
+        {GameState::START, { 
+            Command(&"loadMap", &std::function<void()>(loadMap), &MAP_LOADED)}},
         {GameState::MAP_LOADED, {
             Command( "loadMap", loadMap, GameState::MAP_LOADED),
             Command("validateMap", validateMap, GameState::MAP_VALIDATED)}},
@@ -85,7 +88,7 @@ void testGameEngine()
             Command("addPlayer", addPlayer, GameState::PLAYERS_ADDED)}},
         {GameState::PLAYERS_ADDED, {
             Command("addPlayer", addPlayer, GameState::PLAYERS_ADDED),
-          Command("assignCountries", assignCountries, GameState::ASSIGN_REINFORCEMENTS)}},
+            Command("assignCountries", assignCountries, GameState::ASSIGN_REINFORCEMENTS)}},
         // Play states
         {GameState::ASSIGN_REINFORCEMENTS, std::list<Command>{
             Command("issueOrder", issueOrder, GameState::ISSUE_ORDERS)}},

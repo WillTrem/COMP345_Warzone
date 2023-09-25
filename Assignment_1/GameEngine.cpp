@@ -1,11 +1,9 @@
 #include "GameEngine.h"
 
-
-Command::Command(std::string cmdName, std::function<void()> action, GameState nextState) :
+Command::Command(std::string *cmdName, std::function<void()> *action, GameState *nextState):
         cmdName(cmdName),
         action(action),
         nextState(nextState) {}
-
 
 GameEngine::GameEngine(GameState* currentState, std::map<GameState, std::list<Command>>* stateTransitions):
     currentState(currentState), 
@@ -20,11 +18,11 @@ void GameEngine::executeCommand(std::string commandArg)
     // passed by reference instead of value there's no scope issues
     for (auto &cmd : (*stateTransitions)[cs])
     {
-        if (cmd.cmdName == commandArg)
+        if ((*cmd.cmdName) == commandArg)
         {
-            cmd.action();
+            (*cmd.action)();
             // now cmd.next
-            currentState = &cmd.nextState;
+            currentState = cmd.nextState;
             cmdSucessful = true;
         }
     }
