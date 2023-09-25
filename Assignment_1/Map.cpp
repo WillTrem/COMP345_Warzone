@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <map>
+#include <algorithm>
 #include "Map.h"
 
 using namespace std;
@@ -8,6 +9,7 @@ using namespace std;
 class Map
 {
     vector<Territory *> mapTerritories;
+    vector<string> nonExistingTerritories;
     struct Continent
     {
         string continentName;
@@ -31,18 +33,55 @@ public:
     void addTerritory(Territory *territory)
     {
         mapTerritories.push_back(territory);
-        cout << territory->territoryName << " has been added to the map" << endl;
+        // cout << territory->territoryName << " has been added to the map" << endl;
     }
 
     void addNeighboringTerritory(string territoryOneName, string territoryTwoName)
     {
         Territory *territory1 = findTerritoryByName(territoryOneName);
         Territory *territory2 = findTerritoryByName(territoryTwoName);
+        bool territoryOneFound = false;
+        bool territoryTwoFound = false;
 
-        if (territory1 && territory2)
+        // Loop through territories to make sure that the territories exists
+        for (Territory *territory : mapTerritories)
+        {
+            if (territory->territoryName == territoryOneName)
+            {
+                territoryOneFound = true;
+                // cout << territoryOneName << " exists" << endl;
+                break;
+            }
+        }
+        for (Territory *territory : mapTerritories)
+        {
+            if (territory->territoryName == territoryTwoName)
+            {
+                territoryTwoFound = true;
+                // cout << territoryTwoName << " exists" << endl;
+                break;
+            }
+        }
+        // To make sure that both territories exist
+        if (territoryOneFound && territoryTwoFound)
         {
             territory1->neighboringTerritories.push_back(territory2);
             // territory2->neighboringTerritories.push_back(territory1);
+            // cout << "Territory " << territory1->territoryName << " now has " << territory1->neighboringTerritories.back()->territoryName << endl;
+        }
+        else
+        {
+            // cout << territoryOneName + " or " + territoryTwoName + "does not exist!" << endl;
+            if (territoryOneFound)
+            {
+                nonExistingTerritories.push_back(territoryTwoName);
+                cout << territoryTwoName + " does not exist!" << endl;
+            }
+            else
+            {
+                nonExistingTerritories.push_back(territoryOneName);
+                cout << territoryOneName + " does not exist!" << endl;
+            }
         }
     }
 
@@ -51,12 +90,12 @@ public:
         for (Territory *territory : continentTerritories)
         {
             territory->setTerritoryContinentName(continentNameVal);
-            cout << territory->territoryName << " is a part of " << continentNameVal << " \n";
+            // cout << territory->territoryName << " is a part of " << continentNameVal << " \n";
         }
 
         Continent *newContinent = new Continent(continentNameVal, continentTerritories);
         continents.push_back(newContinent);
-        cout << "The continent is " << newContinent->continentName << "\n";
+        // cout << "The continent is " << newContinent->continentName << "\n";
     }
 
     void printEntireMapInfo()
@@ -80,7 +119,7 @@ public:
             {
                 cout << territory->territoryName << " ";
             }
-            cout << "\n";
+            cout << endl;
         }
     }
 
@@ -96,19 +135,19 @@ public:
         return nullptr;
     }
 
-    bool validate(Map currentMap, Territory *startingTerritory, std::map<std::string, bool> &visited)
+    bool validate(Map currentMap, Territory *startingTerritory, std::map<std::string, bool> &visitedTerritories, std::map<std::string, bool> &visitedContinents)
     {
+        // Empty map visitedTerritories and visitedContinents to reset
+        visitedTerritories = map<string, bool>();
+        visitedContinents = map<string, bool>();
+        // Traverse the map to visit every node on the map
+        mapTraversal(startingTerritory, visitedTerritories, visitedContinents); // Pass the map by reference
 
         // ******************************* FIRST CHECK ******************************* //
         cout << "First condition check" << endl;
-        
-        // Empty map visited to reset
-        visited = map<string, bool>();
-        // Traverse the map to visit every node on the map
-        mapTraversal(startingTerritory, visited); // Pass the map by reference
         for (Territory *territory : mapTerritories)
         {
-            if (visited[territory->territoryName] == true)
+            if (visitedTerritories[territory->territoryName] == true)
             {
                 cout << "Territory " << territory->territoryName << " has been traversed \n";
             }
@@ -119,30 +158,53 @@ public:
                 return false;
             }
         }
-        cout << " --------------- THE MAP IS A VALID GRAPH ---------------" << endl;
-        return true;
+        cout << endl;
+        cout << " --------------- THE MAP IS A VALID GRAPH --------------- " << endl;
+        cout << endl;
 
         // ******************************* SECOND CHECK ******************************* //
-        
+        for (Continent *continent : continents)
+        {
+            if (visitedContinents[continent->continentName] == true)
+            {
+                cout << "Continent " << continent->continentName << " has been traversed \n";
+            }
+            else
+            {
+                cout << " --------------- THE CONTINENTS DO NOT FORM A VALID SUBGRAPH ---------------" << endl;
+                return false;
+            }
+        }
+        cout << endl;
+        cout << " --------------- THE CONTINENTS FORM A VALID SUBGRAPH ---------------" << endl;
+        cout << endl;
 
         // ******************************* THIRD CHECK ******************************* //
         // ENSURE THAT NO TERRITORY BELONGS TO TWO CONTINENTS
 
+        // IF A NEIGHBORING TERRITORY DOES NOT EXIST
+        cout << "********** WARNING **********" << endl;
+        for (string nonExistantTerritories : nonExistingTerritories)
+        {
+            cout << nonExistantTerritories << " does not exist!!" << endl;
+        }
     }
 
-    void deallocateTerritoryMemory()
+    void deallocateMapMemory()
     {
     }
 
-    void mapTraversal(Territory *territory, map<string, bool> &visited)
+    void mapTraversal(Territory *territory, map<string, bool> &visitedTerritories, map<string, bool> &visitedContinents)
     {
-        visited[territory->territoryName] = true;
+        visitedTerritories[territory->territoryName] = true;
+        visitedContinents[territory->continentName] = true;
+
         std::cout << "Visited: " << territory->territoryName << std::endl;
         for (Territory *neighbor : territory->neighboringTerritories)
         {
-            if (!visited[neighbor->territoryName])
+            if (!visitedTerritories[neighbor->territoryName])
             {
-                mapTraversal(neighbor, visited);
+                mapTraversal(neighbor, visitedTerritories, visitedContinents);
             }
         }
     }

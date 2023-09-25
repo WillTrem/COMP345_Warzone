@@ -3,6 +3,8 @@
 #include <string>
 #include <sstream>
 #include <fstream>
+#include <cctype>
+#include <algorithm>
 #include <map>
 #include "Map.h"
 #include "Map.cpp"
@@ -11,12 +13,14 @@ using namespace std;
 
 class MapDriver
 {
+    // Initializing the entire map of the game
+    Map worldMap;
     std::map<std::string, int> mapContinents;
+    std::map<string> territoryWithMultipleContinents;
     std::vector<Territory *> mapTerritories;
     std::vector<Territory *> continentTerritories;
     std::vector<string> neighborTerritories;
     std::map<Territory *, vector<string> > neighborTerritoryMappingList;
-    bool allTerritoryBelongOneContinent = true;
 
 public:
     // Custom method to split a string into an array of multiple strings with the use of a delimiter
@@ -37,7 +41,7 @@ public:
     void loadMap()
     {
         string myText;
-        ifstream MyReadFile("aden.map"); // To read the file for a first time
+        ifstream MyReadFile("Aden.map"); // To read the file for a first time
 
         // We get rid of the first paragraph of the text file since it is of no use
         while (getline(MyReadFile, myText))
@@ -81,7 +85,6 @@ public:
                     // Converting the elements of the string array into Territory objects and storing them into an array of Territories
                     // Can't add the neighbors of the territories yet since some Territory objects havent been created
                     Territory *newTerritory = new Territory(words[0], words[1], words[2], words[3]);
-
                     // Empty the list of neighborTerritories for each territories
                     neighborTerritories = vector<string>();
 
@@ -101,10 +104,23 @@ public:
                             {
                                 if (words[i] == pair.first)
                                 {
-                                    allTerritoryBelongOneContinent = false;
+                                    territoryWithMultipleContinents.push_back(words[0]);
                                 }
                             }
                             // ---------------------------------------------------------------------------- //
+
+                            // Makes sure that the string does not contain ANY whitespace at the end, HOWEVER keep the whitespaces in the middle of the string
+                            // Find first non-whitespace character
+                            size_t firstNonSpace = words[i].find_first_not_of(" \t\r\n");
+
+                            // Find last non-whitespace character
+                            size_t lastNonSpace = words[i].find_last_not_of(" \t\r\n");
+
+                            // Extract the word/substring between the first non whitespace character and the last non whitespace character
+                            if (firstNonSpace != std::string::npos && lastNonSpace != std::string::npos)
+                            {
+                                words[i] = words[i].substr(firstNonSpace, lastNonSpace - firstNonSpace + 1); // Extract the substring
+                            }
                             neighborTerritories.push_back(words[i]);
                         }
                     }
@@ -124,10 +140,10 @@ public:
         cout << endl;
 
         // Printing all continents
-        for (const auto &pair : mapContinents)
-        {
-            std::cout << "Continent: " << pair.first << ", Number of territories: " << pair.second << std::endl;
-        }
+        // for (const auto &pair : mapContinents)
+        // {
+        //     std::cout << "Continent: " << pair.first << ", Number of territories: " << pair.second << std::endl;
+        // }
 
         cout << endl;
         cout << "======================================================\n";
@@ -136,13 +152,10 @@ public:
         cout << endl;
 
         // Printing all territories on the map
-        for (Territory *territory : mapTerritories)
-        {
-            cout << "Territory " << territory->territoryName << " is located at (" << territory->coordX << ", " << territory->coordY << ") and it is located on the Continent of " << territory->continentName << "\n";
-        }
-
-        // Initializing the entire map of the game
-        Map worldMap;
+        // for (Territory *territory : mapTerritories)
+        // {
+        //     cout << "Territory " << territory->territoryName << " is located at (" << territory->coordX << ", " << territory->coordY << ") and it is located on the Continent of " << territory->continentName << "\n";
+        // }
 
         // Adding all territories to the world map
         for (Territory *territory : mapTerritories)
@@ -173,12 +186,19 @@ public:
             for (string neighbor : currentTerritoryNeighbors)
             {
                 worldMap.addNeighboringTerritory(currentTerritory->territoryName, neighbor);
-                cout << "Territory " << currentTerritory->territoryName << " has neighbor " << neighbor << endl;
+                // cout << "Territory " << currentTerritory->territoryName << " has neighbor " << neighbor << endl;
             }
         }
-        // Creation of the map visited to store territories visited by the DFS
-        std::map<std::string, bool> visited;
-        worldMap.validate(worldMap, mapTerritories[0], visited);
+    }
+
+    void validateMap()
+    {
+        // Creation of the map data structure "visited" to store territories visited by the DFS
+        std::map<std::string, bool> visitedTerritories;
+        std::map<std::string, bool> visitedContinents;
+
+        // Validate the Map
+        worldMap.validate(worldMap, mapTerritories[0], visitedTerritories, visitedContinents);
     }
 };
 
@@ -186,6 +206,6 @@ int main()
 {
     MapDriver mapDriver;
     mapDriver.loadMap();
-
+    mapDriver.validateMap();
     return 0;
 }
