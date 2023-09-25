@@ -1,0 +1,17 @@
+[Map]
+author=Dustwhirl
+warn=yes
+image=Aden.bmp
+wrap=no
+scroll=none
+
+[Continents]
+Berga=4
+
+[Territories]
+Barron,629,173,Berga,Banyan,Bella,OFSHou
+Banyan,603,242,Berga,Barron,Bella
+Bella,686,239,Berga,Barron,Banyan,Bordon,Bot,Byland
+Bordon,749,206,Berga,Bella,Bot,Byland
+Bot,744,299,Berga,Bella,Bordon,Byland
+Byland,774,383,Berga,Barron,Bella,Bordon,Bot

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Cards.h"
 #include <algorithm>
+#include "Cards.h"
 
 using namespace std;
 
@@ -102,13 +102,11 @@ void Card::operator=(Card &Card)
 }
 
 // Stream insertion operator overload.
-ostream &operator<<(ostream &os, const Card &c)
-{
-	cout << "Card stream insertion operator called\n"
-		 << endl;
-	cout << "Card information:" << endl;
-	cout << "\nThe card belongs to the deck" << c.myDeck << endl;
-	cout << "\nThe card belongs to the hand" << c.currentOwner << endl;
+ostream& operator<<(ostream& os, const Card& c) {
+	os << "Card stream insertion operator called\n" << endl;
+	os << "Card information:" << endl;
+	os << "\nThe card belongs to the deck" << c.myDeck << endl;
+	os << "\nThe card belongs to the hand" << c.currentOwner << endl;
 	return os;
 }
 
@@ -325,17 +323,15 @@ void Hand::operator=(Hand &Hand)
 }
 
 // Stream insertion operator overload.
-ostream &operator<<(ostream &os, const Hand &h)
-{
-	cout << "Hand stream insertion operator called\n"
-		 << endl;
-	cout << "Hand information:" << endl;
-	cout << "\nCards currently in the hand:" << endl;
-	for (Card *card : h.myCards)
+ostream& operator<<(ostream& os, const Hand& h) {
+	os << "Hand stream insertion operator called\n" << endl;
+	os << "Hand information:" << endl;
+	os << "\nCards currently in the hand:" << endl;
+	for (Card* card : h.myCards)
 	{
-		cout << "\nA new card:" << endl;
-		cout << "Card object: " << &card << endl;
-		cout << "Card address: " << card << endl;
+		os << "\nA new card:" << endl;
+		os << "Card object: " << &card << endl;
+		os << "Card address: " << card << endl;
 	}
 	return os;
 }
@@ -449,18 +445,16 @@ void Deck::operator=(Deck &Deck)
 }
 
 // Stream insertion operator overload.
-ostream &operator<<(ostream &os, const Deck &d)
-{
-	cout << "Deck stream insertion operator called\n"
-		 << endl;
-	cout << "Deck information:" << endl;
+ostream& operator<<(ostream& os, const Deck& d) {
+	os << "Deck stream insertion operator called\n" << endl;
+	os << "Deck information:" << endl;
 
-	cout << "\nCards currently in the deck:" << endl;
-	for (Card *card : d.deckCards)
+	os << "\nCards currently in the deck:" << endl;
+	for (Card* card : d.deckCards)
 	{
-		cout << "\nA card:" << endl;
-		cout << "Card object: " << &card << endl;
-		cout << "Card address: " << card << endl;
+		os << "\nA card:" << endl;
+		os << "Card object: " << &card << endl;
+		os << "Card address: " << card << endl;
 	}
 
 	return os;
