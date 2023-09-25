@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Cards.h"
 #include <algorithm>
+#include "Cards.h"
 
 using namespace std;
 
@@ -57,11 +57,11 @@ Card::Card(Hand* owner, Deck* deck) // If needed, a card could be created direct
 // Copy constructor.
 Card::Card(Card* sourceCard)
 {
-	myDeck = sourceCard->myDeck
+	myDeck = sourceCard->myDeck;
 	myDeck->addCardUniversal(this);
 
 	currentOwner = sourceCard->currentOwner;
-	if (currentOwner == nullptr) :
+	if (currentOwner == nullptr)
 	{
 		myDeck->addCard(this);
 	}
@@ -92,6 +92,24 @@ void Card::play()
 	return;
 };
 
+// Assignment operator overload
+void Card::operator=(Card& Card) {
+	cout << "Card assignment operator called." << endl;
+	myDeck = Card.myDeck;
+	currentOwner = Card.currentOwner;
+	
+	// Should it also be added to the deck's lists?
+}
+
+// Stream insertion operator overload.
+ostream& operator<<(ostream& os, const Card& c) {
+	os << "Card stream insertion operator called\n" << endl;
+	os << "Card information:" << endl;
+	os << "\nThe card belongs to the deck" << c.myDeck << endl;
+	os << "\nThe card belongs to the hand" << c.currentOwner << endl;
+	return os;
+}
+
 
 // Each card has a type from: bomb, reinforcement, blockade, airlift and diplomacy.
 // Making these into different child classes as I imagine they'll have different purposes.
@@ -101,6 +119,10 @@ Card_Bomb::Card_Bomb(Deck* deck) : Card::Card(deck)
 	cout << "It is a Bomb card.\n" << endl;
 };
 Card_Bomb::Card_Bomb(Hand* owner, Deck* deck) : Card::Card(owner, deck) 
+{
+	cout << "It is a Bomb card.\n" << endl;
+};
+Card_Bomb::Card_Bomb(Card_Bomb* sourceCard) : Card::Card(sourceCard)
 {
 	cout << "It is a Bomb card.\n" << endl;
 };
@@ -122,6 +144,10 @@ Card_Reinforcement::Card_Reinforcement(Hand* owner, Deck* deck) : Card::Card(own
 {
 	cout << "It is a Reinforcement card.\n" << endl;
 };
+Card_Reinforcement::Card_Reinforcement(Card_Reinforcement* sourceCard) : Card::Card(sourceCard)
+{
+	cout << "It is a Reinforcement card.\n" << endl;
+};
 void Card_Reinforcement::play() 
 {
 	cout << "Playing a Reinforcement card." << endl;
@@ -135,6 +161,10 @@ Card_Blockade::Card_Blockade(Deck* deck) : Card::Card(deck)
 	cout << "It is a Blockade card.\n" << endl;
 };
 Card_Blockade::Card_Blockade(Hand* owner, Deck* deck) : Card::Card(owner, deck)
+{
+	cout << "It is a Blockade card.\n" << endl;
+};
+Card_Blockade::Card_Blockade(Card_Blockade* sourceCard) : Card::Card(sourceCard)
 {
 	cout << "It is a Blockade card.\n" << endl;
 };
@@ -154,6 +184,10 @@ Card_Airlift::Card_Airlift(Hand* owner, Deck* deck) : Card::Card(owner, deck)
 {
 	cout << "It is an Airlift card.\n" << endl;
 };
+Card_Airlift::Card_Airlift(Card_Airlift* sourceCard) : Card::Card(sourceCard)
+{
+	cout << "It is an Airlift card.\n" << endl;
+};
 void Card_Airlift::play() 
 {
 	cout << "Playing an Airlift card." << endl;
@@ -167,6 +201,10 @@ Card_Diplomacy::Card_Diplomacy(Deck* deck) : Card::Card(deck)
 	cout << "It is a Diplomacy card.\n" << endl;
 };
 Card_Diplomacy::Card_Diplomacy(Hand* owner, Deck* deck) : Card::Card(owner, deck)
+{
+	cout << "It is a Diplomacy card.\n" << endl;
+};
+Card_Diplomacy::Card_Diplomacy(Card_Diplomacy* sourceCard) : Card::Card(sourceCard)
 {
 	cout << "It is a Diplomacy card.\n" << endl;
 };
@@ -261,6 +299,26 @@ void Hand::printCards()
 
 	cout << "\n" << endl;
 };
+
+// Assignment operator overload.
+void Hand::operator=(Hand& Hand) {
+	cout << "Hand assignment operator called." << endl;
+	myCards = Hand.myCards;
+}
+
+// Stream insertion operator overload.
+ostream& operator<<(ostream& os, const Hand& h) {
+	os << "Hand stream insertion operator called\n" << endl;
+	os << "Hand information:" << endl;
+	os << "\nCards currently in the hand:" << endl;
+	for (Card* card : h.myCards)
+	{
+		os << "\nA new card:" << endl;
+		os << "Card object: " << &card << endl;
+		os << "Card address: " << card << endl;
+	}
+	return os;
+}
 
 
 
@@ -360,3 +418,26 @@ void Deck::printCards()
 
 	cout << "\n" << endl;
 };
+
+// Assignment operator overload
+void Deck::operator=(Deck& Deck) {
+	cout << "Deck assignment operator called." << endl;
+	allCards = Deck.allCards;
+	deckCards = Deck.deckCards;
+}
+
+// Stream insertion operator overload.
+ostream& operator<<(ostream& os, const Deck& d) {
+	os << "Deck stream insertion operator called\n" << endl;
+	os << "Deck information:" << endl;
+
+	os << "\nCards currently in the deck:" << endl;
+	for (Card* card : d.deckCards)
+	{
+		os << "\nA card:" << endl;
+		os << "Card object: " << &card << endl;
+		os << "Card address: " << card << endl;
+	}
+
+	return os;
+}

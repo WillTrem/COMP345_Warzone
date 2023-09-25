@@ -46,6 +46,10 @@ class Card
 	// Base play() method. 
 	// Each card has a play() method that enables a player to use it during game play by creating special orders. Once a card has been played, it is removed from the handand put back into the deck.
 	virtual void play(); // What level of privacy should it have?
+
+	// Overloads
+	void operator=(Card& Card);
+	friend std::ostream& operator<<(std::ostream& out, const Card& d);
 };
 
 // Each card has a type from: bomb, reinforcement, blockade, airlift and diplomacy.
@@ -112,6 +116,10 @@ class Hand
 	void removeCard(Card* card);
 	void printCards();
 	std::vector<Card*> returnMyCards();
+
+	// Overloads
+	void operator=(Hand& Hand);
+	friend std::ostream& operator<<(std::ostream& out, const Hand& h);
 };
 
 
@@ -139,6 +147,10 @@ class Deck
 	void draw(Hand* drawingHand);
 
 	void printCards();
+
+	// Overloads
+	void operator=(Deck& Deck);
+	friend std::ostream& operator<<(std::ostream& out, const Deck& d);
 };
 
 

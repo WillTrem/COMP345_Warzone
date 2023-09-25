@@ -16,10 +16,14 @@ class Player {
 	// TODO: Declare toDefend()
 	// TODO: Declare toAttack()
 
+	// Default constructor
 	Player();
 
 	// TODO: Add territories to the constructor's parameters
 	Player(Hand* initialHand);
+
+	// Copy constructor
+	Player(Player& player);
 
 	Hand* getHand();
 
@@ -27,7 +31,11 @@ class Player {
 
 	void issueOrder();
 	
+	// Assignment operator overload
+	void operator=(Player& player);
 
-
-
+	// Stream insertion operator overload
+	friend std::ostream& operator<<(std::ostream &out, const Player &p);
 };
+
+

@@ -4,6 +4,7 @@
 #include "Assignment_1.h"
 #include "CardsDriver.h"
 #include "GameEngineDriver.h"
+#include "PlayerDriver.h"
 
 using namespace std;
 
@@ -14,6 +15,8 @@ int main()
 
 	// Roxane's testing area.
 	testCards();
+
+	testPlayers();
 
 	testGameEngine();
 
