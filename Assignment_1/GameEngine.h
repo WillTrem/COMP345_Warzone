@@ -29,12 +29,11 @@ enum GameState
 class Command
 {
 public:
-    std::string *cmdName;
-    std::function<void()> *action;
-    GameState *nextState;
+    std::string cmdName;
+    std::function<void()> action;
+    GameState nextState;
 
     Command(std::string cmdName, std::function<void()> action, GameState nextState);
-    ~Command();
 };
 
 class GameEngine
@@ -43,10 +42,9 @@ private:
     std::map<GameState, std::list<Command>> *stateTransitions;
 
 public:
-    const GameState *currentState;
+    GameState *currentState;
 
-    GameEngine(GameState currentState, std::map<GameState, std::list<Command>> stateTransitions);
-    ~GameEngine();
+    GameEngine(GameState *currentState, std::map<GameState, std::list<Command>> *stateTransitions);
 
     void executeCommand(std::string command);
 };

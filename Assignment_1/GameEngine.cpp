@@ -2,37 +2,28 @@
 
 
 Command::Command(std::string cmdName, std::function<void()> action, GameState nextState) :
-        cmdName(&cmdName),
-        action(&action),
-        nextState(&nextState) {}
-
-Command::~Command() {}
+        cmdName(cmdName),
+        action(action),
+        nextState(nextState) {}
 
 
-GameEngine::GameEngine(GameState currentState, std::map<GameState, std::list<Command>> stateTransitions):
-    currentState(&currentState), 
-    stateTransitions(&stateTransitions) {}
-
-GameEngine::~GameEngine() {}
+GameEngine::GameEngine(GameState* currentState, std::map<GameState, std::list<Command>>* stateTransitions):
+    currentState(currentState), 
+    stateTransitions(stateTransitions) {}
 
 void GameEngine::executeCommand(std::string commandArg)
 {
     // Dereference pointers
     GameState cs = *(currentState);
-    std::map<GameState, std::list<Command>> transitions = *(stateTransitions);
-
-    std::list<Command> commands = transitions[cs];
     bool cmdSucessful = false;
 
-    for (auto cmd : commands)
+    for (auto &cmd : (*stateTransitions)[cs])
     {
-        std::string* cmdName = cmd.cmdName;
-        if (*cmdName == commandArg)
+        if (cmd.cmdName == commandArg)
         {
-            std::function<void()> a = *(cmd.action);
-            a();
+            cmd.action();
             // cmd.nextState is already a pointer don't need to dereference
-            currentState = cmd.nextState;
+            currentState = &cmd.nextState;
             cmdSucessful = true;
         }
     }
