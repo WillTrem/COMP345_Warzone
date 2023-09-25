@@ -1,9 +1,20 @@
 #include "GameEngine.h"
 
+/**
+ * Normal constructor
+*/
 Command::Command(std::string *cmdName, void (*action)(), GameState *nextState):
-        cmdName(cmdName),
-        action(action),
-        nextState(nextState) {}
+    cmdName(cmdName),
+    action(action),
+    nextState(nextState) {}
+
+/**
+ * Copy constructor
+*/
+Command::Command(const Command &command) : 
+    cmdName(command.cmdName),
+    action(command.action),
+    nextState(command.nextState) {}
 
 /**
  * Normal constructor

@@ -44,6 +44,7 @@ public:
 
     //Constructor
     Command(std::string *cmdName,  void (*action)(), GameState *nextState);
+    Command(const Command &command);
 };
 
 class GameEngine
