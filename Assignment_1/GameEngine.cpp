@@ -1,6 +1,6 @@
 #include "GameEngine.h"
 
-Command::Command(std::string *cmdName, std::function<void()> *action, GameState *nextState):
+Command::Command(std::string *cmdName, void (*action)(), GameState *nextState):
         cmdName(cmdName),
         action(action),
         nextState(nextState) {}
@@ -18,8 +18,7 @@ void GameEngine::executeCommand(std::string commandArg)
     {
         if ((*cmd.cmdName) == commandArg)
         {
-            auto action = *cmd.action;
-            action();
+            cmd.action();
             currentState = cmd.nextState;
             cmdSucessful = true;
         }

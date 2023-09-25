@@ -30,10 +30,10 @@ class Command
 {
 public:
     std::string *cmdName;
-    std::function<void()> *action;
+    void (*action)();
     GameState *nextState;
 
-    Command(std::string *cmdName, std::function<void()> *action, GameState *nextState);
+    Command(std::string *cmdName,  void (*action)(), GameState *nextState);
 };
 
 class GameEngine
