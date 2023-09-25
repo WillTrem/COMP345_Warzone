@@ -75,33 +75,52 @@ void testGameEngine()
 {
     GameState START = GameState::START;
     GameState MAP_LOADED = GameState::MAP_LOADED;
+    GameState MAP_VALIDATED = GameState::MAP_VALIDATED;
+    GameState PLAYERS_ADDED = GameState::PLAYERS_ADDED;
+    GameState ASSIGN_REINFORCEMENTS = GameState::ASSIGN_REINFORCEMENTS;
+    GameState ISSUE_ORDERS = GameState::ISSUE_ORDERS;
+    GameState EXECUTE_ORDERS = GameState::EXECUTE_ORDERS;
+    GameState WIN = GameState::WIN;
+    GameState END = GameState::END;
+
+    std::string loadMapCmd= "loadMap";
+    std::string validateMapCmd= "validateMap";
+    std::string addPlayerCmd= "addPlayer";
+    std::string assignCountriesCmd= "assignCountries";
+    std::string issueOrderCmd= "issueOrder";
+    std::string endIssueOrdersCmd= "endIssueOrders";
+    std::string executeOrderCmd= "executeOrder";
+    std::string endExecuteOrdersCmd= "endExecuteOrders";
+    std::string winCmd= "win";
+    std::string playCmd= "play";
+    std::string endCmd= "end";
 
     // Game Engine FSM
     std::map<GameState, std::list<Command>> stateTransitions = {
         // Start states
         {GameState::START, { 
-            Command(&"loadMap", &std::function<void()>(loadMap), &MAP_LOADED)}},
+            Command(&loadMapCmd, &std::function<void()>(loadMap), &MAP_LOADED)}},
         {GameState::MAP_LOADED, {
-            Command( "loadMap", loadMap, GameState::MAP_LOADED),
-            Command("validateMap", validateMap, GameState::MAP_VALIDATED)}},
+            Command(&loadMapCmd, &std::function<void()>(loadMap), &MAP_LOADED),
+            Command(&validateMapCmd, &std::function<void()>(validateMap), &MAP_VALIDATED)}},
         {GameState::MAP_VALIDATED, {
-            Command("addPlayer", addPlayer, GameState::PLAYERS_ADDED)}},
+            Command(&addPlayerCmd, &std::function<void()>(addPlayer), &PLAYERS_ADDED)}},
         {GameState::PLAYERS_ADDED, {
-            Command("addPlayer", addPlayer, GameState::PLAYERS_ADDED),
-            Command("assignCountries", assignCountries, GameState::ASSIGN_REINFORCEMENTS)}},
+            Command(&addPlayerCmd, &std::function<void()>(addPlayer), &PLAYERS_ADDED),
+            Command(&assignCountriesCmd, &std::function<void()>(assignCountries), &ASSIGN_REINFORCEMENTS)}},
         // Play states
         {GameState::ASSIGN_REINFORCEMENTS, std::list<Command>{
-            Command("issueOrder", issueOrder, GameState::ISSUE_ORDERS)}},
+            Command(&issueOrderCmd, &std::function<void()>(issueOrder), &ASSIGN_REINFORCEMENTS)}},
         {GameState::ISSUE_ORDERS,{
-            Command("issueOrder", issueOrder, GameState::ISSUE_ORDERS),
-            Command("endIssueOrders", endIssueOrders, GameState::EXECUTE_ORDERS)}},
+            Command(&issueOrderCmd, &std::function<void()>(issueOrder), &ISSUE_ORDERS),
+            Command(&endIssueOrdersCmd, &std::function<void()>(endIssueOrders), &EXECUTE_ORDERS)}},
         {GameState::EXECUTE_ORDERS, {
-            Command("executeOrder", executeOrder, GameState::EXECUTE_ORDERS),
-            Command("endExecuteOrders", endExecuteOrders, GameState::ASSIGN_REINFORCEMENTS),
-            Command("win", win, GameState::WIN)}},
+            Command(&executeOrderCmd, &std::function<void()>(executeOrder), &EXECUTE_ORDERS),
+            Command(&endExecuteOrdersCmd, &std::function<void()>(endExecuteOrders), &ASSIGN_REINFORCEMENTS),
+            Command(&winCmd, &std::function<void()>(win), &WIN)}},
         {GameState::WIN, {
-            Command("play", start, GameState::EXECUTE_ORDERS),
-            Command("end", end, GameState::END)}},
+            Command(&playCmd, &std::function<void()>(start), &START),
+            Command(&endCmd, &std::function<void()>(end), &END)}},
     };
 
     GameState currentState = GameState::START;

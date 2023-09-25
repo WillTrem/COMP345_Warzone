@@ -11,17 +11,15 @@ GameEngine::GameEngine(GameState* currentState, std::map<GameState, std::list<Co
 
 void GameEngine::executeCommand(std::string commandArg)
 {
-    // Dereference pointers
-    GameState cs = *(currentState);
     bool cmdSucessful = false;
 
-    // passed by reference instead of value there's no scope issues
-    for (auto &cmd : (*stateTransitions)[cs])
+    // passed by reference instead of value so no new variables are created
+    for (auto &cmd : (*stateTransitions)[*currentState])
     {
         if ((*cmd.cmdName) == commandArg)
         {
-            (*cmd.action)();
-            // now cmd.next
+            auto action = *cmd.action;
+            action();
             currentState = cmd.nextState;
             cmdSucessful = true;
         }
