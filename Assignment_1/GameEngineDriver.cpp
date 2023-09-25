@@ -73,32 +73,34 @@ void end()
 
 void testGameEngine()
 {
+    // Game Engine FSM
     std::map<GameState, std::list<Command>> stateTransitions = {
         // Start states
-        {GameState::START, {
+        {GameState::START, std::list<Command>{
             Command("loadMap", [&]() { loadMap(); }, GameState::MAP_LOADED)}},
-        {GameState::MAP_LOADED, {
+        {GameState::MAP_LOADED, std::list<Command>{
             Command( "loadMap", [&]() { loadMap(); }, GameState::MAP_LOADED),
-          Command("validateMap", [&]() { validateMap(); }, GameState::MAP_VALIDATED)}},
-        {GameState::MAP_VALIDATED, {
+            Command("validateMap", [&]() { validateMap(); }, GameState::MAP_VALIDATED)}},
+        {GameState::MAP_VALIDATED, std::list<Command>{
             Command("addPlayer", [&]() { addPlayer(); }, GameState::PLAYERS_ADDED)}},
-        {GameState::PLAYERS_ADDED, {
+        {GameState::PLAYERS_ADDED, std::list<Command> {
             Command("addPlayer", [&]() { addPlayer(); }, GameState::PLAYERS_ADDED),
           Command("assignCountries", [&]() { assignCountries(); }, GameState::ASSIGN_REINFORCEMENTS)}},
         // Play states
-        {GameState::ASSIGN_REINFORCEMENTS, {
+        {GameState::ASSIGN_REINFORCEMENTS, std::list<Command>{
             Command("issueOrder", [&]() { issueOrder(); }, GameState::ISSUE_ORDERS)}},
-        {GameState::ISSUE_ORDERS, {
+        {GameState::ISSUE_ORDERS, std::list<Command>{
             Command("issueOrder", [&]() { issueOrder(); }, GameState::ISSUE_ORDERS),
             Command("endIssueOrders", [&]() { endIssueOrders(); }, GameState::EXECUTE_ORDERS)}},
-        {GameState::EXECUTE_ORDERS, {
+        {GameState::EXECUTE_ORDERS, std::list<Command>{
             Command("executeOrder", [&]() { executeOrder(); }, GameState::EXECUTE_ORDERS),
             Command("endExecuteOrders", [&]() { endExecuteOrders(); }, GameState::ASSIGN_REINFORCEMENTS),
             Command("win", [&]() { win(); }, GameState::WIN)}},
-        {GameState::WIN, {
+        {GameState::WIN, std::list<Command>{
             Command("play", [&]() { start(); }, GameState::EXECUTE_ORDERS),
             Command("end", [&]() { end(); }, GameState::END)}},
     };
+
     GameEngine gameEngine(GameState::START, stateTransitions);
 
     start();

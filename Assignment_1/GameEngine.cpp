@@ -2,31 +2,18 @@
 
 
 Command::Command(std::string cmdName, std::function<void()> action, GameState nextState) :
-        cmdName(new std::string(cmdName)),
-        action(new std::function<void()>(action)),
-        nextState(new GameState(nextState))
-{}
+        cmdName(&cmdName),
+        action(&action),
+        nextState(&nextState) {}
 
-Command::~Command()
-{
-    delete cmdName;
-    delete action;
-    delete nextState;
-}
+Command::~Command() {}
 
 
 GameEngine::GameEngine(GameState currentState, std::map<GameState, std::list<Command>> stateTransitions):
-    currentState(new GameState(currentState)), 
-    stateTransitions(new std::map<GameState, std::list<Command>>(stateTransitions))
-{
-    std::cout << "done constructing";
-}
+    currentState(&currentState), 
+    stateTransitions(&stateTransitions) {}
 
-GameEngine::~GameEngine()
-{
-    delete currentState;
-    delete stateTransitions;
-}
+GameEngine::~GameEngine() {}
 
 void GameEngine::executeCommand(std::string commandArg)
 {
