@@ -5,29 +5,36 @@
 
 #include "Cards.h"
 #include "Orders.h"
+#include "Map.h"
 
+using namespace std;
 class Player {
 	private: 
 	// TODO: Declare collection of Territories 
+	vector<Territory *> ownedTerritories;
 	OrdersList* ordersList;
 	Hand* hand;
 
 	public:
-	// TODO: Declare toDefend()
-	// TODO: Declare toAttack()
 
 	// Default constructor
 	Player();
 
-	// TODO: Add territories to the constructor's parameters
-	Player(Hand* initialHand);
+	// Parametrized constructor
+	Player(Hand* initialHand, vector<Territory*> &initialTerritories);
 
 	// Copy constructor
 	Player(Player& player);
 
 	Hand* getHand();
 
+	vector<Territory*> getOwnedTerritories();
+
 	OrdersList* getOrdersList();
+
+	vector<Territory*> toDefend();
+
+	vector<Territory*> toAttack();
 
 	void issueOrder();
 	
