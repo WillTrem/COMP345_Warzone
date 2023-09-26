@@ -1,165 +1,48 @@
 #include "GameEngine.h"
 
-Command::Command(std::string _cmdName, std::function<void()> _action, GameState _nextState)
-{
-    cmdName = _cmdName;
-    action = _action;
-    nextState = _nextState;
-}
+/**
+ * Normal constructor
+*/
+Command::Command(std::string *cmdName, void (*action)(), GameState *nextState):
+    cmdName(cmdName),
+    action(action),
+    nextState(nextState) {}
 
-// Temporary so that compiler doesn't complain
-// TODO: Implement/replace the actual functions
-void GameEngine::start()
-{
-    std::cout << "Started game\n"
-              << std::endl;
-    std::cout << "Available commands: 'loadMap'" << std::endl;
-}
-void GameEngine::loadMap()
-{
-    std::cout << "Loaded map sucessfully\n"
-              << std::endl;
-    std::cout << "Available commands: 'loadMap' , 'validateMap'" << std::endl;
-}
-void GameEngine::validateMap()
-{
-    std::cout << "Validated map sucessfully\n"
-              << std::endl;
-    std::cout << "Available commands: 'addPlayer'" << std::endl;
-}
-void GameEngine::addPlayer()
-{
-    std::cout << "Added player\n"
-              << std::endl;
-    std::cout << "Available commands: 'addPlayer' , 'assignCountries'" << std::endl;
-}
-void GameEngine::assignCountries()
-{
-    std::cout << "Assigned countries\n"
-              << std::endl;
-    std::cout << "Available commands: 'issueOrder'" << std::endl;
-}
-void GameEngine::issueOrder()
-{
-    std::cout << "Order issued sucessfully\n"
-              << std::endl;
-    std::cout << "Available commands: 'issueOrder' , 'endIssueOrders'" << std::endl;
-}
-void GameEngine::endIssueOrders()
-{
-    std::cout << "Done issuing orders\n"
-              << std::endl;
-    std::cout << "Available commands: 'executeOrder' , 'endExecuteOrders' , 'win'" << std::endl;
-}
-void GameEngine::executeOrder()
-{
-    std::cout << "Order executed sucessfully\n"
-              << std::endl;
-    std::cout << "Available commands: 'executeOrder' , 'endExecuteOrders' , 'win'" << std::endl;
-}
-void GameEngine::endExecuteOrders()
-{
-    std::cout << "Done executing orders\n"
-              << std::endl;
-    std::cout << "Available commands: 'issueOrder'" << std::endl;
-}
-void GameEngine::win()
-{
-    std::cout << "You win!\n"
-              << std::endl;
-    std::cout << "Available commands: 'play' , 'end'" << std::endl;
-}
-void GameEngine::end()
-{
-    std::cout << "Thank you for playing!\n"
-              << std::endl;
-}
+/**
+ * Copy constructor
+*/
+Command::Command(const Command &command) : 
+    cmdName(command.cmdName),
+    action(command.action),
+    nextState(command.nextState) {}
 
-GameEngine::GameEngine()
-{
-    currentState = GameState::START;
+/**
+ * Normal constructor
+*/
+GameEngine::GameEngine(GameState* currentState, std::map<GameState, std::list<Command>>* stateTransitions):
+    currentState(currentState), 
+    stateTransitions(stateTransitions) {}
 
-    start();
+/**
+ * Copy constructor
+*/
+GameEngine::GameEngine(const GameEngine &gameEngine): 
+    currentState(gameEngine.currentState), 
+    stateTransitions(gameEngine.stateTransitions) {}
 
-    stateTransitions = {
-        // Start states
-        {GameState::START,
-         {Command(
-             "loadMap", [&]()
-             { loadMap(); },
-             GameState::MAP_LOADED)}},
-        {GameState::MAP_LOADED,
-         {Command(
-              "loadMap", [&]()
-              { loadMap(); },
-              GameState::MAP_LOADED),
-          Command(
-              "validateMap", [&]()
-              { validateMap(); },
-              GameState::MAP_VALIDATED)}},
-        {GameState::MAP_VALIDATED,
-         {Command(
-             "addPlayer", [&]()
-             { addPlayer(); },
-             GameState::PLAYERS_ADDED)}},
-        {GameState::PLAYERS_ADDED,
-         {Command(
-              "addPlayer", [&]()
-              { addPlayer(); },
-              GameState::PLAYERS_ADDED),
-          Command(
-              "assignCountries", [&]()
-              { assignCountries(); },
-              GameState::ASSIGN_REINFORCEMENTS)}},
-        // Play states
-        {GameState::ASSIGN_REINFORCEMENTS,
-         {Command(
-             "issueOrder", [&]()
-             { issueOrder(); },
-             GameState::ISSUE_ORDERS)}},
-        {GameState::ISSUE_ORDERS,
-         {Command(
-              "issueOrder", [&]()
-              { issueOrder(); },
-              GameState::ISSUE_ORDERS),
-          Command(
-              "endIssueOrders", [&]()
-              { endIssueOrders(); },
-              GameState::EXECUTE_ORDERS)}},
-        {GameState::EXECUTE_ORDERS,
-         {Command(
-              "executeOrder", [&]()
-              { executeOrder(); },
-              GameState::EXECUTE_ORDERS),
-          Command(
-              "endExecuteOrders", [&]()
-              { endExecuteOrders(); },
-              GameState::ASSIGN_REINFORCEMENTS),
-          Command(
-              "win", [&]()
-              { win(); },
-              GameState::WIN)}},
-        {GameState::WIN,
-         {Command(
-              "play", [&]()
-              { start(); },
-              GameState::EXECUTE_ORDERS),
-          Command(
-              "end", [&]()
-              { end(); },
-              GameState::END)}},
-
-    };
-}
-
+/**
+ * 1. Checks to see if the commmand is a valid command at the current state
+ * 2. executes the transistion function (action)
+ * 3. Make currentState point to the new state
+*/
 void GameEngine::executeCommand(std::string commandArg)
 {
-    std::list<Command> commands = stateTransitions[currentState];
     bool cmdSucessful = false;
 
-    for (auto cmd : commands)
+    // passed by reference instead of value so no new variables are created
+    for (auto &cmd : (*stateTransitions)[*currentState])
     {
-        if (cmd.cmdName == commandArg)
+        if ((*cmd.cmdName) == commandArg)
         {
             cmd.action();
             currentState = cmd.nextState;
@@ -171,4 +54,15 @@ void GameEngine::executeCommand(std::string commandArg)
     {
         std::cout << "Invalid command. See above for valid commands" << std::endl;
     }
+}
+
+void GameEngine::operator=(GameState &newState)
+{
+    currentState = &newState;
+}
+
+std::ostream &operator<<(std::ostream &os, const GameEngine &gameEngine)
+{
+    os << "Current state = state " << gameEngine.currentState << std::endl;
+    return os;
 }

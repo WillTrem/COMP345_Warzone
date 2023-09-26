@@ -6,10 +6,14 @@
 #include <iostream>
 #include <functional>
 
+
 // #include "Orders.h"
 #include "Cards.h"
 #include "Player.h"
 
+/**
+ * Represents the various states a game can be in at any point in time
+*/
 enum GameState
 {
     // Start states
@@ -25,35 +29,39 @@ enum GameState
     END
 };
 
+/**
+ * A command consists of:
+ * 1. The command string that needs to be provided as input to run it
+ * 2. The function that gets called when the command is entered
+ * 3. The next state to transition into after command is ran
+*/
 class Command
 {
 public:
-    std::string cmdName;
-    GameState nextState;
-    std::function<void()> action;
+    std::string *cmdName;
+    void (*action)();
+    GameState *nextState;
 
-    Command(std::string _cmdName, std::function<void()> _action, GameState _nextState);
+    //Constructor
+    Command(std::string *cmdName,  void (*action)(), GameState *nextState);
+    Command(const Command &command);
 };
 
 class GameEngine
 {
 private:
-    std::map<GameState, std::list<Command>> stateTransitions;
-
-    void start();
-    void loadMap();
-    void validateMap();
-    void addPlayer();
-    void assignCountries();
-    void issueOrder();
-    void endIssueOrders();
-    void executeOrder();
-    void endExecuteOrders();
-    void win();
-    void end();
+    std::map<GameState, std::list<Command>> *stateTransitions;
 
 public:
-    GameState currentState;
-    GameEngine();
+    GameState *currentState;
+    // Constructors
+    GameEngine(GameState *currentState, std::map<GameState, std::list<Command>> *stateTransitions);
+    GameEngine(const GameEngine &gameEngine);
+
     void executeCommand(std::string command);
+
+    // Operator overloads
+    void operator=(GameState &newState);
+	friend std::ostream& operator<<(std::ostream &os, const GameEngine& gameEngine);
+
 };
