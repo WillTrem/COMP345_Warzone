@@ -110,7 +110,7 @@ void testGameEngine()
             Command(&assignCountriesCmd, assignCountries, &ASSIGN_REINFORCEMENTS)}},
         // Play states
         {GameState::ASSIGN_REINFORCEMENTS, {
-            Command(&issueOrderCmd, issueOrder, &ASSIGN_REINFORCEMENTS)}},
+            Command(&issueOrderCmd, issueOrder, &ISSUE_ORDERS)}},
         {GameState::ISSUE_ORDERS, {
             Command(&issueOrderCmd, issueOrder, &ISSUE_ORDERS),
             Command(&endIssueOrdersCmd, endIssueOrders, &EXECUTE_ORDERS)}},
