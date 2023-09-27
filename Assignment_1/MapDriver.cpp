@@ -16,7 +16,7 @@ class MapDriver
     // Initializing the entire map of the game
     Map worldMap;
     std::map<std::string, int> mapContinents;
-    std::map<string> territoryWithMultipleContinents;
+    std::vector<string> territoryWithMultipleContinents;
     std::vector<Territory *> mapTerritories;
     std::vector<Territory *> continentTerritories;
     std::vector<string> neighborTerritories;
