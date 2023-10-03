@@ -51,7 +51,7 @@ void testCards()
 
 
 	// Play all of the hand's cards to put them back in the deck.
-	cout << "\Playing all cards to empty the hand:\n" << endl;
+	cout << "\nPlaying all cards to empty the hand:\n" << endl;
 	for (Card* card : testHand.returnMyCards())
 	{
 		card->play();
