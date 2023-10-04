@@ -33,6 +33,31 @@ Player::Player(Player &player)
 	ordersList = new OrdersList(*player.ordersList); 
 }
 
+Player::~Player(){
+	cout<<"Player destructor called"<<endl;
+
+	// Calling other destructors
+	hand->~Hand();
+	ordersList->~OrdersList();
+
+
+	// Memory deallocation
+	// delete hand;
+	// delete ordersList;
+
+	// Setting pointers to null
+	hand = NULL;
+	ordersList = NULL;
+
+	// Repeating the same steps for each of the territories of the player
+	for (int i = 0; i < ownedTerritories.size(); i++)
+	{
+		ownedTerritories.at(i)->~Territory();
+		// delete ownedTerritories.at(i);
+		ownedTerritories.at(i) = NULL;
+	}	
+}
+
 // Returns the hand of the player
 Hand *Player::getHand()
 {

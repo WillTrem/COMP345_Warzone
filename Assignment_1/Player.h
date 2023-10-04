@@ -10,10 +10,9 @@
 using namespace std;
 class Player {
 	private: 
-	// TODO: Declare collection of Territories 
 	vector<Territory *> ownedTerritories;
-	OrdersList* ordersList;
-	Hand* hand;
+	OrdersList* ordersList = nullptr;
+	Hand* hand = nullptr;
 
 	public:
 
@@ -25,6 +24,9 @@ class Player {
 
 	// Copy constructor
 	Player(Player& player);
+
+	// Destructor
+	~ Player();
 
 	Hand* getHand();
 

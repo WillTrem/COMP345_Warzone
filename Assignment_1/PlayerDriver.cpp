@@ -11,7 +11,8 @@ using namespace std;
 void testPlayers(){
 	Player p1 = Player();
 	Hand p2StartingHand = Hand();
-	Player p2(&p2StartingHand);
+	vector<Territory*> p2StartingTerritories = {new Territory(), new Territory()};
+	Player p2(&p2StartingHand, p2StartingTerritories);
 
 	cout<<"P1 issuing order"<<endl;
 	p1.issueOrder();
@@ -28,5 +29,6 @@ void testPlayers(){
 	//Stream insertion operator demo
 
 	cout << p4;
-	//TODO: add copy constructor and assignment operator to driver
+
+	// Destructor demo (implicitely called)
 }
