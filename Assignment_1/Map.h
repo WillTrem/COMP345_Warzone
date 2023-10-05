@@ -15,74 +15,90 @@ public:
     int numOfArmies;
     std::vector<Territory *> neighboringTerritories;
 
-    Territory(string territoryNameVal, string coordXVal, string coordYVal, string continentNameVal) : territoryName(territoryNameVal), coordX(coordXVal), coordY(coordYVal), continentName(continentNameVal)
-    {
-        occupierName = "";
-        numOfArmies = 0;
-        neighboringTerritories = vector<Territory *>();
-    }
-    // Territory(string territoryNameVal, int coordXVal, int coordYVal, string continentNameVal, string occupierNameVal, int numOfArmies) : territoryName(territoryNameVal), coordX(coordXVal), coordY(coordYVal), continentName(continentNameVal), occupierName(occupierNameVal), numOfArmies(numOfArmies) {}
-
     // default constructor
-    Territory()
-    {
-        territoryName = "Unknown";
-        occupierName = "Unknown";
-        continentName = "Unknown";
-        coordX = "Unknown";
-        coordY = "Unknown";
-        numOfArmies = 0;
-    }
+    Territory();
 
     // parameterized constructor
-    // Territory(string territoryNameVal, string occupierNameVal, int numOfArmiesVal)
-    // {
-    //     territoryName = territoryNameVal;
-    //     occupierName = occupierNameVal;
-    //     numOfArmies = numOfArmiesVal;
-    // }
+    Territory(string territoryNameVal, string coordXVal, string coordYVal, string continentNameVal);
+
+    // copy constructor
+    Territory(const Territory &t); // Copy Constructor
 
     // destructor
-    // ~Territory()
-    // {
-    //     cout << "Destructor invoked"
-    //          << "\n";
-    // }
+    ~Territory();
 
-    // Basic functions for territory attributes
-    void setTerritoryName(string territoryNameVal)
-    {
-        territoryName = territoryNameVal;
-    }
+    // ***** Basic functions for territory attributes *****
+    void setTerritoryName(string territoryNameVal);
 
-    void setOccupierName(string occupierNameVal)
-    {
-        occupierName = occupierNameVal;
-    }
+    void setOccupierName(string occupierNameVal);
 
-    void setTerritoryContinentName(string continentNameVal)
-    {
-        continentName = continentNameVal;
-    }
+    void setTerritoryContinentName(string continentNameVal);
 
-    void setCoordX(string coordXVal)
-    {
-        coordX = coordXVal;
-    }
+    void setCoordX(string coordXVal);
 
-    void setCoordY(string coordYVal)
-    {
-        coordY = coordYVal;
-    }
+    void setCoordY(string coordYVal);
 
-    void setTerritoryNumberOfArmies(int numOfArmiesVal)
-    {
-        numOfArmies = numOfArmiesVal;
-    }
+    void setTerritoryNumberOfArmies(int numOfArmiesVal);
 
-    void setNeighboringTerritories(vector<Territory *> neighboringTerritoriesVal)
-    {
-        neighboringTerritories = neighboringTerritoriesVal;
-    }
+    void setNeighboringTerritories(vector<Territory *> neighboringTerritoriesVal);
+    // ****************************************************
+};
+
+class Continent
+{
+public:
+    string continentName;
+    vector<Territory *> continentTerritories;
+
+    // default constructor
+    Continent();
+
+    // parameterized constructor
+    Continent(string continentNameVal, vector<Territory *> continentTerritoriesVal);
+
+    // copy constructor
+    Continent(const Continent &c); // Copy Constructor
+
+    // destructor
+    ~Continent();
+
+    // assignment operator
+    friend ostream &operator<<(ostream &out, const Continent &c);
+    Continent &operator=(const Continent &c);
+};
+
+class Map
+{
+public:
+    string mapName;
+    vector<Territory *> mapTerritories;
+    vector<Continent *> continents;
+    vector<string> nonExistingTerritories;
+
+    // default constructor
+    Map();
+
+    // parameterized constructor
+    Map(string mapName);
+
+    // copy constructor
+    Map(const Map &m);
+
+    // destructor
+    ~Map();
+
+    void addTerritory(Territory *territory);
+
+    void addNeighboringTerritory(string territoryOneName, string territoryTwoName);
+
+    void addContinent(string continentNameVal, vector<Territory *> continentTerritories);
+
+    void printEntireMapInfo();
+
+    Territory *findTerritoryByName(string territoryNameVal);
+
+    bool validate(Map currentMap, Territory *startingTerritory, std::map<std::string, bool> &visitedTerritories, std::map<std::string, bool> &visitedContinents);
+
+    void mapTraversal(Territory *territory, map<string, bool> &visitedTerritories, map<string, bool> &visitedContinents);
 };
 #endif // end define MAP_H

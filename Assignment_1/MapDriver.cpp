@@ -202,7 +202,7 @@ public:
     }
 };
 
-int testLoadMaps()
+int main()
 {
     MapDriver mapDriver;
     mapDriver.loadMap();
