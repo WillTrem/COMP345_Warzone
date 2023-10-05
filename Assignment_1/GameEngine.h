@@ -4,16 +4,14 @@
 #include <list>
 #include <string>
 #include <iostream>
-#include <functional>
 
-
-// #include "Orders.h"
+#include "Orders.h"
 #include "Cards.h"
 #include "Player.h"
 
 /**
  * Represents the various states a game can be in at any point in time
-*/
+ */
 enum GameState
 {
     // Start states
@@ -34,7 +32,7 @@ enum GameState
  * 1. The command string that needs to be provided as input to run it
  * 2. The function that gets called when the command is entered
  * 3. The next state to transition into after command is ran
-*/
+ */
 class Command
 {
 public:
@@ -42,8 +40,8 @@ public:
     void (*action)();
     GameState *nextState;
 
-    //Constructor
-    Command(std::string *cmdName,  void (*action)(), GameState *nextState);
+    // Constructor
+    Command(std::string *cmdName, void (*action)(), GameState *nextState);
     Command(const Command &command);
 };
 
@@ -62,6 +60,5 @@ public:
 
     // Operator overloads
     void operator=(GameState &newState);
-	friend std::ostream& operator<<(std::ostream &os, const GameEngine& gameEngine);
-
+    friend std::ostream &operator<<(std::ostream &os, const GameEngine &gameEngine);
 };

@@ -7,7 +7,6 @@
 #include <algorithm>
 #include <map>
 #include "Map.h"
-#include "Map.cpp"
 
 using namespace std;
 
@@ -202,10 +201,10 @@ public:
     }
 };
 
-int main()
-{
-    MapDriver mapDriver;
-    mapDriver.loadMap();
-    mapDriver.validateMap();
-    return 0;
-}
+// int main()
+// {
+//     MapDriver mapDriver;
+//     mapDriver.loadMap();
+//     mapDriver.validateMap();
+//     return 0;
+// }
