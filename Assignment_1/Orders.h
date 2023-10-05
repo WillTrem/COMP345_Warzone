@@ -28,7 +28,7 @@ class Order
     Order();
 
     // copy constructor
-    Order(Order& existingOrder);
+    Order(const Order& existingOrder);
 
     // virtual method to execute order (implemented in subclasses)
     virtual void execute();
@@ -36,7 +36,7 @@ class Order
     // virtual method to validate order (implemented in subclasses)
     virtual bool validate();
     
-    //stream insertion operator
+    // stream insertion operator
     friend std::ostream& operator<<(std::ostream& output, const Order& order);
 };
 
@@ -58,13 +58,16 @@ class Deploy : public Order
     Deploy();
 
     // copy constructor
-    Deploy(Deploy& existingDeploy);
+    Deploy(const Deploy& existingDeploy);
 
     // execute method override
     void execute() override;
 
     // validate method override
     bool validate() override;
+
+    // stream insertion operator
+    friend std::ostream& operator<<(std::ostream& output, const Deploy& deploy);
 };
 
 //   ---   Advance class   --- 
@@ -83,13 +86,16 @@ class Advance : public Order
     Advance();
 
     // copy constructor
-    Advance(Advance& existingAdvance);
+    Advance(const Advance& existingAdvance);
 
     // execute method override
     void execute() override;
 
     // validate method override
     bool validate() override;
+
+    // stream insertion operator
+    friend std::ostream& operator<<(std::ostream& output, const Advance& advance);
 };
 
 //   ---   Bomb class   --- 
@@ -108,13 +114,16 @@ class Bomb : public Order
     Bomb();
 
     // copy constructor
-    Bomb(Bomb& existingBomb);
+    Bomb(const Bomb& existingBomb);
     
     // execute method override
     void execute() override;
 
     // validate method override
     bool validate() override;
+
+    // stream insertion operator
+    friend std::ostream& operator<<(std::ostream& output, const Bomb& bomb);
 };
 
 //   ---   Blockade class   --- 
@@ -133,13 +142,16 @@ class Blockade : public Order
     Blockade();
 
     // copy constructor
-    Blockade(Blockade& existingBlockade);
+    Blockade(const Blockade& existingBlockade);
     
     // execute method override
     void execute() override;
 
     // validate method override
     bool validate() override;
+
+    // stream insertion operator
+    friend std::ostream& operator<<(std::ostream& output, const Blockade& blockade);
 };
 
 //   ---   Airlift class  --- 
@@ -158,13 +170,16 @@ class Airlift : public Order
     Airlift();
 
     // copy constructor
-    Airlift(Airlift& existingAirlift);
+    Airlift(const Airlift& existingAirlift);
     
     // execute method override
     void execute() override;
 
     // validate method override
     bool validate() override;
+
+    // stream insertion operator
+    friend std::ostream& operator<<(std::ostream& output, const Airlift& airlift);
 };
 
 //   ---   Negotiate class  --- 
@@ -183,13 +198,16 @@ class Negotiate : public Order
     Negotiate();
 
     // copy constructor
-    Negotiate(Negotiate& existingNegotiate);
+    Negotiate(const Negotiate& existingNegotiate);
     
     // execute method override
     void execute() override;
 
     // validate method override
     bool validate() override;
+
+    // stream insertion operator
+    friend std::ostream& operator<<(std::ostream& output, const Negotiate& negotiate);
 };
 
 // end of order types!
@@ -210,7 +228,7 @@ class OrdersList
     OrdersList();
 
     // copy constructor
-    OrdersList(OrdersList& existingOrdersList);
+    OrdersList(const OrdersList& existingOrdersList);
     
     // add an order to the list
     void addOrder(Order* order);
@@ -223,6 +241,9 @@ class OrdersList
     
     // move around an order in the list
     void move();
+
+    //stream insertion operator
+    friend std::ostream& operator<<(std::ostream& output, const OrdersList& ordersList);
 };
 
 #endif
