@@ -18,7 +18,10 @@ class Order
 {
     private:
     // effect of the Order
-    std::string effect = "effect attribute in the Order class";
+    std::string effect = "effect attribute printed from Order object";
+
+    // boolean set true if action object has been executed
+    bool executed = false;
 
     public:
     // default constructor
@@ -34,7 +37,7 @@ class Order
     virtual bool validate();
     
     //stream insertion operator
-    
+    friend std::ostream& operator<<(std::ostream& output, const Order& order);
 };
 
 // order types:
@@ -45,7 +48,10 @@ class Deploy : public Order
 {   
     private:
     // effect of Deploy
-    std::string effect = "effect attribute in Deploy order class";
+    std::string effect = "effect attribute printed from Deploy object";
+
+    // boolean set true if action object has been executed
+    bool executed = false;
 
     public:
     // default constructor
@@ -54,7 +60,10 @@ class Deploy : public Order
     // copy constructor
     Deploy(Deploy& existingDeploy);
 
+    // execute method override
     void execute() override;
+
+    // validate method override
     bool validate() override;
 };
 
@@ -64,7 +73,10 @@ class Advance : public Order
 {
     private:
     // effect of Advance
-    std::string effect = "effect attribute in Advance order class";
+    std::string effect = "effect attribute printed from Advance object";
+
+    // boolean set true if action object has been executed
+    bool executed = false;
 
     public:
     // default constructor
@@ -73,7 +85,10 @@ class Advance : public Order
     // copy constructor
     Advance(Advance& existingAdvance);
 
+    // execute method override
     void execute() override;
+
+    // validate method override
     bool validate() override;
 };
 
@@ -83,7 +98,10 @@ class Bomb : public Order
 {
     private:
     // effect of Bomb
-    std::string effect = "effect attribute in Bomb order class";
+    std::string effect = "effect attribute printed from Bomb object";
+
+    // boolean set true if action object has been executed
+    bool executed = false;
 
     public:
     // default constructor
@@ -92,7 +110,10 @@ class Bomb : public Order
     // copy constructor
     Bomb(Bomb& existingBomb);
     
+    // execute method override
     void execute() override;
+
+    // validate method override
     bool validate() override;
 };
 
@@ -102,7 +123,10 @@ class Blockade : public Order
 {
     private:
     // effect of Blockade
-    std::string effect = "effect attribute in Blockade order class";
+    std::string effect = "effect attribute printed from Blockade object";
+
+    // boolean set true if action object has been executed
+    bool executed = false;
 
     public:
     // default constructor
@@ -111,7 +135,10 @@ class Blockade : public Order
     // copy constructor
     Blockade(Blockade& existingBlockade);
     
+    // execute method override
     void execute() override;
+
+    // validate method override
     bool validate() override;
 };
 
@@ -121,7 +148,10 @@ class Airlift : public Order
 {
     private:
     // effect of Airlift
-    std::string effect = "effect attribute in Airlift order class";
+    std::string effect = "effect attribute printed from Airlift object";
+
+    // boolean set true if action object has been executed
+    bool executed = false;
 
     public:
     // default constructor
@@ -130,7 +160,10 @@ class Airlift : public Order
     // copy constructor
     Airlift(Airlift& existingAirlift);
     
+    // execute method override
     void execute() override;
+
+    // validate method override
     bool validate() override;
 };
 
@@ -140,7 +173,10 @@ class Negotiate : public Order
 {
     private:
     /// effect of Negotiate
-    std::string effect = "effect attribute in Negotiate order class";
+    std::string effect = "effect attribute printed from Negotiate object";
+
+    // boolean set true if action object has been executed
+    bool executed = false;
 
     public:
     // default constructor
@@ -149,7 +185,10 @@ class Negotiate : public Order
     // copy constructor
     Negotiate(Negotiate& existingNegotiate);
     
+    // execute method override
     void execute() override;
+
+    // validate method override
     bool validate() override;
 };
 

@@ -26,7 +26,18 @@ Order::Order(Order& existingOrder)
 bool Order::validate() {return true;}
 
 // execute method
-void Order::execute() {}
+void Order::execute() {this->executed = true;}
+
+// stream insertion operator overload
+std::ostream& operator<<(ostream& output, const Order& order)
+{   
+    output << "<< overload called in Order class" << endl;
+    if (order.executed)
+    {
+        output << order.effect << endl;
+    }
+    return output;
+}
 
 //   ---   Deploy class   ---  
 
@@ -50,7 +61,7 @@ void Deploy::execute()
     if (this->validate())
     {
         cout << "execute() called in Deploy class" << endl;
-        cout << "Deploy effect: " + this->effect;
+        this->executed = true;
     }
 }
 
@@ -76,7 +87,7 @@ void Advance::execute()
     if (this->validate())
     {
         cout << "execute() called in Advance class" << endl;
-        cout << "Advance effect: " + this->effect;
+        this->executed = true;
     }
 }
 
@@ -102,7 +113,7 @@ void Bomb::execute()
     if (this->validate())
     {
         cout << "execute() called in Bomb class" << endl;
-        cout << "Bomb effect: " + this->effect;
+        this->executed = true;
     }
 }
 
@@ -128,7 +139,7 @@ void Blockade::execute()
     if (this->validate())
     {
         cout << "execute() called in Blockade class" << endl;
-        cout << "Blockade effect: " + this->effect;
+        this->executed = true;
     }
 }
 
@@ -154,7 +165,7 @@ void Airlift::execute()
     if (this->validate())
     {
         cout << "execute() called in Airlift class" << endl;
-        cout << "Airlift effect: " + this->effect;
+        this->executed = true;
     }
 }
 
@@ -180,7 +191,7 @@ void Negotiate::execute()
     if (this->validate())
     {
         cout << "execute() called in Negotiate class" << endl;
-        cout << "Negotiate effect: " + this->effect;
+        this->executed = true;
     }
 }
 
@@ -213,7 +224,7 @@ Order* OrdersList::getNextOrder()
     }
     else
     {   // if list is empty, print a message
-        std::cout << " -- Order list is empty !";
+        std::cout << " -- Order list is empty !" << endl;
         return nullptr;
     }
 }
