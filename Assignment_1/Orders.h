@@ -28,7 +28,7 @@ class Order
     Order();
 
     // copy constructor
-    Order(Order& existingOrder);
+    Order(const Order& existingOrder);
 
     // virtual method to execute order (implemented in subclasses)
     virtual void execute();
@@ -58,7 +58,7 @@ class Deploy : public Order
     Deploy();
 
     // copy constructor
-    Deploy(Deploy& existingDeploy);
+    Deploy(const Deploy& existingDeploy);
 
     // execute method override
     void execute() override;
@@ -83,7 +83,7 @@ class Advance : public Order
     Advance();
 
     // copy constructor
-    Advance(Advance& existingAdvance);
+    Advance(const Advance& existingAdvance);
 
     // execute method override
     void execute() override;
@@ -108,7 +108,7 @@ class Bomb : public Order
     Bomb();
 
     // copy constructor
-    Bomb(Bomb& existingBomb);
+    Bomb(const Bomb& existingBomb);
     
     // execute method override
     void execute() override;
@@ -133,7 +133,7 @@ class Blockade : public Order
     Blockade();
 
     // copy constructor
-    Blockade(Blockade& existingBlockade);
+    Blockade(const Blockade& existingBlockade);
     
     // execute method override
     void execute() override;
@@ -158,7 +158,7 @@ class Airlift : public Order
     Airlift();
 
     // copy constructor
-    Airlift(Airlift& existingAirlift);
+    Airlift(const Airlift& existingAirlift);
     
     // execute method override
     void execute() override;
@@ -183,7 +183,7 @@ class Negotiate : public Order
     Negotiate();
 
     // copy constructor
-    Negotiate(Negotiate& existingNegotiate);
+    Negotiate(const Negotiate& existingNegotiate);
     
     // execute method override
     void execute() override;
@@ -210,7 +210,7 @@ class OrdersList
     OrdersList();
 
     // copy constructor
-    OrdersList(OrdersList& existingOrdersList);
+    OrdersList(const OrdersList& existingOrdersList);
     
     // add an order to the list
     void addOrder(Order* order);
