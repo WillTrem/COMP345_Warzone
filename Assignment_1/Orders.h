@@ -36,7 +36,7 @@ class Order
     // virtual method to validate order (implemented in subclasses)
     virtual bool validate();
     
-    //stream insertion operator
+    // stream insertion operator
     friend std::ostream& operator<<(std::ostream& output, const Order& order);
 };
 
@@ -65,6 +65,9 @@ class Deploy : public Order
 
     // validate method override
     bool validate() override;
+
+    // stream insertion operator
+    friend std::ostream& operator<<(std::ostream& output, const Deploy& deploy);
 };
 
 //   ---   Advance class   --- 
@@ -90,6 +93,9 @@ class Advance : public Order
 
     // validate method override
     bool validate() override;
+
+    // stream insertion operator
+    friend std::ostream& operator<<(std::ostream& output, const Advance& advance);
 };
 
 //   ---   Bomb class   --- 
@@ -115,6 +121,9 @@ class Bomb : public Order
 
     // validate method override
     bool validate() override;
+
+    // stream insertion operator
+    friend std::ostream& operator<<(std::ostream& output, const Bomb& bomb);
 };
 
 //   ---   Blockade class   --- 
@@ -140,6 +149,9 @@ class Blockade : public Order
 
     // validate method override
     bool validate() override;
+
+    // stream insertion operator
+    friend std::ostream& operator<<(std::ostream& output, const Blockade& blockade);
 };
 
 //   ---   Airlift class  --- 
@@ -165,6 +177,9 @@ class Airlift : public Order
 
     // validate method override
     bool validate() override;
+
+    // stream insertion operator
+    friend std::ostream& operator<<(std::ostream& output, const Airlift& airlift);
 };
 
 //   ---   Negotiate class  --- 
@@ -190,6 +205,9 @@ class Negotiate : public Order
 
     // validate method override
     bool validate() override;
+
+    // stream insertion operator
+    friend std::ostream& operator<<(std::ostream& output, const Negotiate& negotiate);
 };
 
 // end of order types!
@@ -223,6 +241,9 @@ class OrdersList
     
     // move around an order in the list
     void move();
+
+    //stream insertion operator
+    friend std::ostream& operator<<(std::ostream& output, const OrdersList& ordersList);
 };
 
 #endif

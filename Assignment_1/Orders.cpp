@@ -29,7 +29,7 @@ void Order::execute() {this->executed = true;}
 // stream insertion operator overload
 std::ostream& operator<<(std::ostream& output, const Order& order)
 {   
-    output << "<< overload called in Order class" << std::endl;
+    output << " << operator printed an Order object" << std::endl;
     if (order.executed)
     {
         output << order.effect << std::endl;
@@ -63,6 +63,17 @@ void Deploy::execute()
     }
 }
 
+// stream insertion operator overload
+std::ostream& operator<<(std::ostream& output, const Deploy& deploy)
+{   
+    output << " << operator printed a Deploy object" << std::endl;
+    if (deploy.executed)
+    {
+        output << deploy.effect << std::endl;
+    }
+    return output;
+}
+
 //   ---   Advance class   ---  
 
 // default constructor
@@ -87,6 +98,17 @@ void Advance::execute()
         std::cout << "execute() called in Advance class" << std::endl;
         this->executed = true;
     }
+}
+
+// stream insertion operator overload
+std::ostream& operator<<(std::ostream& output, const Advance& advance)
+{   
+    output << " << operator printed an Advance object" << std::endl;
+    if (advance.executed)
+    {
+        output << advance.effect << std::endl;
+    }
+    return output;
 }
 
 //   ---   Bomb class   ---  
@@ -115,6 +137,17 @@ void Bomb::execute()
     }
 }
 
+// stream insertion operator overload
+std::ostream& operator<<(std::ostream& output, const Bomb& bomb)
+{   
+    output << " << operator printed a Bomb object" << std::endl;
+    if (bomb.executed)
+    {
+        output << bomb.effect << std::endl;
+    }
+    return output;
+}
+
 //   ---   Blockade class   ---  
 
 // default constructor
@@ -139,6 +172,17 @@ void Blockade::execute()
         std::cout << "execute() called in Blockade class" << std::endl;
         this->executed = true;
     }
+}
+
+// stream insertion operator overload
+std::ostream& operator<<(std::ostream& output, const Blockade& blockade)
+{   
+    output << " << operator printed a Blockade object" << std::endl;
+    if (blockade.executed)
+    {
+        output << blockade.effect << std::endl;
+    }
+    return output;
 }
 
 //   ---   Airlift class   ---  
@@ -167,6 +211,17 @@ void Airlift::execute()
     }
 }
 
+// stream insertion operator overload
+std::ostream& operator<<(std::ostream& output, const Airlift& airlift)
+{   
+    output << " << operator printed an Airlift object" << std::endl;
+    if (airlift.executed)
+    {
+        output << airlift.effect << std::endl;
+    }
+    return output;
+}
+
 //   ---   Negotiate class   ---  
 
 // default constructor
@@ -191,6 +246,17 @@ void Negotiate::execute()
         std::cout << "execute() called in Negotiate class" << std::endl;
         this->executed = true;
     }
+}
+
+// stream insertion operator overload
+std::ostream& operator<<(std::ostream& output, const Negotiate& negotiate)
+{   
+    output << " << operator printed a Negotiate object" << std::endl;
+    if (negotiate.executed)
+    {
+        output << negotiate.effect << std::endl;
+    }
+    return output;
 }
 
 //   ---   OrdersList class   ---   
@@ -225,4 +291,11 @@ Order* OrdersList::getNextOrder()
         std::cout << " -- Order list is empty !" << std::endl;
         return nullptr;
     }
+}
+
+// stream insertion operator overload
+std::ostream& operator<<(std::ostream& output, const OrdersList& orderslist)
+{   
+    output << " << operator printed an OrdersList object" << std::endl;
+    return output;
 }
