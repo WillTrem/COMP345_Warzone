@@ -35,6 +35,9 @@ class Order
 
     // virtual method to validate order (implemented in subclasses)
     virtual bool validate();
+
+    // assignment operator
+    Order& operator=(const Order& order);
     
     // stream insertion operator
     friend std::ostream& operator<<(std::ostream& output, const Order& order);
@@ -66,6 +69,9 @@ class Deploy : public Order
     // validate method override
     bool validate() override;
 
+    // assignment operator
+    Deploy& operator=(const Deploy& deploy);
+
     // stream insertion operator
     friend std::ostream& operator<<(std::ostream& output, const Deploy& deploy);
 };
@@ -93,6 +99,9 @@ class Advance : public Order
 
     // validate method override
     bool validate() override;
+
+    // assignment operator
+    Advance& operator=(const Advance& advance);
 
     // stream insertion operator
     friend std::ostream& operator<<(std::ostream& output, const Advance& advance);
@@ -122,6 +131,9 @@ class Bomb : public Order
     // validate method override
     bool validate() override;
 
+    // assignment operator
+    Bomb& operator=(const Bomb& bomb);
+
     // stream insertion operator
     friend std::ostream& operator<<(std::ostream& output, const Bomb& bomb);
 };
@@ -149,6 +161,9 @@ class Blockade : public Order
 
     // validate method override
     bool validate() override;
+    
+    // assignment operator
+    Blockade& operator=(const Blockade& blockade);
 
     // stream insertion operator
     friend std::ostream& operator<<(std::ostream& output, const Blockade& blockade);
@@ -177,6 +192,9 @@ class Airlift : public Order
 
     // validate method override
     bool validate() override;
+    
+    // assignment operator
+    Airlift& operator=(const Airlift& airlift);
 
     // stream insertion operator
     friend std::ostream& operator<<(std::ostream& output, const Airlift& airlift);
@@ -205,6 +223,9 @@ class Negotiate : public Order
 
     // validate method override
     bool validate() override;
+
+    // assignment operator
+    Negotiate& operator=(const Negotiate& negotiate);
 
     // stream insertion operator
     friend std::ostream& operator<<(std::ostream& output, const Negotiate& negotiate);
@@ -241,6 +262,9 @@ class OrdersList
     
     // move around an order in the list
     void move();
+
+    // assignment operator
+    OrdersList& operator=(const OrdersList& ordersList);
 
     //stream insertion operator
     friend std::ostream& operator<<(std::ostream& output, const OrdersList& ordersList);

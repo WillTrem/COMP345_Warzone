@@ -33,6 +33,13 @@ bool Order::validate() {return true;}
 // execute method
 void Order::execute() {this->executed = true;}
 
+// assignment operator
+Order& Order::operator=(const Order& order)
+{
+    this->effect = order.effect;
+    this->executed = order.executed;
+}
+
 // stream insertion operator overload
 std::ostream& operator<<(std::ostream& output, const Order& order)
 {   
@@ -72,6 +79,13 @@ void Deploy::execute()
         std::cout << "execute() called in Deploy class" << std::endl;
         this->executed = true;
     }
+}
+
+// assignment operator
+Deploy& Deploy::operator=(const Deploy& deploy)
+{
+    this->effect = deploy.effect;
+    this->executed = deploy.executed;
 }
 
 // stream insertion operator overload
@@ -115,6 +129,13 @@ void Advance::execute()
     }
 }
 
+// assignment operator
+Advance& Advance::operator=(const Advance& advance)
+{
+    this->effect = advance.effect;
+    this->executed = advance.executed;
+}
+
 // stream insertion operator overload
 std::ostream& operator<<(std::ostream& output, const Advance& advance)
 {   
@@ -154,6 +175,13 @@ void Bomb::execute()
         std::cout << "execute() called in Bomb class" << std::endl;
         this->executed = true;
     }
+}
+
+// assignment operator
+Bomb& Bomb::operator=(const Bomb& bomb)
+{
+    this->effect = bomb.effect;
+    this->executed = bomb.executed;
 }
 
 // stream insertion operator overload
@@ -197,6 +225,13 @@ void Blockade::execute()
     }
 }
 
+// assignment operator
+Blockade& Blockade::operator=(const Blockade& blockade)
+{
+    this->effect = blockade.effect;
+    this->executed = blockade.executed;
+}
+
 // stream insertion operator overload
 std::ostream& operator<<(std::ostream& output, const Blockade& blockade)
 {   
@@ -238,6 +273,13 @@ void Airlift::execute()
     }
 }
 
+// assignment operator
+Airlift& Airlift::operator=(const Airlift& airlift)
+{
+    this->effect = airlift.effect;
+    this->executed = airlift.executed;
+}
+
 // stream insertion operator overload
 std::ostream& operator<<(std::ostream& output, const Airlift& airlift)
 {   
@@ -277,6 +319,13 @@ void Negotiate::execute()
         std::cout << "execute() called in Negotiate class" << std::endl;
         this->executed = true;
     }
+}
+
+// assignment operator
+Negotiate& Negotiate::operator=(const Negotiate& negotiate)
+{
+    this->effect = negotiate.effect;
+    this->executed = negotiate.executed;
 }
 
 // stream insertion operator overload
@@ -326,6 +375,12 @@ Order* OrdersList::getNextOrder()
         std::cout << " -- Order list is empty !" << std::endl;
         return nullptr;
     }
+}
+
+// assignment operator
+OrdersList& OrdersList::operator=(const OrdersList& orderslist)
+{
+    this->ordersList = orderslist.ordersList;
 }
 
 // stream insertion operator overload
