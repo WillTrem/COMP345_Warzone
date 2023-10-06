@@ -8,6 +8,7 @@
 
 #include "Orders.h"
 #include <iostream>
+#include <string>
 
 //   ---   Order class   ---   
 
