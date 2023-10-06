@@ -12,12 +12,19 @@
 //   ---   Order class   ---   
 
 // default constructor
-Order::Order() {}
+Order::Order()
+{
+    // prints when every subclass constructor is called, makes testing too messy :)
+    //std::cout << "parent class Order default constructor called" << std:: endl;
+}
 
 // copy constructor
 Order::Order(const Order& existingOrder)
 {
     this->effect = existingOrder.effect;
+    
+    // prints when every subclass constructor is called, makes testing too messy :)
+    //std::cout << "parent class Order copy constructor called" << std:: endl;
 }
 
 // validate method
@@ -40,12 +47,16 @@ std::ostream& operator<<(std::ostream& output, const Order& order)
 //   ---   Deploy class   ---  
 
 // default constructor
-Deploy::Deploy() {}
+Deploy::Deploy() 
+{
+    std::cout << "Deploy object created using default constructor" << std:: endl;
+}
 
 // copy constructor
 Deploy::Deploy(const Deploy& existingDeploy)
 {
     this->effect = existingDeploy.effect;
+    std::cout << "Deploy object created using copy constructor" << std:: endl;
 }
 
 bool Deploy::validate()
@@ -77,12 +88,16 @@ std::ostream& operator<<(std::ostream& output, const Deploy& deploy)
 //   ---   Advance class   ---  
 
 // default constructor
-Advance::Advance() {}
+Advance::Advance()
+{
+    std::cout << "Advance object created using default constructor" << std:: endl;
+}
 
 // copy constructor
 Advance::Advance(const Advance& existingAdvance)
 {
     this->effect = existingAdvance.effect;
+    std::cout << "Advance object created using copy constructor" << std:: endl;
 }
 
 bool Advance::validate()
@@ -114,12 +129,16 @@ std::ostream& operator<<(std::ostream& output, const Advance& advance)
 //   ---   Bomb class   ---  
 
 // default constructor
-Bomb::Bomb() {}
+Bomb::Bomb()
+{
+    std::cout << "Bomb object created using default constructor" << std:: endl;
+}
 
 // copy constructor
 Bomb::Bomb(const Bomb& existingBomb)
 {
     this->effect = existingBomb.effect;
+    std::cout << "Bomb object created using copy constructor" << std:: endl;
 }
 
 bool Bomb::validate()
@@ -151,12 +170,16 @@ std::ostream& operator<<(std::ostream& output, const Bomb& bomb)
 //   ---   Blockade class   ---  
 
 // default constructor
-Blockade::Blockade() {}
+Blockade::Blockade()
+{
+    std::cout << "Blockade object created using default constructor" << std:: endl;
+}
 
 // copy constructor
 Blockade::Blockade(const Blockade& existingBlockade)
 {
     this->effect = existingBlockade.effect;
+    std::cout << "Blockade object created using copy constructor" << std:: endl;
 }
 
 bool Blockade::validate()
@@ -188,12 +211,16 @@ std::ostream& operator<<(std::ostream& output, const Blockade& blockade)
 //   ---   Airlift class   ---  
 
 // default constructor
-Airlift::Airlift() {}
+Airlift::Airlift()
+{
+    std::cout << "Airlift object created using default constructor" << std:: endl;
+}
 
 // copy constructor
 Airlift::Airlift(const Airlift& existingAirlift)
 {
     this->effect = existingAirlift.effect;
+    std::cout << "Airlift object created using copy constructor" << std:: endl;
 }
 
 bool Airlift::validate()
@@ -225,12 +252,16 @@ std::ostream& operator<<(std::ostream& output, const Airlift& airlift)
 //   ---   Negotiate class   ---  
 
 // default constructor
-Negotiate::Negotiate() {}
+Negotiate::Negotiate()
+{
+    std::cout << "Negotiate object created using default constructor" << std:: endl;
+}
 
 // copy constructor
 Negotiate::Negotiate(const Negotiate& existingNegotiate)
 {
     this->effect = existingNegotiate.effect;
+    std::cout << "Negotiate object created using copy constructor" << std:: endl;
 }
 
 bool Negotiate::validate()
@@ -262,12 +293,16 @@ std::ostream& operator<<(std::ostream& output, const Negotiate& negotiate)
 //   ---   OrdersList class   ---   
 
 // default constructor
-OrdersList::OrdersList() {}
+OrdersList::OrdersList()
+{
+    std::cout << "OrdersList object created using default constructor" << std:: endl;
+}
 
 // copy constructor
 OrdersList::OrdersList(const OrdersList& existingOrdersList)
 {
     this->ordersList = existingOrdersList.ordersList;
+    std::cout << "OrdersList object created using copy constructor" << std:: endl;
 }
 
 // add an order to the list

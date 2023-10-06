@@ -6,8 +6,8 @@
 #include <cctype>
 #include <algorithm>
 #include <map>
+#include "MapDriver.h"
 #include "Map.h"
-#include "Map.cpp"
 
 using namespace std;
 
@@ -201,11 +201,3 @@ public:
         worldMap.validate(worldMap, mapTerritories[0], visitedTerritories, visitedContinents);
     }
 };
-
-int main()
-{
-    MapDriver mapDriver;
-    mapDriver.loadMap();
-    mapDriver.validateMap();
-    return 0;
-}
