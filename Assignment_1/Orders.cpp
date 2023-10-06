@@ -38,6 +38,8 @@ Order& Order::operator=(const Order& order)
 {
     this->effect = order.effect;
     this->executed = order.executed;
+
+    return *this;
 }
 
 // stream insertion operator overload
@@ -86,6 +88,8 @@ Deploy& Deploy::operator=(const Deploy& deploy)
 {
     this->effect = deploy.effect;
     this->executed = deploy.executed;
+
+    return *this;
 }
 
 // stream insertion operator overload
@@ -134,6 +138,8 @@ Advance& Advance::operator=(const Advance& advance)
 {
     this->effect = advance.effect;
     this->executed = advance.executed;
+
+    return *this;
 }
 
 // stream insertion operator overload
@@ -182,6 +188,8 @@ Bomb& Bomb::operator=(const Bomb& bomb)
 {
     this->effect = bomb.effect;
     this->executed = bomb.executed;
+
+    return *this;
 }
 
 // stream insertion operator overload
@@ -230,6 +238,8 @@ Blockade& Blockade::operator=(const Blockade& blockade)
 {
     this->effect = blockade.effect;
     this->executed = blockade.executed;
+
+    return *this;
 }
 
 // stream insertion operator overload
@@ -278,6 +288,8 @@ Airlift& Airlift::operator=(const Airlift& airlift)
 {
     this->effect = airlift.effect;
     this->executed = airlift.executed;
+
+    return *this;
 }
 
 // stream insertion operator overload
@@ -326,6 +338,8 @@ Negotiate& Negotiate::operator=(const Negotiate& negotiate)
 {
     this->effect = negotiate.effect;
     this->executed = negotiate.executed;
+
+    return *this;
 }
 
 // stream insertion operator overload
@@ -385,6 +399,8 @@ Order* OrdersList::getNextOrder()
 OrdersList& OrdersList::operator=(const OrdersList& orderslist)
 {
     this->ordersList = orderslist.ordersList;
+    
+    return *this;
 }
 
 // stream insertion operator overload
@@ -395,7 +411,7 @@ std::ostream& operator<<(std::ostream& output, const OrdersList& orderslist)
     int i = 1;
     while(!temp.empty())
     {   
-        std::cout << i + ": ";
+        std::cout << std::to_string(i) + ": ";
         std::cout << temp.front() << std::endl;
         temp.pop();
         i++;
