@@ -377,6 +377,10 @@ Order* OrdersList::getNextOrder()
     }
 }
 
+// move
+
+// remove
+
 // assignment operator
 OrdersList& OrdersList::operator=(const OrdersList& orderslist)
 {
@@ -386,6 +390,17 @@ OrdersList& OrdersList::operator=(const OrdersList& orderslist)
 // stream insertion operator overload
 std::ostream& operator<<(std::ostream& output, const OrdersList& orderslist)
 {   
-    output << " << operator printed an OrdersList object" << std::endl;
+    // creates a temporary copy of orderlist and traverse it to print it out
+    std::queue<Order*> temp = orderslist.ordersList;
+    int i = 1;
+    while(!temp.empty())
+    {   
+        std::cout << i + ": ";
+        std::cout << temp.front() << std::endl;
+        temp.pop();
+        i++;
+    }
+    std::cout << std::endl;
+
     return output;
 }
