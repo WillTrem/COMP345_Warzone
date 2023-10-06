@@ -27,6 +27,9 @@ Order::Order(const Order& existingOrder)
     //std::cout << "parent class Order copy constructor called" << std:: endl;
 }
 
+// destructor
+Order::~Order() {}
+
 // validate method
 bool Order::validate() {return true;}
 
@@ -42,10 +45,15 @@ Order& Order::operator=(const Order& order)
     return *this;
 }
 
+void Order::print(std::ostream& output) const
+{
+    output << "Order" << std::endl;
+}
+
 // stream insertion operator overload
 std::ostream& operator<<(std::ostream& output, const Order& order)
 {   
-    output << " << operator printed an Order object" << std::endl;
+    order.print(output);
     if (order.executed)
     {
         output << order.effect << std::endl;
@@ -92,10 +100,16 @@ Deploy& Deploy::operator=(const Deploy& deploy)
     return *this;
 }
 
+// print method that helps with overloading stream insertion operators
+void Deploy::print(std::ostream& output) const
+{
+    output << "Deploy" << std::endl;
+}
+
 // stream insertion operator overload
 std::ostream& operator<<(std::ostream& output, const Deploy& deploy)
 {   
-    output << " << operator printed a Deploy object" << std::endl;
+    deploy.print(output);
     if (deploy.executed)
     {
         output << deploy.effect << std::endl;
@@ -142,10 +156,16 @@ Advance& Advance::operator=(const Advance& advance)
     return *this;
 }
 
+// print method that helps with overloading stream insertion operators
+void Advance::print(std::ostream& output) const
+{
+    output << "Advance" << std::endl;
+}
+
 // stream insertion operator overload
 std::ostream& operator<<(std::ostream& output, const Advance& advance)
 {   
-    output << " << operator printed an Advance object" << std::endl;
+    advance.print(output);
     if (advance.executed)
     {
         output << advance.effect << std::endl;
@@ -192,10 +212,16 @@ Bomb& Bomb::operator=(const Bomb& bomb)
     return *this;
 }
 
+// print method that helps with overloading stream insertion operators
+void Bomb::print(std::ostream& output) const
+{
+    output << "Bomb" << std::endl;
+}
+
 // stream insertion operator overload
 std::ostream& operator<<(std::ostream& output, const Bomb& bomb)
 {   
-    output << " << operator printed a Bomb object" << std::endl;
+    bomb.print(output);
     if (bomb.executed)
     {
         output << bomb.effect << std::endl;
@@ -242,10 +268,16 @@ Blockade& Blockade::operator=(const Blockade& blockade)
     return *this;
 }
 
+// print method that helps with overloading stream insertion operators
+void Blockade::print(std::ostream& output) const
+{
+    output << "Blockade" << std::endl;
+}
+
 // stream insertion operator overload
 std::ostream& operator<<(std::ostream& output, const Blockade& blockade)
 {   
-    output << " << operator printed a Blockade object" << std::endl;
+    blockade.print(output);
     if (blockade.executed)
     {
         output << blockade.effect << std::endl;
@@ -292,10 +324,16 @@ Airlift& Airlift::operator=(const Airlift& airlift)
     return *this;
 }
 
+// print method that helps with overloading stream insertion operators
+void Airlift::print(std::ostream& output) const
+{
+    output << "Airlift" << std::endl;
+}
+
 // stream insertion operator overload
 std::ostream& operator<<(std::ostream& output, const Airlift& airlift)
 {   
-    output << " << operator printed an Airlift object" << std::endl;
+    airlift.print(output);
     if (airlift.executed)
     {
         output << airlift.effect << std::endl;
@@ -342,10 +380,16 @@ Negotiate& Negotiate::operator=(const Negotiate& negotiate)
     return *this;
 }
 
+// print method that helps with overloading stream insertion operators
+void Negotiate::print(std::ostream& output) const
+{
+    output << "Negotiate" << std::endl;
+}
+
 // stream insertion operator overload
 std::ostream& operator<<(std::ostream& output, const Negotiate& negotiate)
 {   
-    output << " << operator printed a Negotiate object" << std::endl;
+    negotiate.print(output);
     if (negotiate.executed)
     {
         output << negotiate.effect << std::endl;
@@ -411,8 +455,9 @@ std::ostream& operator<<(std::ostream& output, const OrdersList& orderslist)
     int i = 1;
     while(!temp.empty())
     {   
+        Order* tempObj = temp.front();
         std::cout << std::to_string(i) + ": ";
-        std::cout << temp.front() << std::endl;
+        std::cout << *tempObj << std::endl;
         temp.pop();
         i++;
     }

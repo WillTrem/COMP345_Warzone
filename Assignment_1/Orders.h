@@ -30,6 +30,9 @@ class Order
     // copy constructor
     Order(const Order& existingOrder);
 
+    // virtual destructor
+    virtual ~Order();
+
     // virtual method to execute order (implemented in subclasses)
     virtual void execute();
 
@@ -38,6 +41,9 @@ class Order
 
     // assignment operator
     Order& operator=(const Order& order);
+
+    // print method that helps with overloading stream insertion operators
+    virtual void print(std::ostream& output) const;
     
     // stream insertion operator
     friend std::ostream& operator<<(std::ostream& output, const Order& order);
@@ -72,6 +78,9 @@ class Deploy : public Order
     // assignment operator
     Deploy& operator=(const Deploy& deploy);
 
+    // print method that helps with overloading stream insertion operators
+    void print(std::ostream& output) const override;
+
     // stream insertion operator
     friend std::ostream& operator<<(std::ostream& output, const Deploy& deploy);
 };
@@ -102,6 +111,9 @@ class Advance : public Order
 
     // assignment operator
     Advance& operator=(const Advance& advance);
+
+    // print method that helps with overloading stream insertion operators
+    void print(std::ostream& output) const override;
 
     // stream insertion operator
     friend std::ostream& operator<<(std::ostream& output, const Advance& advance);
@@ -134,6 +146,9 @@ class Bomb : public Order
     // assignment operator
     Bomb& operator=(const Bomb& bomb);
 
+    // print method that helps with overloading stream insertion operators
+    void print(std::ostream& output) const override;
+
     // stream insertion operator
     friend std::ostream& operator<<(std::ostream& output, const Bomb& bomb);
 };
@@ -157,13 +172,16 @@ class Blockade : public Order
     Blockade(const Blockade& existingBlockade);
     
     // execute method override
-    void execute() override;
+    virtual void execute() override;
 
     // validate method override
-    bool validate() override;
+    virtual bool validate() override;
     
     // assignment operator
     Blockade& operator=(const Blockade& blockade);
+
+    // print method that helps with overloading stream insertion operators
+    void print(std::ostream& output) const override;
 
     // stream insertion operator
     friend std::ostream& operator<<(std::ostream& output, const Blockade& blockade);
@@ -196,6 +214,9 @@ class Airlift : public Order
     // assignment operator
     Airlift& operator=(const Airlift& airlift);
 
+    // print method that helps with overloading stream insertion operators
+    void print(std::ostream& output) const override;
+
     // stream insertion operator
     friend std::ostream& operator<<(std::ostream& output, const Airlift& airlift);
 };
@@ -226,6 +247,9 @@ class Negotiate : public Order
 
     // assignment operator
     Negotiate& operator=(const Negotiate& negotiate);
+
+    // print method that helps with overloading stream insertion operators
+    void print(std::ostream& output) const override;
 
     // stream insertion operator
     friend std::ostream& operator<<(std::ostream& output, const Negotiate& negotiate);
