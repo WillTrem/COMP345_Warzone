@@ -34,10 +34,3 @@ void testOrdersLists()
 
     std::cout << "all good" << std::endl;
 }
-
-int main()
-{
-    testOrdersLists();
-
-    return 0;
-}
