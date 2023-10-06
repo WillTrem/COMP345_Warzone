@@ -27,16 +27,33 @@ Order::Order(const Order& existingOrder)
     //std::cout << "parent class Order copy constructor called" << std:: endl;
 }
 
+// destructor
+Order::~Order() {}
+
 // validate method
 bool Order::validate() {return true;}
 
 // execute method
 void Order::execute() {this->executed = true;}
 
+// assignment operator
+Order& Order::operator=(const Order& order)
+{
+    this->effect = order.effect;
+    this->executed = order.executed;
+
+    return *this;
+}
+
+void Order::print(std::ostream& output) const
+{
+    output << "Order" << std::endl;
+}
+
 // stream insertion operator overload
 std::ostream& operator<<(std::ostream& output, const Order& order)
 {   
-    output << " << operator printed an Order object" << std::endl;
+    order.print(output);
     if (order.executed)
     {
         output << order.effect << std::endl;
@@ -74,10 +91,25 @@ void Deploy::execute()
     }
 }
 
+// assignment operator
+Deploy& Deploy::operator=(const Deploy& deploy)
+{
+    this->effect = deploy.effect;
+    this->executed = deploy.executed;
+
+    return *this;
+}
+
+// print method that helps with overloading stream insertion operators
+void Deploy::print(std::ostream& output) const
+{
+    output << "Deploy" << std::endl;
+}
+
 // stream insertion operator overload
 std::ostream& operator<<(std::ostream& output, const Deploy& deploy)
 {   
-    output << " << operator printed a Deploy object" << std::endl;
+    deploy.print(output);
     if (deploy.executed)
     {
         output << deploy.effect << std::endl;
@@ -115,10 +147,25 @@ void Advance::execute()
     }
 }
 
+// assignment operator
+Advance& Advance::operator=(const Advance& advance)
+{
+    this->effect = advance.effect;
+    this->executed = advance.executed;
+
+    return *this;
+}
+
+// print method that helps with overloading stream insertion operators
+void Advance::print(std::ostream& output) const
+{
+    output << "Advance" << std::endl;
+}
+
 // stream insertion operator overload
 std::ostream& operator<<(std::ostream& output, const Advance& advance)
 {   
-    output << " << operator printed an Advance object" << std::endl;
+    advance.print(output);
     if (advance.executed)
     {
         output << advance.effect << std::endl;
@@ -156,10 +203,25 @@ void Bomb::execute()
     }
 }
 
+// assignment operator
+Bomb& Bomb::operator=(const Bomb& bomb)
+{
+    this->effect = bomb.effect;
+    this->executed = bomb.executed;
+
+    return *this;
+}
+
+// print method that helps with overloading stream insertion operators
+void Bomb::print(std::ostream& output) const
+{
+    output << "Bomb" << std::endl;
+}
+
 // stream insertion operator overload
 std::ostream& operator<<(std::ostream& output, const Bomb& bomb)
 {   
-    output << " << operator printed a Bomb object" << std::endl;
+    bomb.print(output);
     if (bomb.executed)
     {
         output << bomb.effect << std::endl;
@@ -197,10 +259,25 @@ void Blockade::execute()
     }
 }
 
+// assignment operator
+Blockade& Blockade::operator=(const Blockade& blockade)
+{
+    this->effect = blockade.effect;
+    this->executed = blockade.executed;
+
+    return *this;
+}
+
+// print method that helps with overloading stream insertion operators
+void Blockade::print(std::ostream& output) const
+{
+    output << "Blockade" << std::endl;
+}
+
 // stream insertion operator overload
 std::ostream& operator<<(std::ostream& output, const Blockade& blockade)
 {   
-    output << " << operator printed a Blockade object" << std::endl;
+    blockade.print(output);
     if (blockade.executed)
     {
         output << blockade.effect << std::endl;
@@ -238,10 +315,25 @@ void Airlift::execute()
     }
 }
 
+// assignment operator
+Airlift& Airlift::operator=(const Airlift& airlift)
+{
+    this->effect = airlift.effect;
+    this->executed = airlift.executed;
+
+    return *this;
+}
+
+// print method that helps with overloading stream insertion operators
+void Airlift::print(std::ostream& output) const
+{
+    output << "Airlift" << std::endl;
+}
+
 // stream insertion operator overload
 std::ostream& operator<<(std::ostream& output, const Airlift& airlift)
 {   
-    output << " << operator printed an Airlift object" << std::endl;
+    airlift.print(output);
     if (airlift.executed)
     {
         output << airlift.effect << std::endl;
@@ -279,10 +371,25 @@ void Negotiate::execute()
     }
 }
 
+// assignment operator
+Negotiate& Negotiate::operator=(const Negotiate& negotiate)
+{
+    this->effect = negotiate.effect;
+    this->executed = negotiate.executed;
+
+    return *this;
+}
+
+// print method that helps with overloading stream insertion operators
+void Negotiate::print(std::ostream& output) const
+{
+    output << "Negotiate" << std::endl;
+}
+
 // stream insertion operator overload
 std::ostream& operator<<(std::ostream& output, const Negotiate& negotiate)
 {   
-    output << " << operator printed a Negotiate object" << std::endl;
+    negotiate.print(output);
     if (negotiate.executed)
     {
         output << negotiate.effect << std::endl;
@@ -328,9 +435,33 @@ Order* OrdersList::getNextOrder()
     }
 }
 
+// move
+
+// remove
+
+// assignment operator
+OrdersList& OrdersList::operator=(const OrdersList& orderslist)
+{
+    this->ordersList = orderslist.ordersList;
+    
+    return *this;
+}
+
 // stream insertion operator overload
 std::ostream& operator<<(std::ostream& output, const OrdersList& orderslist)
 {   
-    output << " << operator printed an OrdersList object" << std::endl;
+    // creates a temporary copy of orderlist and traverse it to print it out
+    std::queue<Order*> temp = orderslist.ordersList;
+    int i = 1;
+    while(!temp.empty())
+    {   
+        Order* tempObj = temp.front();
+        std::cout << std::to_string(i) + ": ";
+        std::cout << *tempObj << std::endl;
+        temp.pop();
+        i++;
+    }
+    std::cout << std::endl;
+
     return output;
 }

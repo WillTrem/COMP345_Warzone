@@ -28,18 +28,22 @@ void testOrdersLists()
 
     // create an OrdersList object to hold the orders
     std::cout << "// create an OrdersList object to hold the orders:" << std::endl;
-    OrdersList ordersList_test = OrdersList();
+    OrdersList orderslist_test = OrdersList();
 
     std::cout << std::endl;
 
     // place pointers to all the action objects in the list
-    ordersList_test.addOrder(&order_test);
-    ordersList_test.addOrder(&deploy_test);
-    ordersList_test.addOrder(&advance_test);
-    ordersList_test.addOrder(&bomb_test);
-    ordersList_test.addOrder(&blockade_test);
-    ordersList_test.addOrder(&airlift_test);
-    ordersList_test.addOrder(&negotiate_test);
+    orderslist_test.addOrder(&order_test);
+    orderslist_test.addOrder(&deploy_test);
+    orderslist_test.addOrder(&advance_test);
+    orderslist_test.addOrder(&bomb_test);
+    orderslist_test.addOrder(&blockade_test);
+    orderslist_test.addOrder(&airlift_test);
+    orderslist_test.addOrder(&negotiate_test);
+
+    // print out the contents of the orderlist
+    std::cout << "// print out the contents of the orderlist:" << std::endl;
+    std::cout << orderslist_test << std::endl;
 
     std::cout << " ---   PART 3: testing done :)   ---\n\n" << std::endl;
 }
