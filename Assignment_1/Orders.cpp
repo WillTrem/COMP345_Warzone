@@ -14,20 +14,17 @@
 // default constructor
 Order::Order()
 {
-    // prints when every subclass constructor is called, makes testing too messy :)
-    //std::cout << "parent class Order default constructor called" << std:: endl;
+    std::cout << "parent class Order default constructor called" << std::endl;
 }
 
 // copy constructor
 Order::Order(const Order& existingOrder)
 {
     this->effect = existingOrder.effect;
-    
-    // prints when every subclass constructor is called, makes testing too messy :)
-    //std::cout << "parent class Order copy constructor called" << std:: endl;
+    std::cout << "parent class Order copy constructor called" << std:: endl;
 }
 
-// destructor
+// virtual destructor
 Order::~Order() {}
 
 // validate method
@@ -45,6 +42,7 @@ Order& Order::operator=(const Order& order)
     return *this;
 }
 
+// print helper method for stream insertion operator overload
 void Order::print(std::ostream& output) const
 {
     output << "Order" << std::endl;
@@ -66,7 +64,7 @@ std::ostream& operator<<(std::ostream& output, const Order& order)
 // default constructor
 Deploy::Deploy() 
 {
-    std::cout << "Deploy object created using default constructor" << std:: endl;
+    std::cout << "Deploy object created using default constructor\n" << std:: endl;
 }
 
 // copy constructor
@@ -76,12 +74,17 @@ Deploy::Deploy(const Deploy& existingDeploy)
     std::cout << "Deploy object created using copy constructor" << std:: endl;
 }
 
+// destructor
+Deploy::~Deploy() {}
+
+// validate method override
 bool Deploy::validate()
 {
     std::cout << "validate() called in Deploy class" << std::endl;
     return true;
 }
 
+// execute method override
 void Deploy::execute()
 {
     if (this->validate())
@@ -100,7 +103,7 @@ Deploy& Deploy::operator=(const Deploy& deploy)
     return *this;
 }
 
-// print method that helps with overloading stream insertion operators
+// print helper method for stream insertion overload
 void Deploy::print(std::ostream& output) const
 {
     output << "Deploy" << std::endl;
@@ -122,7 +125,7 @@ std::ostream& operator<<(std::ostream& output, const Deploy& deploy)
 // default constructor
 Advance::Advance()
 {
-    std::cout << "Advance object created using default constructor" << std:: endl;
+    std::cout << "Advance object created using default constructor\n" << std:: endl;
 }
 
 // copy constructor
@@ -132,12 +135,17 @@ Advance::Advance(const Advance& existingAdvance)
     std::cout << "Advance object created using copy constructor" << std:: endl;
 }
 
+// destructor
+Advance::~Advance() {}
+
+// validate method override
 bool Advance::validate()
 {
     std::cout << "validate() called in Advance class" << std::endl;
     return true;
 }
 
+// execute method override
 void Advance::execute()
 {
     if (this->validate())
@@ -156,7 +164,7 @@ Advance& Advance::operator=(const Advance& advance)
     return *this;
 }
 
-// print method that helps with overloading stream insertion operators
+// print helper method for stream insertion overload
 void Advance::print(std::ostream& output) const
 {
     output << "Advance" << std::endl;
@@ -178,7 +186,7 @@ std::ostream& operator<<(std::ostream& output, const Advance& advance)
 // default constructor
 Bomb::Bomb()
 {
-    std::cout << "Bomb object created using default constructor" << std:: endl;
+    std::cout << "Bomb object created using default constructor\n" << std:: endl;
 }
 
 // copy constructor
@@ -188,12 +196,17 @@ Bomb::Bomb(const Bomb& existingBomb)
     std::cout << "Bomb object created using copy constructor" << std:: endl;
 }
 
+// destructor
+Bomb::~Bomb() {}
+
+// validate method override
 bool Bomb::validate()
 {
     std::cout << "validate() called in Bomb class" << std::endl;
     return true;
 }
 
+// execute method override
 void Bomb::execute()
 {
     if (this->validate())
@@ -212,7 +225,7 @@ Bomb& Bomb::operator=(const Bomb& bomb)
     return *this;
 }
 
-// print method that helps with overloading stream insertion operators
+// print helper method for stream insertion overload
 void Bomb::print(std::ostream& output) const
 {
     output << "Bomb" << std::endl;
@@ -234,7 +247,7 @@ std::ostream& operator<<(std::ostream& output, const Bomb& bomb)
 // default constructor
 Blockade::Blockade()
 {
-    std::cout << "Blockade object created using default constructor" << std:: endl;
+    std::cout << "Blockade object created using default constructor\n" << std:: endl;
 }
 
 // copy constructor
@@ -244,12 +257,17 @@ Blockade::Blockade(const Blockade& existingBlockade)
     std::cout << "Blockade object created using copy constructor" << std:: endl;
 }
 
+// destructor
+Blockade::~Blockade() {}
+
+// validate method override
 bool Blockade::validate()
 {
     std::cout << "validate() called in Blockade class" << std::endl;
     return true;
 }
 
+// execute method override
 void Blockade::execute()
 {
     if (this->validate())
@@ -268,7 +286,7 @@ Blockade& Blockade::operator=(const Blockade& blockade)
     return *this;
 }
 
-// print method that helps with overloading stream insertion operators
+// print helper method for stream insertion overload
 void Blockade::print(std::ostream& output) const
 {
     output << "Blockade" << std::endl;
@@ -290,7 +308,7 @@ std::ostream& operator<<(std::ostream& output, const Blockade& blockade)
 // default constructor
 Airlift::Airlift()
 {
-    std::cout << "Airlift object created using default constructor" << std:: endl;
+    std::cout << "Airlift object created using default constructor\n" << std:: endl;
 }
 
 // copy constructor
@@ -300,12 +318,17 @@ Airlift::Airlift(const Airlift& existingAirlift)
     std::cout << "Airlift object created using copy constructor" << std:: endl;
 }
 
+// destructor
+Airlift::~Airlift() {}
+
+// validate method override
 bool Airlift::validate()
 {
     std::cout << "validate() called in Airlift class" << std::endl;
     return true;
 }
 
+// execute method override
 void Airlift::execute()
 {
     if (this->validate())
@@ -324,7 +347,7 @@ Airlift& Airlift::operator=(const Airlift& airlift)
     return *this;
 }
 
-// print method that helps with overloading stream insertion operators
+// print helper method for stream insertion overload
 void Airlift::print(std::ostream& output) const
 {
     output << "Airlift" << std::endl;
@@ -346,7 +369,7 @@ std::ostream& operator<<(std::ostream& output, const Airlift& airlift)
 // default constructor
 Negotiate::Negotiate()
 {
-    std::cout << "Negotiate object created using default constructor" << std:: endl;
+    std::cout << "Negotiate object created using default constructor\n" << std:: endl;
 }
 
 // copy constructor
@@ -356,12 +379,17 @@ Negotiate::Negotiate(const Negotiate& existingNegotiate)
     std::cout << "Negotiate object created using copy constructor" << std:: endl;
 }
 
+// destructor
+Negotiate::~Negotiate() {}
+
+// validate method override
 bool Negotiate::validate()
 {
     std::cout << "validate() called in Negotiate class" << std::endl;
     return true;
 }
 
+// execute method override
 void Negotiate::execute()
 {
     if (this->validate())
@@ -380,7 +408,7 @@ Negotiate& Negotiate::operator=(const Negotiate& negotiate)
     return *this;
 }
 
-// print method that helps with overloading stream insertion operators
+// print helper method for stream insertion overload
 void Negotiate::print(std::ostream& output) const
 {
     output << "Negotiate" << std::endl;
@@ -412,10 +440,19 @@ OrdersList::OrdersList(const OrdersList& existingOrdersList)
     std::cout << "OrdersList object created using copy constructor" << std:: endl;
 }
 
+OrdersList::~OrdersList()
+{   
+    // change all the pointers to nullptr
+    for (Order* order : ordersList)
+    {
+        order = nullptr;
+    }
+}
+
 // add an order to the list
 void OrdersList::addOrder(Order* order)
 {
-    ordersList.push(order);
+    this->ordersList.push_back(order);
 }
 
 // get next order on the list
@@ -425,7 +462,7 @@ Order* OrdersList::getNextOrder()
     if (!ordersList.empty())
     {   
         Order* nextOrderPtr = ordersList.front(); 
-        ordersList.pop();
+        ordersList.pop_front();
         return nextOrderPtr;
     }
     else
@@ -435,9 +472,32 @@ Order* OrdersList::getNextOrder()
     }
 }
 
-// move
+// remove an order from the list [takes an int, which is a menu number]
+void OrdersList::remove(int num)
+{   
+    // index is one less than menu numbering
+    num--;
 
-// remove
+    this->ordersList.erase(this->ordersList.begin() + num);
+
+     std::cout << "an order was removed\n" << std::endl;
+}
+
+// swap two orders in the list [takes two ints, which are menu numbers]
+void OrdersList::move(int a, int b)
+{   
+    // index is one less than menu numbering
+    a--;
+    b--;
+
+    Order* temp = this->ordersList[a];
+
+    this->ordersList[a] = this->ordersList[b];
+    this->ordersList[b] = temp;
+
+    std::cout << "orders were swapped\n" << std::endl;
+}
+
 
 // assignment operator
 OrdersList& OrdersList::operator=(const OrdersList& orderslist)
@@ -451,17 +511,16 @@ OrdersList& OrdersList::operator=(const OrdersList& orderslist)
 std::ostream& operator<<(std::ostream& output, const OrdersList& orderslist)
 {   
     // creates a temporary copy of orderlist and traverse it to print it out
-    std::queue<Order*> temp = orderslist.ordersList;
+    std::deque<Order*> temp = orderslist.ordersList;
     int i = 1;
     while(!temp.empty())
     {   
         Order* tempObj = temp.front();
         std::cout << std::to_string(i) + ": ";
         std::cout << *tempObj << std::endl;
-        temp.pop();
+        temp.pop_front();
         i++;
     }
-    std::cout << std::endl;
 
     return output;
 }
