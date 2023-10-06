@@ -5,6 +5,7 @@
 #include "CardsDriver.h"
 #include "GameEngineDriver.h"
 #include "PlayerDriver.h"
+#include "OrdersDriver.h"
 
 using namespace std;
 
@@ -17,6 +18,9 @@ int main()
 	testCards();
 
 	testPlayers();
+
+	// PART 3 test (chris)
+	testOrdersLists();
 
 	testGameEngine();
 

@@ -11,7 +11,11 @@
 
 void testOrdersLists()
 {
+    // make my testing output look nice
+    std::cout << "\n\n ---   PART 3: testing   --- \n" << std::endl;
+
     // create orders of every kind (including the plain Order object, why not)
+    std::cout << "// create orders of every kind:" << std::endl;
     Order order_test = Order();
     Deploy deploy_test = Deploy();
     Advance advance_test = Advance();
@@ -20,8 +24,13 @@ void testOrdersLists()
     Airlift airlift_test = Airlift();
     Negotiate negotiate_test = Negotiate();
 
-    // create an OrdersList object
+    std::cout << std::endl;
+
+    // create an OrdersList object to hold the orders
+    std::cout << "// create an OrdersList object to hold the orders:" << std::endl;
     OrdersList ordersList_test = OrdersList();
+
+    std::cout << std::endl;
 
     // place pointers to all the action objects in the list
     ordersList_test.addOrder(&order_test);
@@ -32,5 +41,5 @@ void testOrdersLists()
     ordersList_test.addOrder(&airlift_test);
     ordersList_test.addOrder(&negotiate_test);
 
-    std::cout << "all good" << std::endl;
+    std::cout << " ---   PART 3: testing done :)   ---\n\n" << std::endl;
 }
