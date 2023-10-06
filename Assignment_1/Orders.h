@@ -10,7 +10,7 @@
 #define ORDERS_H
 
 #include <iostream>
-#include <queue>
+#include <deque>
 
 //   ---   Order class    ---   [each ORDER type (below) inherits from this class and overrides execute() and validate()]
 
@@ -42,7 +42,7 @@ class Order
     // assignment operator
     Order& operator=(const Order& order);
 
-    // print method that helps with overloading stream insertion operators
+    // print helper method for stream insertion overload
     virtual void print(std::ostream& output) const;
     
     // stream insertion operator
@@ -69,6 +69,9 @@ class Deploy : public Order
     // copy constructor
     Deploy(const Deploy& existingDeploy);
 
+    // default destructor
+    ~Deploy();
+
     // execute method override
     void execute() override;
 
@@ -78,7 +81,7 @@ class Deploy : public Order
     // assignment operator
     Deploy& operator=(const Deploy& deploy);
 
-    // print method that helps with overloading stream insertion operators
+    // print helper method for stream insertion overload
     void print(std::ostream& output) const override;
 
     // stream insertion operator
@@ -103,6 +106,9 @@ class Advance : public Order
     // copy constructor
     Advance(const Advance& existingAdvance);
 
+    // default destructor
+    ~Advance();
+
     // execute method override
     void execute() override;
 
@@ -112,7 +118,7 @@ class Advance : public Order
     // assignment operator
     Advance& operator=(const Advance& advance);
 
-    // print method that helps with overloading stream insertion operators
+    // print helper method for stream insertion overload
     void print(std::ostream& output) const override;
 
     // stream insertion operator
@@ -136,6 +142,9 @@ class Bomb : public Order
 
     // copy constructor
     Bomb(const Bomb& existingBomb);
+
+    // default destructor
+    ~Bomb();
     
     // execute method override
     void execute() override;
@@ -146,7 +155,7 @@ class Bomb : public Order
     // assignment operator
     Bomb& operator=(const Bomb& bomb);
 
-    // print method that helps with overloading stream insertion operators
+    // print helper method for stream insertion overload
     void print(std::ostream& output) const override;
 
     // stream insertion operator
@@ -170,6 +179,9 @@ class Blockade : public Order
 
     // copy constructor
     Blockade(const Blockade& existingBlockade);
+
+    // default destructor
+    ~Blockade();
     
     // execute method override
     virtual void execute() override;
@@ -180,7 +192,7 @@ class Blockade : public Order
     // assignment operator
     Blockade& operator=(const Blockade& blockade);
 
-    // print method that helps with overloading stream insertion operators
+    // print helper method for stream insertion overload
     void print(std::ostream& output) const override;
 
     // stream insertion operator
@@ -204,6 +216,9 @@ class Airlift : public Order
 
     // copy constructor
     Airlift(const Airlift& existingAirlift);
+
+    // default destructor
+    ~Airlift();
     
     // execute method override
     void execute() override;
@@ -214,7 +229,7 @@ class Airlift : public Order
     // assignment operator
     Airlift& operator=(const Airlift& airlift);
 
-    // print method that helps with overloading stream insertion operators
+    // print helper method for stream insertion overload
     void print(std::ostream& output) const override;
 
     // stream insertion operator
@@ -238,6 +253,9 @@ class Negotiate : public Order
 
     // copy constructor
     Negotiate(const Negotiate& existingNegotiate);
+
+    // default destructor
+    ~Negotiate();
     
     // execute method override
     void execute() override;
@@ -248,7 +266,7 @@ class Negotiate : public Order
     // assignment operator
     Negotiate& operator=(const Negotiate& negotiate);
 
-    // print method that helps with overloading stream insertion operators
+    // print helper method for stream insertion overload
     void print(std::ostream& output) const override;
 
     // stream insertion operator
@@ -265,7 +283,7 @@ class OrdersList
     private:
     
     // a list of pointers to Order objects
-    std::queue<Order*> ordersList;
+    std::deque<Order*> ordersList;
 
     public:
     
@@ -274,6 +292,9 @@ class OrdersList
 
     // copy constructor
     OrdersList(const OrdersList& existingOrdersList);
+
+    // destructor
+    ~OrdersList();
     
     // add an order to the list
     void addOrder(Order* order);
@@ -282,10 +303,10 @@ class OrdersList
     Order* getNextOrder();
     
     // delete an order from the list
-    void remove();
+    void remove(int num);
     
     // move around an order in the list
-    void move();
+    void move(int a, int b);
 
     // assignment operator
     OrdersList& operator=(const OrdersList& ordersList);
