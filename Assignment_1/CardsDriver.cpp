@@ -12,7 +12,7 @@ using namespace std;
 
 void testCards()
 {
-	cout << "\nTesting in CardsDriver :)\n" << endl;
+	std::cout << " ---   PART 4: Cards & Decks   ---\n\n" << std::endl;
 	
 	// Create the deck.
 	Deck testDeck = Deck();
@@ -75,6 +75,8 @@ void testCards()
 	Hand copyHand = Hand(testHand);
 	cout << "Now printing the copied hand:" << endl;
 	copyHand.printCards();
+
+	std::cout << " ---   PART 4: testing done :)   ---\n\n" << std::endl;
 };
 
 
