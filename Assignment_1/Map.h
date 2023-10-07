@@ -1,8 +1,4 @@
 #include <iostream>
-#include <iostream>
-#include <vector>
-#include <map>
-#include <algorithm>
 
 using namespace std;
 
@@ -30,6 +26,12 @@ public:
 
     // destructor
     ~Territory();
+
+    // insertion stream operator
+    friend ostream &operator<<(ostream &out, const Territory &t);
+
+    // assignment operator
+    Territory &operator=(const Territory &t);
 
     // ***** Basic functions for territory attributes *****
     void setTerritoryName(string territoryNameVal);
@@ -66,8 +68,10 @@ public:
     // destructor
     ~Continent();
 
-    // assignment operator
+    // insertion stream operator
     friend ostream &operator<<(ostream &out, const Continent &c);
+
+    // assignment operator
     Continent &operator=(const Continent &c);
 };
 
@@ -75,9 +79,13 @@ class Map
 {
 public:
     string mapName;
-    vector<Territory *> mapTerritories;
-    vector<Continent *> continents;
-    vector<string> nonExistingTerritories;
+    vector<Territory *> mapTerritories = vector<Territory *>();
+    vector<Continent *> continents = vector<Continent *>();
+    vector<string> territoryWithMultipleContinents;
+    map<std::string, int> mapContinents = map<std::string, int>();
+    vector<string> neighborTerritories = vector<string>();
+    vector<Territory *> continentTerritories = vector<Territory *>();
+    map<Territory *, vector<string> > neighborTerritoryMappingList;
 
     // default constructor
     Map();
@@ -91,6 +99,12 @@ public:
     // destructor
     ~Map();
 
+    // assignment operator
+    Map &operator=(const Map &map);
+
+    // insertion stream operator
+    friend std::ostream &operator<<(std::ostream &os, const Map &map);
+
     void addTerritory(Territory *territory);
 
     void addNeighboringTerritory(string territoryOneName, string territoryTwoName);
@@ -101,8 +115,10 @@ public:
 
     Territory *findTerritoryByName(string territoryNameVal);
 
-    bool validate(Map currentMap, Territory *startingTerritory, std::map<std::string, bool> &visitedTerritories, std::map<std::string, bool> &visitedContinents);
+    bool validate();
 
     void mapTraversal(Territory *territory, map<string, bool> &visitedTerritories, map<string, bool> &visitedContinents);
+
+    void loadMap(string fileName);
 };
 #endif // end define MAP_H

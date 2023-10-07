@@ -5,6 +5,21 @@
 #include "Map.h"
 
 using namespace std;
+
+vector<string> split(const string &s, char delimiter)
+{
+    vector<string> tokens;
+    string token;
+    istringstream tokenStream(s);
+
+    while (getline(tokenStream, token, delimiter))
+    {
+        tokens.push_back(token);
+    }
+
+    return tokens;
+}
+
 // ***************************** TERRITORY *****************************
 // Territory default constructor
 Territory::Territory()
@@ -48,6 +63,33 @@ Territory::~Territory()
         this->neighboringTerritories[i] = nullptr;
     }
     this->neighboringTerritories.clear();
+}
+
+// Continent assignment operator
+Territory &Territory::operator=(const Territory &territory)
+{
+    if (&territory != this)
+    {
+        territoryName = territory.territoryName;
+        occupierName = territory.occupierName;
+        continentName = territory.continentName;
+        numOfArmies = territory.numOfArmies;
+        neighboringTerritories = territory.neighboringTerritories;
+    }
+    return *this;
+}
+
+// Continent insertion stream operator
+std::ostream &operator<<(std::ostream &os, const Territory &territory)
+{
+    os << "Territory Name: " << territory.territoryName << std::endl;
+
+    os << "Territory Neighbors:" << std::endl;
+    for (const Territory *territory : territory.neighboringTerritories)
+    {
+        os << "  " << territory->territoryName << std::endl;
+    }
+    return os;
 }
 
 // Set territory name
@@ -128,6 +170,29 @@ Continent::~Continent()
     this->continentTerritories.clear();
 }
 
+// Continent assignment operator
+Continent &Continent::operator=(const Continent &continent)
+{
+    if (&continent != this)
+    {
+        continentName = continent.continentName;
+        continentTerritories = continent.continentTerritories;
+    }
+    return *this;
+}
+
+// Continent insertion stream operator
+std::ostream &operator<<(std::ostream &os, const Continent &continent)
+{
+    os << "Continent Name: " << continent.continentName << std::endl;
+
+    os << "Continent Territories:" << std::endl;
+    for (const Territory *territory : continent.continentTerritories)
+    {
+        os << "  " << territory->territoryName << std::endl;
+    }
+    return os;
+}
 // ***************************** CONTINENT *****************************
 
 // ***************************** MAP *****************************
@@ -137,7 +202,7 @@ Map::Map()
     mapName = "";
     mapTerritories = vector<Territory *>();
     continents = vector<Continent *>();
-    nonExistingTerritories = vector<string>();
+    territoryWithMultipleContinents = vector<string>();
 }
 
 // Map parameterized constructor
@@ -152,49 +217,67 @@ Map::Map(const Map &map)
     mapName = map.mapName;
     mapTerritories = map.mapTerritories;
     continents = map.continents;
-    nonExistingTerritories = map.nonExistingTerritories;
+    territoryWithMultipleContinents = map.territoryWithMultipleContinents;
 }
 
 // Map destructor
 Map::~Map()
 {
-    for (int i = 0; i < this->continents.size(); i++)
+    for (Continent *continent : continents)
     {
-        delete this->continents[i];
-        this->continents[i] = nullptr;
+        delete continent;
     }
-    this->continents.clear();
+    continents.clear();
 
-    for (int i = 0; i < this->mapTerritories.size(); i++)
+    for (Territory *territory : mapTerritories)
     {
-        delete this->mapTerritories[i];
-        this->mapTerritories[i] = nullptr;
+        delete territory;
     }
-    this->mapTerritories.clear();
+    mapTerritories.clear();
 
-    for (int i = 0; i < this->nonExistingTerritories.size(); i++)
+    for (Territory *territory : continentTerritories)
     {
-        this->nonExistingTerritories[i] = nullptr;
+        delete territory;
     }
-    this->nonExistingTerritories.clear();
+    continentTerritories.clear();
 }
 
 // Map assignment operator
-// Map &Map::operator=(const Map &m)
-// {
-//     if (&m != this)
-//     {
-//         mapName = m.mapName;
-//         continents = m.continents;
-//         mapTerritories = m.mapTerritories;
-//     }
-//     return *this;
-// }
+Map &Map::operator=(const Map &map)
+{
+    if (&map != this)
+    {
+        mapName = map.mapName;
+        continents = map.continents;
+        mapTerritories = map.mapTerritories;
+        territoryWithMultipleContinents = map.territoryWithMultipleContinents;
+    }
+    return *this;
+}
+
+// Map insertion stream operator
+std::ostream &operator<<(std::ostream &os, const Map &map)
+{
+    cout << "Map Name: " << map.mapName << std::endl;
+
+    cout << "Map Territories:" << std::endl;
+    for (const Territory *territory : map.mapTerritories)
+    {
+        cout << "  " << territory << std::endl;
+    }
+
+    cout << "Continents:" << std::endl;
+    for (const Continent *continent : map.continents)
+    {
+        cout << "  " << *continent << std::endl;
+    }
+    return os;
+}
 
 void Map::addTerritory(Territory *territory)
 {
     mapTerritories.push_back(territory);
-    // cout << territory->territoryName << " has been added to the map" << endl;
+    cout << territory->territoryName << " has been added to the map" << endl;
 }
 
 void Map::addNeighboringTerritory(string territoryOneName, string territoryTwoName)
@@ -227,22 +310,6 @@ void Map::addNeighboringTerritory(string territoryOneName, string territoryTwoNa
     if (territoryOneFound && territoryTwoFound)
     {
         territory1->neighboringTerritories.push_back(territory2);
-        // territory2->neighboringTerritories.push_back(territory1);
-        // cout << "Territory " << territory1->territoryName << " now has " << territory1->neighboringTerritories.back()->territoryName << endl;
-    }
-    else
-    {
-        // cout << territoryOneName + " or " + territoryTwoName + "does not exist!" << endl;
-        if (territoryOneFound)
-        {
-            nonExistingTerritories.push_back(territoryTwoName);
-            cout << territoryTwoName + " does not exist!" << endl;
-        }
-        else
-        {
-            nonExistingTerritories.push_back(territoryOneName);
-            cout << territoryOneName + " does not exist!" << endl;
-        }
     }
 }
 
@@ -296,58 +363,103 @@ Territory *Map::findTerritoryByName(string territoryNameVal)
     return nullptr;
 }
 
-bool Map::validate(Map currentMap, Territory *startingTerritory, std::map<std::string, bool> &visitedTerritories, std::map<std::string, bool> &visitedContinents)
+bool Map::validate()
 {
-    // Empty map visitedTerritories and visitedContinents to reset
-    visitedTerritories = map<string, bool>();
-    visitedContinents = map<string, bool>();
-    // Traverse the map to visit every node on the map
-    mapTraversal(startingTerritory, visitedTerritories, visitedContinents); // Pass the map by reference
-
-    // ******************************* FIRST CHECK ******************************* //
-    cout << "First condition check" << endl;
-    for (Territory *territory : mapTerritories)
+    try
     {
-        if (visitedTerritories[territory->territoryName] == true)
+        std::map<std::string, bool> visitedTerritories;
+        std::map<std::string, bool> visitedContinents;
+        // Empty map visitedTerritories and visitedContinents to reset
+
+        bool conditionOne = true;
+        bool conditionTwo = true;
+        bool conditionThree = true;
+
+        // Traverse the map to visit every node on the map
+        mapTraversal(mapTerritories[0], visitedTerritories, visitedContinents); // Pass the map by reference
+
+        // ******************************* FIRST CHECK ******************************* //
+        cout << endl;
+        cout << "----------- FIRST CONDITION CHECK -----------" << endl;
+        cout << endl;
+        for (Territory *territory : mapTerritories)
         {
-            cout << "Territory " << territory->territoryName << " has been traversed \n";
+            if (visitedTerritories[territory->territoryName] == true)
+            {
+                cout << "Territory " << territory->territoryName << " has been traversed \n";
+            }
+            else
+            {
+                cout << "Territory " << territory->territoryName << " is not a part of the graph \n";
+                conditionOne = false;
+            }
+        }
+        cout << endl;
+        cout << " --------------- THE MAP IS A VALID GRAPH --------------- " << endl;
+
+        // ******************************* SECOND CHECK ******************************* //
+        cout << endl;
+        cout << "----------- SECOND CONDITION CHECK -----------" << endl;
+        cout << endl;
+
+        int numOfConnectedContinents = 0;
+        for (const auto &pair : visitedContinents)
+        {
+            if (pair.second == true)
+            {
+                numOfConnectedContinents++;
+            }
+        }
+        if (numOfConnectedContinents != continents.size())
+        {
+            conditionTwo = false;
+        }
+
+        if (conditionTwo == true)
+        {
+            cout << "--------------- THE CONTINENTS ARE VALID SUBGRAPHS ---------------" << endl;
         }
         else
         {
-            cout << "Territory " << territory->territoryName << " is not a part of the graph \n";
-            cout << " --------------- THE MAP IS NOT A VALID GRAPH ---------------" << endl;
-            return false;
+            cout << "--------------- THE CONTINENTS ARE INVALID SUBGRAPHS ---------------" << endl;
         }
-    }
-    cout << endl;
-    cout << " --------------- THE MAP IS A VALID GRAPH --------------- " << endl;
-    cout << endl;
 
-    // ******************************* SECOND CHECK ******************************* //
-    for (Continent *continent : continents)
-    {
-        if (visitedContinents[continent->continentName] == true)
+        // ******************************* THIRD CHECK ******************************* //
+        cout << endl;
+        cout << "----------- THIRD CONDITION CHECK -----------" << endl;
+        cout << endl;
+
+        if (!territoryWithMultipleContinents.empty())
         {
-            cout << "Continent " << continent->continentName << " has been traversed \n";
+            cout << "One of More territories has more than one continent" << endl;
+            conditionThree = false;
         }
         else
         {
-            cout << " --------------- THE CONTINENTS DO NOT FORM A VALID SUBGRAPH ---------------" << endl;
-            return false;
+            cout << "Every territory belongs to only one continent" << endl;
+        }
+
+        if (conditionOne && conditionTwo && conditionThree)
+        {
+            cout << endl;
+            cout << "THIS CONQUEST FILE IS VALID !!!" << endl;
+            cout << endl;
+        }
+        else
+        {
+            cout << "THIS CONQUEST FILE IS INVALID !!!" << endl;
         }
     }
-    cout << endl;
-    cout << " --------------- THE CONTINENTS ARE VALID SUBGRAPHS ---------------" << endl;
-    cout << endl;
-
-    // ******************************* THIRD CHECK ******************************* //
-    // ENSURE THAT NO TERRITORY BELONGS TO TWO CONTINENTS
-
-    // IF A NEIGHBORING TERRITORY DOES NOT EXIST
-    cout << "********** WARNING **********" << endl;
-    for (string nonExistantTerritories : nonExistingTerritories)
+    catch (const std::exception &ex)
     {
-        cout << nonExistantTerritories << " does not exist!!" << endl;
+        // Handle the exception here.
+        std::cerr << "An exception occurred: " << ex.what() << std::endl;
+        // Optionally, you can rethrow the exception or perform additional handling.
+    }
+    catch (...)
+    {
+
+        std::cerr << "An unknown exception occurred." << std::endl;
     }
 }
 
@@ -355,8 +467,8 @@ void Map::mapTraversal(Territory *territory, map<string, bool> &visitedTerritori
 {
     visitedTerritories[territory->territoryName] = true;
     visitedContinents[territory->continentName] = true;
+    // cout << visitedContinents[territory->continentName] << " traversed " << endl;
 
-    std::cout << "Visited: " << territory->territoryName << std::endl;
     for (Territory *neighbor : territory->neighboringTerritories)
     {
         if (!visitedTerritories[neighbor->territoryName])
@@ -366,47 +478,198 @@ void Map::mapTraversal(Territory *territory, map<string, bool> &visitedTerritori
     }
 }
 
-// ***************************** MAP *****************************
+void Map::loadMap(string fileName)
+{
+    try
+    {
+        string myText;
+        bool mapValidationPassed = false;
+        // ifstream MyReadFile("Aden.map"); // To read the file for a first time
+        ifstream MyReadFile(fileName); // To read the file for a first time
+        // ifstream MyReadFile("Chicago.map"); // To read the file for a first time
 
-// int main()
-// {
-//     Map worldMap;
+        // We get rid of the first paragraph of the text file since it is of no use
+        while (getline(MyReadFile, myText))
+        {
+            cout << myText << endl;
+            if (myText.empty() || myText.find_first_not_of(" \t\n\v\f\r") == string::npos)
+            {
+                // Break from while loop when empty line is encountered
+                break;
+            }
 
-//     // Create territories
-//     Territory *Canada = new Territory("Canada", "Brian Mulroney", 40);
-//     Territory *USSR = new Territory("USSR", "Joseph Stalin", 180);
-//     Territory *USA = new Territory("USA", "Abraham Lincoln", 200);
-//     Territory *Cuba = new Territory("Cuba", "Fidel Castro", 10);
+            if (mapValidationPassed == false)
+            {
+                // Makes sure that the string does not contain ANY whitespace at the end, HOWEVER keep the whitespaces in the middle of the string
+                // Find first non-whitespace character
+                size_t firstNonSpace = myText.find_first_not_of(" \t\r\n");
 
-//     // Add territories to the map
-//     worldMap.addTerritory(Canada);
-//     worldMap.addTerritory(USSR);
-//     worldMap.addTerritory(USA);
-//     worldMap.addTerritory(Cuba);
+                // Find last non-whitespace character
+                size_t lastNonSpace = myText.find_last_not_of(" \t\r\n");
 
-//     // Connect the territories together with edges
-//     worldMap.addNeighboringTerritory("Canada", "USSR");
-//     worldMap.addNeighboringTerritory("Canada", "USA");
-//     worldMap.addNeighboringTerritory("USA", "Cuba");
+                // Extract the word/substring between the first non whitespace character and the last non whitespace character
+                if (firstNonSpace != std::string::npos && lastNonSpace != std::string::npos)
+                {
+                    myText = myText.substr(firstNonSpace, lastNonSpace - firstNonSpace + 1); // Extract the substring
+                }
+            }
 
-//     // Creating continents
-//     vector<Territory *> ostanCountries;
-//     ostanCountries.push_back(USSR);
-//     worldMap.addContinent("Ostania", ostanCountries);
+            if (myText == "[Map]" || mapValidationPassed == true)
+            {
+                mapValidationPassed = true;
+            }
+            else
+            {
+                cout << endl;
+                cout << "-- Invalid Map File --" << endl;
+                cout << endl;
+                return;
+            }
+        }
 
-//     vector<Territory *> westaCountries;
-//     westaCountries.push_back(Canada);
-//     westaCountries.push_back(USA);
-//     worldMap.addContinent("Westalis", westaCountries);
+        // Store the continents and their respective number of territories in a map
+        while (getline(MyReadFile, myText))
+        {
+            cout << myText << endl;
+            if (!myText.empty())
+            {
+                size_t equalsPos = myText.find('=');
+                if (equalsPos != std::string::npos)
+                {
+                    std::string continent = myText.substr(0, equalsPos);
+                    int numOfTerritoryOnContinent = std::stoi(myText.substr(equalsPos + 1));
+                    mapContinents[continent] = numOfTerritoryOnContinent;
+                }
+            }
+            // Break from while loop when empty line is encountered
+            if (myText.empty() || myText.find_first_not_of(" \t\n\v\f\r") == string::npos)
+            {
+                break;
+            }
+        }
+        // Store and create territories
+        int skippedLine = false; // SkippedLine variable purpose is to skip the first line
+        while (getline(MyReadFile, myText))
+        {
+            cout << myText << endl;
+            if (skippedLine == true)
+            {
+                // Split the line into an array of strings
+                vector<string> words = vector<string>();
+                words = split(myText, ',');
+                if (!myText.empty() && !words[0].empty() && !(myText.find_first_not_of(" \t\n\v\f\r") == string::npos))
+                {
+                    // Converting the elements of the string array into Territory objects and storing them into an array of Territories
+                    // Can't add the neighbors of the territories yet since some Territory objects havent been created
+                    Territory *newTerritory = new Territory(words[0], words[1], words[2], words[3]);
+                    // Empty the list of neighborTerritories for each territories
+                    // Store the neighboring territories in a list, then in a map
+                    for (int i = 4; i < 100; i++)
+                    {
+                        if (words[i].empty())
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            // ---------------------------------------------------------------------------- //
+                            // Verify that a territory does not belong to two continents
 
-//     // Print the map
-//     worldMap.printEntireMapInfo();
+                            for (const auto &pair : mapContinents)
+                            {
+                                if (words[i] == pair.first)
+                                {
+                                    territoryWithMultipleContinents.push_back(words[0]);
+                                }
+                            }
+                            // ---------------------------------------------------------------------------- //
 
-//     // Don't forget to free the allocated memory
-//     delete Canada;
-//     delete USSR;
-//     delete USA;
-//     delete Cuba;
+                            // Makes sure that the string does not contain ANY whitespace at the end, HOWEVER keep the whitespaces in the middle of the string
+                            // Find first non-whitespace character
+                            size_t firstNonSpace = words[i].find_first_not_of(" \t\r\n");
 
-//     return 0;
-// }
+                            // Find last non-whitespace character
+                            size_t lastNonSpace = words[i].find_last_not_of(" \t\r\n");
+
+                            // Extract the word/substring between the first non whitespace character and the last non whitespace character
+                            if (firstNonSpace != std::string::npos && lastNonSpace != std::string::npos)
+                            {
+                                words[i] = words[i].substr(firstNonSpace, lastNonSpace - firstNonSpace + 1); // Extract the substring
+                            }
+                            neighborTerritories.push_back(words[i]);
+                        }
+                    }
+                    mapTerritories.push_back(newTerritory);
+                    neighborTerritoryMappingList[newTerritory] = neighborTerritories;
+                    neighborTerritories.clear();
+                }
+            }
+            else
+            {
+                skippedLine = true;
+            }
+        }
+        MyReadFile.close();
+
+        // ********************************* Data manipulation ********************************* //
+        cout << endl;
+
+        // Printing all continents
+        for (const auto &pair : mapContinents)
+        {
+            std::cout << "Continent: " << pair.first << ", Number of territories: " << pair.second << std::endl;
+        }
+
+        cout << endl;
+        cout << "======================================================\n";
+        cout << " The repository of all territories present on the map \n";
+        cout << "======================================================\n";
+        cout << endl;
+
+        // Printing all territories on the map
+        for (Territory *territory : mapTerritories)
+        {
+            cout << "Territory " << territory->territoryName << " is located at (" << territory->coordX << ", " << territory->coordY << ") and it is located on the Continent of " << territory->continentName << "\n";
+        }
+
+        // Adding all continents to the world map AND add the respective territories to each continent
+        for (const auto &pair : mapContinents)
+        {
+            string continentName = pair.first;
+            continentTerritories.clear();
+            for (Territory *territory : mapTerritories)
+            {
+                if (continentName == territory->continentName)
+                {
+                    continentTerritories.push_back(territory);
+                }
+            }
+            addContinent(continentName, continentTerritories);
+            continentTerritories.clear();
+        }
+
+        // Adding the neighboring territories to the territories
+        for (const auto &pair : neighborTerritoryMappingList)
+        {
+            Territory *currentTerritory = pair.first;
+            vector<string> currentTerritoryNeighbors = pair.second;
+            for (string neighbor : currentTerritoryNeighbors)
+            {
+                addNeighboringTerritory(currentTerritory->territoryName, neighbor);
+                // cout << "Territory " << currentTerritory->territoryName << " has neighbor " << neighbor << endl;
+            }
+        }
+    }
+    catch (const std::ifstream::failure &ex)
+    {
+        std::cerr << "The file is cannot be loaded into a Map" << std::endl;
+    }
+    catch (const std::exception &ex)
+    {
+        std::cerr << "The file is cannot be loaded into a Map" << std::endl;
+    }
+    catch (...)
+    {
+        std::cerr << "The file is cannot be loaded into a Map" << std::endl;
+    }
+}

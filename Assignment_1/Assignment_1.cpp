@@ -6,6 +6,7 @@
 #include "GameEngineDriver.h"
 #include "PlayerDriver.h"
 #include "OrdersDriver.h"
+#include "MapDriver.h"
 
 using namespace std;
 
@@ -18,6 +19,9 @@ int main()
 	testCards();
 
 	testPlayers();
+
+	// PART 1 test (shawn 40213581)
+	testLoadMaps();
 
 	// PART 3 test (chris)
 	testOrdersLists();
