@@ -365,7 +365,7 @@ Territory *Map::findTerritoryByName(string territoryNameVal)
     return nullptr;
 }
 
-bool Map::validate()
+void Map::validate()
 {
     try
     {

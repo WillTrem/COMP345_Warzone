@@ -21,13 +21,13 @@ int main()
 	cout << "Hello CMake.\n"
 		 << endl;
 
-	// Roxane's testing area.
+	// Part 4 test (Roxane.)
 	testCards();
 
 	testPlayers();
 
 	// PART 1 test (shawn 40213581)
-	testLoadMaps();
+	testLoadMap();
 
 	// PART 3 test (chris)
 	testOrdersLists();

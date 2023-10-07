@@ -116,7 +116,7 @@ public:
 
     Territory *findTerritoryByName(string territoryNameVal);
 
-    bool validate();
+    void validate();
 
     void mapTraversal(Territory *territory, map<string, bool> &visitedTerritories, map<string, bool> &visitedContinents);
 
