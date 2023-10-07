@@ -568,7 +568,7 @@ void Map::loadMap(string fileName)
                     // Store the neighboring territories in a list, then in a map
                     for (int i = 4; i < 100; i++)
                     {
-                        if (words[i].empty())
+                        if (i >= words.size())
                         {
                             break;
                         }
