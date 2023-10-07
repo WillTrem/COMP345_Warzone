@@ -2,6 +2,8 @@
 #include <vector>
 #include <map>
 #include <algorithm>
+#include <string>
+#include <sstream>
 #include "Map.h"
 
 using namespace std;
