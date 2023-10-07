@@ -81,7 +81,7 @@ Deploy::~Deploy() {}
 // validate method override
 bool Deploy::validate()
 {
-    std::cout << "validate() called in Deploy class" << std::endl;
+    std::cout << "validate() called in a Deploy object" << std::endl;
     return true;
 }
 
@@ -90,7 +90,7 @@ void Deploy::execute()
 {
     if (this->validate())
     {
-        std::cout << "execute() called in Deploy class" << std::endl;
+        std::cout << "execute() called in a Deploy object" << std::endl;
         this->executed = true;
     }
 }
@@ -142,7 +142,7 @@ Advance::~Advance() {}
 // validate method override
 bool Advance::validate()
 {
-    std::cout << "validate() called in Advance class" << std::endl;
+    std::cout << "validate() called in an Advance object" << std::endl;
     return true;
 }
 
@@ -151,7 +151,7 @@ void Advance::execute()
 {
     if (this->validate())
     {
-        std::cout << "execute() called in Advance class" << std::endl;
+        std::cout << "execute() called in an Advance object" << std::endl;
         this->executed = true;
     }
 }
@@ -203,7 +203,7 @@ Bomb::~Bomb() {}
 // validate method override
 bool Bomb::validate()
 {
-    std::cout << "validate() called in Bomb class" << std::endl;
+    std::cout << "validate() called in a Bomb object\n" << std::endl;
     return true;
 }
 
@@ -212,7 +212,7 @@ void Bomb::execute()
 {
     if (this->validate())
     {
-        std::cout << "execute() called in Bomb class" << std::endl;
+        std::cout << "execute() called in a Bomb object" << std::endl;
         this->executed = true;
     }
 }
@@ -264,7 +264,7 @@ Blockade::~Blockade() {}
 // validate method override
 bool Blockade::validate()
 {
-    std::cout << "validate() called in Blockade class" << std::endl;
+    std::cout << "validate() called in a Blockade object" << std::endl;
     return true;
 }
 
@@ -273,7 +273,7 @@ void Blockade::execute()
 {
     if (this->validate())
     {
-        std::cout << "execute() called in Blockade class" << std::endl;
+        std::cout << "execute() called in a Blockade object" << std::endl;
         this->executed = true;
     }
 }
@@ -325,7 +325,7 @@ Airlift::~Airlift() {}
 // validate method override
 bool Airlift::validate()
 {
-    std::cout << "validate() called in Airlift class" << std::endl;
+    std::cout << "validate() called in an Airlift object" << std::endl;
     return true;
 }
 
@@ -334,7 +334,7 @@ void Airlift::execute()
 {
     if (this->validate())
     {
-        std::cout << "execute() called in Airlift class" << std::endl;
+        std::cout << "execute() called in an Airlift object" << std::endl;
         this->executed = true;
     }
 }
@@ -386,7 +386,7 @@ Negotiate::~Negotiate() {}
 // validate method override
 bool Negotiate::validate()
 {
-    std::cout << "validate() called in Negotiate class" << std::endl;
+    std::cout << "validate() called in a Negotiate object" << std::endl;
     return true;
 }
 
@@ -395,7 +395,7 @@ void Negotiate::execute()
 {
     if (this->validate())
     {
-        std::cout << "execute() called in Negotiate class" << std::endl;
+        std::cout << "execute() called in a Negotiate object" << std::endl;
         this->executed = true;
     }
 }
@@ -459,6 +459,8 @@ void OrdersList::addOrder(Order* order)
 // get next order on the list
 Order* OrdersList::getNextOrder()
 {
+    std::cout << "getNextOrder() was called\n" << std::endl;
+
     // if list not empty, pop and return next order
     if (!ordersList.empty())
     {   
@@ -498,7 +500,6 @@ void OrdersList::move(int a, int b)
 
     std::cout << "orders were swapped\n" << std::endl;
 }
-
 
 // assignment operator
 OrdersList& OrdersList::operator=(const OrdersList& orderslist)

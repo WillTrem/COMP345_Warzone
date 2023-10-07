@@ -48,10 +48,16 @@ void testOrdersLists()
     orderslist_test.remove(4);
     std::cout << orderslist_test << std::endl;
 
-    // swap bomb and deploy in the orderlist and reprint it
-    std::cout << " -- swap bomb and deploy in the orderlist and reprint it :\n" << std::endl;
+    // swap deploy and bomb in the orderlist using move() and reprint it
+    std::cout << " -- swap deploy and bomb in the orderlist using move() and reprint it :\n" << std::endl;
     orderslist_test.move(3, 1);
     std::cout << orderslist_test << std::endl;
+
+    // execute the first order and reprint the list
+    std::cout << " -- execute the first order and reprint the list :\n" << std::endl;
+    Order* nextOrder = orderslist_test.getNextOrder();
+    nextOrder->execute();
+    std::cout << std::endl << orderslist_test << std::endl;
 
     std::cout << " ---   PART 3: testing done :)   ---\n\n" << std::endl;
 }

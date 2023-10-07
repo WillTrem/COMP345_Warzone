@@ -302,10 +302,10 @@ class OrdersList
     // get next order on the list
     Order* getNextOrder();
     
-    // delete an order from the list
+    // delete an order from the list (use menu number)
     void remove(int num);
     
-    // move around an order in the list
+    // move around an order in the list (use menu numbers)
     void move(int a, int b);
 
     // assignment operator
