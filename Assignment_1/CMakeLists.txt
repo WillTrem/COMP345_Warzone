@@ -9,8 +9,8 @@ project ("Assignment_1")
 
 # Add source to this project's executable.
 add_executable (Assignment_1 
-    "Assignment_1.cpp" 
-    "Assignment_1.h" 
+    "MainDriver.cpp" 
+    "MainDriver.h" 
     "Cards.h" 
     "Cards.cpp" 
     "CardsDriver.h" 
