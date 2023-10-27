@@ -14,25 +14,47 @@
 #include "OrdersDriver.h"
 #include "MapDriver.h"
 
+#include "CommandProcessing.h"
+
 using namespace std;
+
 
 int main()
 {
 	cout << "Hello CMake.\n"
 		 << endl;
 
-	// Part 4 test (Roxane.)
-	testCards();
-
-	testPlayers();
-
+	// Assignment 1.
+	
 	// PART 1 test (shawn 40213581)
-	testLoadMap();
+	//testLoadMap();
+
+	// PART 2 test
+	//testPlayers();
 
 	// PART 3 test (chris)
-	testOrdersLists();
+	//testOrdersLists();
 
-	testGameEngine();
+	// PART 4 test (Roxane)
+	//testCards();
+
+	// PART 5 test
+	//testGameEngine();
+
+
+	// Assignment 2.
+
+	// PART 1 test
+
+	CommandProcessor processorTest = CommandProcessor();
+	Command* commandTest = processorTest.getCommand();
+	cout << *commandTest;
+
+
+
+	// Don't exit unless prompted.
+	cout << "\n\nPress Enter to exit...";
+	cin.get();
 
 	return 0;
 };
