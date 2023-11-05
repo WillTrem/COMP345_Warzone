@@ -14,6 +14,7 @@
 /**
  * Represents the various states a game can be in at any point in time
 */
+using namespace std;
 enum GameState
 {
     // Start states
@@ -39,12 +40,20 @@ class Command
 {
 public:
     std::string *cmdName;
+    std::string parameter;
     void (*action)();
     GameState *nextState;
+    string effect;
 
     //Constructor
+    Command(std::string *cmdName);
+    Command(std::string *cmdName, std::string parameter);
     Command(std::string *cmdName,  void (*action)(), GameState *nextState);
     Command(const Command &command);
+    
+    // Saves the effect of the command after execution
+    void saveEffect(string effect);
+
 };
 
 class GameEngine

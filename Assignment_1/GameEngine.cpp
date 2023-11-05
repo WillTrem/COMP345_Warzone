@@ -1,5 +1,12 @@
 #include "GameEngine.h"
 
+// Constructor with only command name
+Command::Command(std::string *cmdName) : cmdName(cmdName) {}
+
+//Constructor with with both command name and parameter
+Command::Command(std::string *cmdName, std::string parameter) : cmdName(cmdName), parameter(parameter) {}
+
+
 /**
  * Normal constructor
 */
