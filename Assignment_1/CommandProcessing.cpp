@@ -2,6 +2,7 @@
 #include "GameEngine.h"
 
 #include <sstream>
+#include <fstream>
 
 using namespace std;
 
@@ -45,7 +46,6 @@ CommandProcessor::~CommandProcessor(){
 
 // Reads the command from the user via console
 Command* CommandProcessor::readCommand(){
-	//TODO implement Command constructor with command parameter as string
 	string input;
 	cout<<"Enter a command: ";
 	getline(cin, input);
@@ -99,6 +99,36 @@ CommandProcessor& CommandProcessor::operator=(const CommandProcessor& other){
 
 // Stream Insertion Operator
 ostream& operator<<(ostream& os, const CommandProcessor& commandProcessor){
+	for(auto& command : commandProcessor.commandList){
+		os<<*command->cmdName<<" "<<command->parameter<<endl;
+	}
+	return os;
+};
+
+// Parametrized Constructor
+FileCommandProcessorAdapter::FileCommandProcessorAdapter(string fileName): fileName(fileName){
+	fileStream = new ifstream(fileName);
+};
+
+// Copy Constructor
+FileCommandProcessorAdapter::FileCommandProcessorAdapter(const FileCommandProcessorAdapter& other){
+	fileStream = new ifstream(other.fileName);
+};
+
+// Destructor
+FileCommandProcessorAdapter::~FileCommandProcessorAdapter(){
+	delete fileStream;
+	fileStream = NULL;
+};
+
+// Assignment Operator
+FileCommandProcessorAdapter& FileCommandProcessorAdapter::operator=(const FileCommandProcessorAdapter& other){
+	fileStream = new ifstream(other.fileName);
+	return *this;
+};
+
+// Stream Insertion Operator
+ostream& operator<<(ostream& os, const FileCommandProcessorAdapter& commandProcessor){
 	for(auto& command : commandProcessor.commandList){
 		os<<*command->cmdName<<" "<<command->parameter<<endl;
 	}
