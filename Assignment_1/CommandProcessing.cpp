@@ -5,6 +5,31 @@
 
 using namespace std;
 
+
+// Constructor with only command name
+Command::Command(std::string cmdName) : cmdName(cmdName) {}
+
+//Constructor with with both command name and parameter
+Command::Command(std::string cmdName, std::string parameter) : cmdName(cmdName), parameter(parameter) {}
+
+
+/**
+ * Normal constructor
+*/
+Command::Command(std::string* cmdName, void (*action)(), GameState* nextState) :
+	cmdName(*cmdName),
+	action(action),
+	nextState(nextState) {}
+
+/**
+ * Copy constructor
+*/
+Command::Command(const Command& command) :
+	cmdName(command.cmdName),
+	action(command.action),
+	nextState(command.nextState) {}
+
+
 const map<string, list<GameState>> CommandProcessor::stateTransitions = {
         {"loadmap",{
 			START, 
