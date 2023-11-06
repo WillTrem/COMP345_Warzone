@@ -160,7 +160,7 @@ void GameEngine::startupPhase()
 {
     Command* currentCommand = nullptr;
 
-    while (*currentState != GAMESTART) // Remain in the startup phase until we switch to the gamestart/play phase.
+    while (*currentState != ASSIGN_REINFORCEMENTS) // Remain in the startup phase until we switch to the gamestart/play phase.
     {
         currentCommand = commandProcessor->getCommand();
         if (commandProcessor->validate(currentCommand, *currentState))
