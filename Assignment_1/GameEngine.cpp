@@ -135,7 +135,15 @@ void GameEngine::executeCommand(Command* command)
     {
         // Fairly distribute all the territories to the players
         // What to do if they cannot be evenly divided?
+        int numPlayers = players->size();
+        int numTerritories = gameMap->mapTerritories.size();
         
+        for (int i = 0; i < numTerritories; i++)
+        {
+            int playerIndex = i % numPlayers; 
+            // Assign the territory at gameMap->mapTerritories[i] to the player at players[playerIndex].
+        }
+
 
         // Determine randomly the order of play of the players in the game
         std::random_device randomizer;
