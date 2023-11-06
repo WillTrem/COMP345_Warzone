@@ -5,6 +5,8 @@
 #include <string>
 #include <iostream>
 #include <functional>
+#include <algorithm>
+#include <random>
 
 // #include "Orders.h"
 #include "Cards.h"
@@ -21,18 +23,28 @@ private:
     std::map<GameState, std::list<Command>> *stateTransitions;
 
 public:
-    GameState *currentState;
-    CommandProcessor* commandProcessor;
+    GameState * currentState;
+    Map * gameMap;
+    std::vector<Player>* players;
+
+    CommandProcessor * commandProcessor;
 
 
     // Constructors
     GameEngine();
-    GameEngine(GameState *currentState, std::map<GameState, std::list<Command>> *stateTransitions);
+    GameEngine(GameState *currentState, std::map<GameState, std::list<Command>> *stateTransitions, bool fromFile = false, string fileName = "test");
     GameEngine(const GameEngine &gameEngine);
 
+    ~GameEngine();
+
     void executeCommand(std::string command);
+    void executeCommand(Command * command);
+
 
     void startupPhase();
+
+
+
 
     // Operator overloads
     void operator=(GameState &newState);

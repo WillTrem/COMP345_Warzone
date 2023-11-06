@@ -13,17 +13,19 @@ class Player {
 	vector<Territory *> ownedTerritories;
 	OrdersList* ordersList = nullptr;
 	Hand* hand = nullptr;
+	string playerName;
 
 	public:
 
 	// Default constructor
 	Player();
 
-	// Parametrized constructor
-	Player(Hand* initialHand, vector<Territory*> &initialTerritories);
+	// Parametrized constructors
+	Player(string name);
+	Player(Hand* initialHand, vector<Territory*> &initialTerritories, string name = "Player");
 
 	// Copy constructor
-	Player(Player& player);
+	Player(const Player& player);
 
 	// Destructor
 	~ Player();

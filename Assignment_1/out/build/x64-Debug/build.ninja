@@ -43,22 +43,92 @@ include CMakeFiles\rules.ninja
 
 build cmake_object_order_depends_target_Assignment_1: phony || CMakeFiles\Assignment_1.dir
 
-build CMakeFiles\Assignment_1.dir\Assignment_1.cpp.obj: CXX_COMPILER__Assignment_1_Debug ..\..\..\Assignment_1.cpp || cmake_object_order_depends_target_Assignment_1
-  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1
+build CMakeFiles\Assignment_1.dir\MainDriver.cpp.obj: CXX_COMPILER__Assignment_1_Debug ..\..\..\MainDriver.cpp || cmake_object_order_depends_target_Assignment_1
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
   OBJECT_DIR = CMakeFiles\Assignment_1.dir
   OBJECT_FILE_DIR = CMakeFiles\Assignment_1.dir
   TARGET_COMPILE_PDB = CMakeFiles\Assignment_1.dir\
   TARGET_PDB = Assignment_1.pdb
 
 build CMakeFiles\Assignment_1.dir\Cards.cpp.obj: CXX_COMPILER__Assignment_1_Debug ..\..\..\Cards.cpp || cmake_object_order_depends_target_Assignment_1
-  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
   OBJECT_DIR = CMakeFiles\Assignment_1.dir
   OBJECT_FILE_DIR = CMakeFiles\Assignment_1.dir
   TARGET_COMPILE_PDB = CMakeFiles\Assignment_1.dir\
   TARGET_PDB = Assignment_1.pdb
 
 build CMakeFiles\Assignment_1.dir\CardsDriver.cpp.obj: CXX_COMPILER__Assignment_1_Debug ..\..\..\CardsDriver.cpp || cmake_object_order_depends_target_Assignment_1
-  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
+  OBJECT_DIR = CMakeFiles\Assignment_1.dir
+  OBJECT_FILE_DIR = CMakeFiles\Assignment_1.dir
+  TARGET_COMPILE_PDB = CMakeFiles\Assignment_1.dir\
+  TARGET_PDB = Assignment_1.pdb
+
+build CMakeFiles\Assignment_1.dir\CommandProcessing.cpp.obj: CXX_COMPILER__Assignment_1_Debug ..\..\..\CommandProcessing.cpp || cmake_object_order_depends_target_Assignment_1
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
+  OBJECT_DIR = CMakeFiles\Assignment_1.dir
+  OBJECT_FILE_DIR = CMakeFiles\Assignment_1.dir
+  TARGET_COMPILE_PDB = CMakeFiles\Assignment_1.dir\
+  TARGET_PDB = Assignment_1.pdb
+
+build CMakeFiles\Assignment_1.dir\CommandProcessingDriver.cpp.obj: CXX_COMPILER__Assignment_1_Debug ..\..\..\CommandProcessingDriver.cpp || cmake_object_order_depends_target_Assignment_1
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
+  OBJECT_DIR = CMakeFiles\Assignment_1.dir
+  OBJECT_FILE_DIR = CMakeFiles\Assignment_1.dir
+  TARGET_COMPILE_PDB = CMakeFiles\Assignment_1.dir\
+  TARGET_PDB = Assignment_1.pdb
+
+build CMakeFiles\Assignment_1.dir\Map.cpp.obj: CXX_COMPILER__Assignment_1_Debug ..\..\..\Map.cpp || cmake_object_order_depends_target_Assignment_1
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
+  OBJECT_DIR = CMakeFiles\Assignment_1.dir
+  OBJECT_FILE_DIR = CMakeFiles\Assignment_1.dir
+  TARGET_COMPILE_PDB = CMakeFiles\Assignment_1.dir\
+  TARGET_PDB = Assignment_1.pdb
+
+build CMakeFiles\Assignment_1.dir\MapDriver.cpp.obj: CXX_COMPILER__Assignment_1_Debug ..\..\..\MapDriver.cpp || cmake_object_order_depends_target_Assignment_1
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
+  OBJECT_DIR = CMakeFiles\Assignment_1.dir
+  OBJECT_FILE_DIR = CMakeFiles\Assignment_1.dir
+  TARGET_COMPILE_PDB = CMakeFiles\Assignment_1.dir\
+  TARGET_PDB = Assignment_1.pdb
+
+build CMakeFiles\Assignment_1.dir\Player.cpp.obj: CXX_COMPILER__Assignment_1_Debug ..\..\..\Player.cpp || cmake_object_order_depends_target_Assignment_1
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
+  OBJECT_DIR = CMakeFiles\Assignment_1.dir
+  OBJECT_FILE_DIR = CMakeFiles\Assignment_1.dir
+  TARGET_COMPILE_PDB = CMakeFiles\Assignment_1.dir\
+  TARGET_PDB = Assignment_1.pdb
+
+build CMakeFiles\Assignment_1.dir\PlayerDriver.cpp.obj: CXX_COMPILER__Assignment_1_Debug ..\..\..\PlayerDriver.cpp || cmake_object_order_depends_target_Assignment_1
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
+  OBJECT_DIR = CMakeFiles\Assignment_1.dir
+  OBJECT_FILE_DIR = CMakeFiles\Assignment_1.dir
+  TARGET_COMPILE_PDB = CMakeFiles\Assignment_1.dir\
+  TARGET_PDB = Assignment_1.pdb
+
+build CMakeFiles\Assignment_1.dir\Orders.cpp.obj: CXX_COMPILER__Assignment_1_Debug ..\..\..\Orders.cpp || cmake_object_order_depends_target_Assignment_1
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
+  OBJECT_DIR = CMakeFiles\Assignment_1.dir
+  OBJECT_FILE_DIR = CMakeFiles\Assignment_1.dir
+  TARGET_COMPILE_PDB = CMakeFiles\Assignment_1.dir\
+  TARGET_PDB = Assignment_1.pdb
+
+build CMakeFiles\Assignment_1.dir\OrdersDriver.cpp.obj: CXX_COMPILER__Assignment_1_Debug ..\..\..\OrdersDriver.cpp || cmake_object_order_depends_target_Assignment_1
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
+  OBJECT_DIR = CMakeFiles\Assignment_1.dir
+  OBJECT_FILE_DIR = CMakeFiles\Assignment_1.dir
+  TARGET_COMPILE_PDB = CMakeFiles\Assignment_1.dir\
+  TARGET_PDB = Assignment_1.pdb
+
+build CMakeFiles\Assignment_1.dir\GameEngine.cpp.obj: CXX_COMPILER__Assignment_1_Debug ..\..\..\GameEngine.cpp || cmake_object_order_depends_target_Assignment_1
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
+  OBJECT_DIR = CMakeFiles\Assignment_1.dir
+  OBJECT_FILE_DIR = CMakeFiles\Assignment_1.dir
+  TARGET_COMPILE_PDB = CMakeFiles\Assignment_1.dir\
+  TARGET_PDB = Assignment_1.pdb
+
+build CMakeFiles\Assignment_1.dir\GameEngineDriver.cpp.obj: CXX_COMPILER__Assignment_1_Debug ..\..\..\GameEngineDriver.cpp || cmake_object_order_depends_target_Assignment_1
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++17
   OBJECT_DIR = CMakeFiles\Assignment_1.dir
   OBJECT_FILE_DIR = CMakeFiles\Assignment_1.dir
   TARGET_COMPILE_PDB = CMakeFiles\Assignment_1.dir\
@@ -72,7 +142,7 @@ build CMakeFiles\Assignment_1.dir\CardsDriver.cpp.obj: CXX_COMPILER__Assignment_
 #############################################
 # Link the executable Assignment_1.exe
 
-build Assignment_1.exe: CXX_EXECUTABLE_LINKER__Assignment_1_Debug CMakeFiles\Assignment_1.dir\Assignment_1.cpp.obj CMakeFiles\Assignment_1.dir\Cards.cpp.obj CMakeFiles\Assignment_1.dir\CardsDriver.cpp.obj
+build Assignment_1.exe: CXX_EXECUTABLE_LINKER__Assignment_1_Debug CMakeFiles\Assignment_1.dir\MainDriver.cpp.obj CMakeFiles\Assignment_1.dir\Cards.cpp.obj CMakeFiles\Assignment_1.dir\CardsDriver.cpp.obj CMakeFiles\Assignment_1.dir\CommandProcessing.cpp.obj CMakeFiles\Assignment_1.dir\CommandProcessingDriver.cpp.obj CMakeFiles\Assignment_1.dir\Map.cpp.obj CMakeFiles\Assignment_1.dir\MapDriver.cpp.obj CMakeFiles\Assignment_1.dir\Player.cpp.obj CMakeFiles\Assignment_1.dir\PlayerDriver.cpp.obj CMakeFiles\Assignment_1.dir\Orders.cpp.obj CMakeFiles\Assignment_1.dir\OrdersDriver.cpp.obj CMakeFiles\Assignment_1.dir\GameEngine.cpp.obj CMakeFiles\Assignment_1.dir\GameEngineDriver.cpp.obj
   FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1
   LINK_FLAGS = /machine:x64 /debug /INCREMENTAL /subsystem:console
   LINK_LIBRARIES = kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib

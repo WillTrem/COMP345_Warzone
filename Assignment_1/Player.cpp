@@ -15,22 +15,36 @@ Player::Player()
 	hand = new Hand();
 	ownedTerritories = {new Territory(), new Territory(), new Territory()};
 	ordersList = new OrdersList();
+
+	playerName = "Player";
 }
 
-// Parametrized constructor
-Player::Player(Hand *initialHand, vector<Territory*> &initialTerritories)
+// Parametrized constructorw
+Player::Player(string name)
+{
+	hand = new Hand();
+	ownedTerritories = { new Territory(), new Territory(), new Territory() };
+	ordersList = new OrdersList();
+
+	playerName = name;
+}
+Player::Player(Hand *initialHand, vector<Territory*> &initialTerritories, string name)
 {
 	hand = initialHand;
 	ownedTerritories = initialTerritories;
 	ordersList = new OrdersList();
+
+	playerName = name;
 }
 
 // Copy constructor
-Player::Player(Player &player)
+Player::Player(const Player &player)
 {
 	hand = new Hand(player.hand);
 	ownedTerritories = vector<Territory*>(player.ownedTerritories);
 	ordersList = new OrdersList(*player.ordersList); 
+
+	playerName = *new string(player.playerName);
 }
 
 Player::~Player(){
@@ -110,6 +124,7 @@ ostream &operator<<(ostream &os, const Player &p)
 	cout << "Player stream insertion operator called\n"
 		 << endl;
 	cout << "Player information:" << endl;
+	cout << "Name: " << p.playerName << endl;
 	cout << "\t Current hand: " << p.hand << endl;
 	// cout << "\t Current orders list: "<<p.ordersList<<endl;
 	
