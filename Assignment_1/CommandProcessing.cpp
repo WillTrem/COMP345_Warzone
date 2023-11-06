@@ -59,9 +59,9 @@ Command* CommandProcessor::readCommand(){
 	while(getline(iss, token, ' ')){
 		inputCommand.push_back(token);
 	}
-
-	//Calling the corresponding constructor based on the number of parameters
-	Command* newCommand = (inputCommand.size() == 1) ? new Command(&inputCommand[0]) : new Command(&inputCommand[0], inputCommand[1]);
+	
+	// Calling the corresponding constructor based on the number of parameters
+	Command* newCommand = (inputCommand.size() == 1) ? new Command(inputCommand[0]) : new Command(inputCommand[0], inputCommand[1]);
 	return newCommand;
 };
 
@@ -79,12 +79,13 @@ Command* CommandProcessor::getCommand(){
 
 // Verifies if a command is valid in the current game state
 bool CommandProcessor::validate(Command* command, GameState currentState){
-	for(auto& state : stateTransitions.at(*command->cmdName)){
+	for(auto& state : stateTransitions.at(command->cmdName)){
 		if(state == currentState){
 			return true;
 		}
 	}
-	string errorMessage = "Command \"" + *command->cmdName + "\" invalid for the current game state.";
+	
+	string errorMessage = "Command \"" + command->cmdName + "\" is invalid for the current game state.";
 	cout<<errorMessage<<endl;
 	// Sets the effect of the command to an error message
 	command->effect = errorMessage;
@@ -100,7 +101,7 @@ CommandProcessor& CommandProcessor::operator=(const CommandProcessor& other){
 // Stream Insertion Operator
 ostream& operator<<(ostream& os, const CommandProcessor& commandProcessor){
 	for(auto& command : commandProcessor.commandList){
-		os<<*command->cmdName<<" "<<command->parameter<<endl;
+		os<<command->cmdName<<" "<<command->parameter<<endl;
 	}
 	return os;
 };
@@ -121,6 +122,25 @@ FileCommandProcessorAdapter::~FileCommandProcessorAdapter(){
 	fileStream = NULL;
 };
 
+// Reads the command from a line of the file
+Command* FileCommandProcessorAdapter::readCommand(){
+	string input;
+	getline(*fileStream, input);
+
+	//split the input string into a vector of strings
+	vector<string> inputCommand;
+	string token;
+
+	istringstream iss(input);
+	while(getline(iss, token, ' ')){
+		inputCommand.push_back(token);
+	}
+
+	//Calling the corresponding constructor based on the number of parameters
+	Command* newCommand = (inputCommand.size() == 1) ? new Command(inputCommand[0]) : new Command(inputCommand[0], inputCommand[1]);
+	return newCommand;
+};
+
 // Assignment Operator
 FileCommandProcessorAdapter& FileCommandProcessorAdapter::operator=(const FileCommandProcessorAdapter& other){
 	fileStream = new ifstream(other.fileName);
@@ -130,7 +150,7 @@ FileCommandProcessorAdapter& FileCommandProcessorAdapter::operator=(const FileCo
 // Stream Insertion Operator
 ostream& operator<<(ostream& os, const FileCommandProcessorAdapter& commandProcessor){
 	for(auto& command : commandProcessor.commandList){
-		os<<*command->cmdName<<" "<<command->parameter<<endl;
+		os<<command->cmdName<<" "<<command->parameter<<endl;
 	}
 	return os;
 };

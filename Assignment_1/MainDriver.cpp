@@ -14,11 +14,14 @@
 #include "OrdersDriver.h"
 #include "MapDriver.h"
 #include "CommandProcessing.h"
+#include "CommandProcessingDriver.h"
 
 using namespace std;
 
 int main(int argc, char* argv[])
 {
+	testCommandProcessor();
+
 	// Parsing arguments
 	CommandProcessor* commandProcessor = nullptr;
 

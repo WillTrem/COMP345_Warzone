@@ -1,17 +1,17 @@
 #include "GameEngine.h"
 
 // Constructor with only command name
-Command::Command(std::string *cmdName) : cmdName(cmdName) {}
+Command::Command(std::string cmdName) : cmdName(cmdName) {}
 
 //Constructor with with both command name and parameter
-Command::Command(std::string *cmdName, std::string parameter) : cmdName(cmdName), parameter(parameter) {}
+Command::Command(std::string cmdName, std::string parameter) : cmdName(cmdName), parameter(parameter) {}
 
 
 /**
  * Normal constructor
 */
 Command::Command(std::string *cmdName, void (*action)(), GameState *nextState):
-    cmdName(cmdName),
+    cmdName(*cmdName),
     action(action),
     nextState(nextState) {}
 
@@ -22,6 +22,13 @@ Command::Command(const Command &command) :
     cmdName(command.cmdName),
     action(command.action),
     nextState(command.nextState) {}
+
+// Default constuctor for GameEngine
+GameEngine::GameEngine(){
+    GameState startState = START;
+    currentState = &startState;
+    stateTransitions = nullptr;
+}
 
 /**
  * Normal constructor
@@ -49,7 +56,7 @@ void GameEngine::executeCommand(std::string commandArg)
     // passed by reference instead of value so no new variables are created
     for (auto &cmd : (*stateTransitions)[*currentState])
     {
-        if ((*cmd.cmdName) == commandArg)
+        if ((cmd.cmdName) == commandArg)
         {
             cmd.action();
             currentState = cmd.nextState;

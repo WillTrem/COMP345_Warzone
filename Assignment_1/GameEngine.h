@@ -39,15 +39,15 @@ enum GameState
 class Command
 {
 public:
-    std::string *cmdName;
+    std::string cmdName;
     std::string parameter;
     void (*action)();
     GameState *nextState;
     string effect;
 
     //Constructor
-    Command(std::string *cmdName);
-    Command(std::string *cmdName, std::string parameter);
+    Command(std::string cmdName);
+    Command(std::string cmdName, std::string parameter);
     Command(std::string *cmdName,  void (*action)(), GameState *nextState);
     Command(const Command &command);
     
@@ -64,6 +64,7 @@ private:
 public:
     GameState *currentState;
     // Constructors
+    GameEngine();
     GameEngine(GameState *currentState, std::map<GameState, std::list<Command>> *stateTransitions);
     GameEngine(const GameEngine &gameEngine);
 
