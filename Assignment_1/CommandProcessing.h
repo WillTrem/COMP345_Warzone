@@ -2,6 +2,9 @@
 
 #include "GameEngine.h"
 
+#include <sstream>
+#include <fstream>
+
 using namespace std;
 class CommandProcessor{
 	protected:
@@ -44,7 +47,7 @@ class CommandProcessor{
 class FileCommandProcessorAdapter : public CommandProcessor{
 	private:
 	ifstream* fileStream = nullptr;	
-	Command* readCommand();
+	Command* readCommand(); 
 
 	public:
 	string fileName;

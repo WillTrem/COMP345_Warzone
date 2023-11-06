@@ -28,6 +28,8 @@ GameEngine::GameEngine(){
     GameState startState = START;
     currentState = &startState;
     stateTransitions = nullptr;
+
+    //commandProcessor = new CommandProcessor(); // The command processor to create depends on a command line parameter.
 }
 
 /**
@@ -35,14 +37,21 @@ GameEngine::GameEngine(){
 */
 GameEngine::GameEngine(GameState* currentState, std::map<GameState, std::list<Command>>* stateTransitions):
     currentState(currentState), 
-    stateTransitions(stateTransitions) {}
+    stateTransitions(stateTransitions) 
+{
+    //commandProcessor = new CommandProcessor();
+}
 
 /**
  * Copy constructor
 */
 GameEngine::GameEngine(const GameEngine &gameEngine): 
     currentState(gameEngine.currentState), 
-    stateTransitions(gameEngine.stateTransitions) {}
+    stateTransitions(gameEngine.stateTransitions) 
+{
+    //commandProcessor = new CommandProcessor(*(gameEngine.commandProcessor));
+}
+
 
 /**
  * 1. Checks to see if the commmand is a valid command at the current state
@@ -69,6 +78,23 @@ void GameEngine::executeCommand(std::string commandArg)
         std::cout << "Invalid command. See above for valid commands" << std::endl;
     }
 }
+
+
+void GameEngine::startupPhase()
+{
+    Command* currentCommand = nullptr;
+    
+    // While in the initial Start state, wait for the loadmap command, then load the map when it is given.
+    while (*currentState == START)
+    {
+        //currentCommand = commandProcessor->getCommand();
+        //if (commandProcessor->validate(currentCommand, currentState))
+        //{
+        //    cout << "Dummy load map command." << endl;
+        //}
+    }
+}
+
 
 void GameEngine::operator=(GameState &newState)
 {

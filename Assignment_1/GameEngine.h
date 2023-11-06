@@ -6,10 +6,10 @@
 #include <iostream>
 #include <functional>
 
-
 // #include "Orders.h"
 #include "Cards.h"
 #include "Player.h"
+
 
 /**
  * Represents the various states a game can be in at any point in time
@@ -63,12 +63,17 @@ private:
 
 public:
     GameState *currentState;
+    //CommandProcessor* commandProcessor;
+
+
     // Constructors
     GameEngine();
     GameEngine(GameState *currentState, std::map<GameState, std::list<Command>> *stateTransitions);
     GameEngine(const GameEngine &gameEngine);
 
     void executeCommand(std::string command);
+
+    void startupPhase();
 
     // Operator overloads
     void operator=(GameState &newState);
