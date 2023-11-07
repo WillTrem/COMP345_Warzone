@@ -41,18 +41,29 @@ int main(int argc, char* argv[])
 	cout << "Hello CMake.\n"
 		 << endl;
 
-	// Part 4 test (Roxane.)
-	testCards();
 
-	testPlayers();
+
+
+
+	
+
+	// Assignment 1.
 
 	// PART 1 test (shawn 40213581)
 	testLoadMap();
 
+	// Part 2 test
+	testPlayers();
+
 	// PART 3 test (chris)
 	testOrdersLists();
 
+	// Part 4 test (Roxane.)
+	testCards();
+
+	// Part 5 test
 	testGameEngine();
+
 
 	return 0;
 };
