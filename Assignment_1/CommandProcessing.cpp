@@ -27,6 +27,9 @@ Command::Command(const Command &command) : cmdName(command.cmdName),
 										   nextState(command.nextState) {}
 
 
+
+// COMMAND PROCESSOR.
+
 // Default Constructor
 CommandProcessor::CommandProcessor()
 {
@@ -89,6 +92,7 @@ bool CommandProcessor::validate(Command *command, GameState currentState)
 	{
 		if (state == currentState)
 		{
+			setUpCommand(command);
 			return true;
 		}
 	}
@@ -100,6 +104,15 @@ bool CommandProcessor::validate(Command *command, GameState currentState)
 	// Sets the effect of the command to an error message
 	command->effect = errorMessage;
 	return false;
+};
+
+// Set a command's nextState and Action according to its type.
+void CommandProcessor::setUpCommand(Command* command)
+{
+	// We assume the command is already valid, as this function is called from inside the validate one.
+	*(command->nextState) = (commandTransitions.at(command->cmdName));
+
+	// Set up the command's corresponding action function here?
 };
 
 // Assignment operator
@@ -118,6 +131,10 @@ ostream &operator<<(ostream &os, const CommandProcessor &commandProcessor)
 	}
 	return os;
 };
+
+
+
+// FILE COMMAND PROCESSOR ADAPTER.
 
 // Parametrized Constructor
 FileCommandProcessorAdapter::FileCommandProcessorAdapter(string fileName) : fileName(fileName)

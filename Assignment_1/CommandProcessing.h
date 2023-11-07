@@ -88,6 +88,9 @@ private:
 	// Saves command to the list of
 	void saveCommand(Command *command);
 
+	// Set a command's nextState and Action according to its type.
+	void setUpCommand(Command* command);
+
 public:
 	// Default Constructor
 	CommandProcessor();
@@ -109,7 +112,7 @@ public:
 	// Stream Insertion Operator
 	friend ostream &operator<<(ostream &os, const CommandProcessor &commandProcessor);
 
-	// static const map<string, list<GameState>> stateTransitions;
+	// static const map<string, list<GameState>> stateTransitions; // Moved out of the class, now a free variable accessible to all.
 };
 
 class FileCommandProcessorAdapter : public CommandProcessor
