@@ -109,6 +109,9 @@ bool CommandProcessor::validate(Command* command, GameState currentState){
 		}
 	}
 	
+	// Assign valid commands their transition state here?
+
+
 	string errorMessage = "Command \"" + command->cmdName + "\" is invalid for the current game state.";
 	cout<<errorMessage<<endl;
 	// Sets the effect of the command to an error message

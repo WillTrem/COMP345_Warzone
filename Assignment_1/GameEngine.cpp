@@ -107,12 +107,16 @@ void GameEngine::executeCommand(Command* command)
         gameMap = new Map();
         gameMap->loadMap(command->parameter); // Assuming the map's filename is stored in the command's parameter field.
 
+        cout << "Successfully loaded map " << gameMap->mapName << "." << endl;
+
         currentState = command->nextState;
         cmdSucessful = true;
     }
     if (command->cmdName == "validatemap")
     {
         gameMap->validate();
+
+        cout << "Successfully validated map " << gameMap->mapName << "." << endl;
 
         currentState = command->nextState;
         cmdSucessful = true;
@@ -121,9 +125,10 @@ void GameEngine::executeCommand(Command* command)
     {
         if (players->size() < 6)
         {
-            cout << "Creating a new player, " << command->parameter << "." << endl;
             Player* newPlayer = new Player(command->parameter); // Assuming the player's name is stored in the command's parameter field.
             players->push_back(*newPlayer);
+
+            cout << "New player " << command->parameter << " has beed added to the game." << endl;
 
             currentState = command->nextState;
             cmdSucessful = true;
@@ -141,7 +146,12 @@ void GameEngine::executeCommand(Command* command)
         for (int i = 0; i < numTerritories; i++)
         {
             int playerIndex = i % numPlayers; 
+            
             // Assign the territory at gameMap->mapTerritories[i] to the player at players[playerIndex].
+            players->at(playerIndex).addOwnedTerritory(gameMap->mapTerritories.at(i));
+            gameMap->mapTerritories.at(i)->occupierName = players->at(playerIndex).getPlayerName();
+
+            cout << "Assigned territory " << gameMap->mapTerritories.at(i)->territoryName << " to player " << players->at(playerIndex).getPlayerName() << "." << endl;
         }
 
 

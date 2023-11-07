@@ -3,6 +3,8 @@
 // Implement a group of C++ classes that implement a Warzone player. 
 // Written by William Tremblay, 40174212.
 
+#include <string>
+
 #include "Cards.h"
 #include "Orders.h"
 #include "Map.h"
@@ -10,13 +12,13 @@
 using namespace std;
 class Player {
 	private: 
-	vector<Territory *> ownedTerritories;
+	vector<Territory*> ownedTerritories;
 	OrdersList* ordersList = nullptr;
 	Hand* hand = nullptr;
 	string playerName;
 
-	public:
 
+	public:
 	// Default constructor
 	Player();
 
@@ -30,11 +32,18 @@ class Player {
 	// Destructor
 	~ Player();
 
+
+	// Getters and setters.
 	Hand* getHand();
 
 	vector<Territory*> getOwnedTerritories();
+	void addOwnedTerritory(Territory* territory);
+	Territory* removeOwnedTerritory(Territory* territory);
 
 	OrdersList* getOrdersList();
+
+	string getPlayerName();
+
 
 	vector<Territory*> toDefend();
 

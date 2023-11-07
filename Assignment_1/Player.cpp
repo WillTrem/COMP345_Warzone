@@ -72,6 +72,12 @@ Player::~Player(){
 	}	
 }
 
+// Returns the player's name
+string Player::getPlayerName()
+{
+	return playerName;
+}
+
 // Returns the hand of the player
 Hand *Player::getHand()
 {
@@ -88,6 +94,30 @@ OrdersList *Player::getOrdersList()
 vector<Territory*> Player::getOwnedTerritories(){
 	return ownedTerritories;
 }
+
+// Pushes a new territory onto the player's list of owned territories.
+void Player::addOwnedTerritory(Territory* territory) {
+	
+	// Should we check whether the territory is already present there?
+	ownedTerritories.push_back(territory);
+}
+
+// Pops an existing territory from the player's list of owned territories. Returns its reference.
+Territory* Player::removeOwnedTerritory(Territory* territory) {
+	// Find the territory in the vector.
+	auto it = find(ownedTerritories.begin(), ownedTerritories.end(), territory);
+
+	// Remove it
+	if (it != ownedTerritories.end())
+	{
+		Territory* popppedTerritory = *it;
+		ownedTerritories.erase(it);
+
+		return popppedTerritory;
+	}
+	return nullptr; // If the territory was not found in the vector, simply return the nullpointer.
+}
+
 
 // Returns an arbitrary list of territories to attack
 vector<Territory*> Player::toDefend(){
