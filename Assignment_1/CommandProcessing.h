@@ -14,7 +14,6 @@ using namespace std;
 /**
  * Represents the various states a game can be in at any point in time
  */
-using namespace std;
 enum GameState
 {
 	// Start states
@@ -29,6 +28,27 @@ enum GameState
 	WIN,
 	END
 };
+
+// Maps which state(s) a command is valid in.
+const map<string, list<GameState>> stateTransitions = {
+	{"loadmap", {START, MAP_LOADED}},
+	{"validatemap", {MAP_LOADED}},
+	{"addplayer", {MAP_VALIDATED, PLAYERS_ADDED}},
+	{"gamestart", {PLAYERS_ADDED}},
+	{"replay", {WIN}},
+	{"quit", {WIN}} 
+};
+
+// Map which state a valid command leads to.
+const map<string, GameState> commandTransitions = {
+	{"loadmap", MAP_LOADED},
+	{"validatemap", MAP_VALIDATED},
+	{"addplayer", PLAYERS_ADDED},
+	{"gamestart", ASSIGN_REINFORCEMENTS},
+	{"replay", START},
+	{"quit", END} 
+};
+
 
 /**
  * A command consists of:

@@ -27,13 +27,6 @@ Command::Command(const Command &command) : cmdName(command.cmdName),
 										   action(command.action),
 										   nextState(command.nextState) {}
 
-const map<string, list<GameState>> CommandProcessor::stateTransitions = {
-	{"loadmap", {START, MAP_LOADED}},
-	{"validatemap", {MAP_LOADED}},
-	{"addplayer", {MAP_VALIDATED, PLAYERS_ADDED}},
-	{"gamestart", {PLAYERS_ADDED}},
-	{"replay", {WIN}},
-	{"quit", {WIN}}};
 
 // Default Constructor
 CommandProcessor::CommandProcessor()
