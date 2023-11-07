@@ -23,12 +23,12 @@ Player::Player()
 Player::Player(string name)
 {
 	hand = new Hand();
-	ownedTerritories = { new Territory(), new Territory(), new Territory() };
+	ownedTerritories = {new Territory(), new Territory(), new Territory()};
 	ordersList = new OrdersList();
 
 	playerName = name;
 }
-Player::Player(Hand *initialHand, vector<Territory*> &initialTerritories, string name)
+Player::Player(Hand *initialHand, vector<Territory *> &initialTerritories, string name)
 {
 	hand = initialHand;
 	ownedTerritories = initialTerritories;
@@ -41,19 +41,19 @@ Player::Player(Hand *initialHand, vector<Territory*> &initialTerritories, string
 Player::Player(const Player &player)
 {
 	hand = new Hand(player.hand);
-	ownedTerritories = vector<Territory*>(player.ownedTerritories);
-	ordersList = new OrdersList(*player.ordersList); 
+	ownedTerritories = vector<Territory *>(player.ownedTerritories);
+	ordersList = new OrdersList(*player.ordersList);
 
 	playerName = *new string(player.playerName);
 }
 
-Player::~Player(){
-	cout<<"Player destructor called"<<endl;
+Player::~Player()
+{
+	cout << "Player destructor called" << endl;
 
 	// Calling other destructors
 	hand->~Hand();
 	ordersList->~OrdersList();
-
 
 	// Memory deallocation
 	// delete hand;
@@ -69,13 +69,23 @@ Player::~Player(){
 		ownedTerritories.at(i)->~Territory();
 		// delete ownedTerritories.at(i);
 		ownedTerritories.at(i) = NULL;
-	}	
+	}
 }
 
 // Returns the player's name
 string Player::getPlayerName()
 {
 	return playerName;
+}
+
+int Player::getReinforcmentPool()
+{
+	return reinforcementPool;
+}
+
+void Player::setReinforcementPool(int numUnits)
+{
+	reinforcementPool = numUnits;
 }
 
 // Returns the hand of the player
@@ -91,26 +101,29 @@ OrdersList *Player::getOrdersList()
 }
 
 // Returns the player's collection of currently owned territories
-vector<Territory*> Player::getOwnedTerritories(){
+vector<Territory *> Player::getOwnedTerritories()
+{
 	return ownedTerritories;
 }
 
 // Pushes a new territory onto the player's list of owned territories.
-void Player::addOwnedTerritory(Territory* territory) {
-	
+void Player::addOwnedTerritory(Territory *territory)
+{
+
 	// Should we check whether the territory is already present there?
 	ownedTerritories.push_back(territory);
 }
 
 // Pops an existing territory from the player's list of owned territories. Returns its reference.
-Territory* Player::removeOwnedTerritory(Territory* territory) {
+Territory *Player::removeOwnedTerritory(Territory *territory)
+{
 	// Find the territory in the vector.
 	auto it = find(ownedTerritories.begin(), ownedTerritories.end(), territory);
 
 	// Remove it
 	if (it != ownedTerritories.end())
 	{
-		Territory* popppedTerritory = *it;
+		Territory *popppedTerritory = *it;
 		ownedTerritories.erase(it);
 
 		return popppedTerritory;
@@ -118,14 +131,15 @@ Territory* Player::removeOwnedTerritory(Territory* territory) {
 	return nullptr; // If the territory was not found in the vector, simply return the nullpointer.
 }
 
-
 // Returns an arbitrary list of territories to attack
-vector<Territory*> Player::toDefend(){
+vector<Territory *> Player::toDefend()
+{
 	return {new Territory(), new Territory(), new Territory()};
 }
 
 // Returns an arbitrary list of territories to attack
-vector<Territory*> Player::toAttack(){
+vector<Territory *> Player::toAttack()
+{
 	return {new Territory(), new Territory(), new Territory()};
 }
 
@@ -157,7 +171,7 @@ ostream &operator<<(ostream &os, const Player &p)
 	cout << "Name: " << p.playerName << endl;
 	cout << "\t Current hand: " << p.hand << endl;
 	// cout << "\t Current orders list: "<<p.ordersList<<endl;
-	
+
 	// TODO: add territories when stream insertion operator is defined for them
 	return os;
 }

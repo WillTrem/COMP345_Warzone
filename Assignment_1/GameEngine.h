@@ -13,9 +13,7 @@
 #include "Player.h"
 #include "CommandProcessing.h"
 
-
 // Moved GameStates and Command to the CommandProcessing file.
-
 
 class GameEngine
 {
@@ -23,12 +21,11 @@ private:
     std::map<GameState, std::list<Command>> *stateTransitions;
 
 public:
-    GameState * currentState;
-    Map * gameMap;
-    std::vector<Player>* players;
+    GameState *currentState;
+    Map *gameMap;
+    std::vector<Player> *players;
 
-    CommandProcessor * commandProcessor;
-
+    CommandProcessor *commandProcessor;
 
     // Constructors
     GameEngine();
@@ -37,17 +34,17 @@ public:
 
     ~GameEngine();
 
-    void executeCommand(std::string command);
-    void executeCommand(Command * command);
+    void mainGameLoop();
+    void reinforcementPhase();
+    void issueOrdersPhase();
+    void executeOrdersPhase();
 
+    void executeCommand(std::string command);
+    void executeCommand(Command *command);
 
     void startupPhase();
 
-
-
-
     // Operator overloads
     void operator=(GameState &newState);
-	friend std::ostream& operator<<(std::ostream &os, const GameEngine& gameEngine);
-
+    friend std::ostream &operator<<(std::ostream &os, const GameEngine &gameEngine);
 };

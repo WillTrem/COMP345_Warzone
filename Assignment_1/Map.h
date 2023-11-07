@@ -56,6 +56,8 @@ class Continent
 public:
     string continentName;
     vector<Territory *> continentTerritories;
+    // TODO, initialize it
+    int controlBonus;
 
     // default constructor
     Continent();

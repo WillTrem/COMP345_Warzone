@@ -1,8 +1,8 @@
 #include "GameEngine.h"
 
-
 // Default constuctor for GameEngine
-GameEngine::GameEngine(){
+GameEngine::GameEngine()
+{
     GameState startState = START;
     currentState = &startState;
     stateTransitions = nullptr;
@@ -14,41 +14,38 @@ GameEngine::GameEngine(){
 
 /**
  * Normal constructor
-*/
-GameEngine::GameEngine(GameState* currentState, std::map<GameState, std::list<Command>>* stateTransitions, bool fromFile, string fileName) :
-    currentState(currentState), 
-    stateTransitions(stateTransitions) 
+ */
+GameEngine::GameEngine(GameState *currentState, std::map<GameState, std::list<Command>> *stateTransitions, bool fromFile, string fileName) : currentState(currentState),
+                                                                                                                                             stateTransitions(stateTransitions)
 {
     players = {};
-    
+
     if (fromFile)
     {
-        FileCommandProcessorAdapter* adapter = new FileCommandProcessorAdapter(fileName);
+        FileCommandProcessorAdapter *adapter = new FileCommandProcessorAdapter(fileName);
         commandProcessor = adapter;
     }
-    else 
+    else
         commandProcessor = new CommandProcessor();
 }
 
 /**
  * Copy constructor
-*/
-GameEngine::GameEngine(const GameEngine &gameEngine): 
-    currentState(gameEngine.currentState), 
-    stateTransitions(gameEngine.stateTransitions) 
+ */
+GameEngine::GameEngine(const GameEngine &gameEngine) : currentState(gameEngine.currentState),
+                                                       stateTransitions(gameEngine.stateTransitions)
 {
     players = {}; // Need to copy these also.
-    
+
     // How to handle the source's command processor being from a file?
-    FileCommandProcessorAdapter* temp = dynamic_cast<FileCommandProcessorAdapter*>(gameEngine.commandProcessor);
+    FileCommandProcessorAdapter *temp = dynamic_cast<FileCommandProcessorAdapter *>(gameEngine.commandProcessor);
     if (temp == nullptr)
         commandProcessor = new CommandProcessor(*(gameEngine.commandProcessor));
     else
     {
-        FileCommandProcessorAdapter* adapter = new FileCommandProcessorAdapter(*temp);
+        FileCommandProcessorAdapter *adapter = new FileCommandProcessorAdapter(*temp);
         commandProcessor = adapter;
     }
-    
 }
 
 // Destructor
@@ -62,21 +59,79 @@ GameEngine::~GameEngine()
 
     delete commandProcessor;
     commandProcessor = nullptr;
-
 }
 
+void GameEngine::mainGameLoop()
+{
+    reinforcementPhase();
+    issueOrdersPhase();
+    executeOrdersPhase();
+}
+
+void GameEngine::reinforcementPhase()
+{
+    for (auto player : *players)
+    {
+        // Check which continents player occupies
+        vector<Continent> continentsOccupied;
+        for (auto continent : gameMap->continents)
+        {
+            // assume its occupied and go through the list
+            bool occupied = true;
+            for (auto territory : continent->continentTerritories)
+            {
+                if (territory->occupierName.compare(player.getPlayerName()) != 0)
+                {
+                    occupied = false;
+                    break;
+                }
+            }
+
+            if (occupied)
+            {
+                continentsOccupied.push_back(*continent);
+            }
+        }
+
+        // Give player continent bonus(es)
+        int continentBonus = 0;
+        for (auto continent : continentsOccupied)
+        {
+            continentBonus += continent.controlBonus;
+        }
+
+        // Allocate units to player
+        int units = player.getOwnedTerritories().size() / 3 + continentBonus;
+        if (units >= 3)
+        {
+            player.setReinforcementPool(units);
+        }
+        else
+        {
+            player.setReinforcementPool(3);
+        }
+    }
+}
+
+void GameEngine::issueOrdersPhase()
+{
+}
+
+void GameEngine::executeOrdersPhase()
+{
+}
 
 /**
  * 1. Checks to see if the commmand is a valid command at the current state
  * 2. executes the transistion function (action)
  * 3. Make currentState point to the new state
-*/
+ */
 void GameEngine::executeCommand(std::string commandArg)
 {
     bool cmdSucessful = false;
 
     // passed by reference instead of value so no new variables are created
-    for (auto& cmd : (*stateTransitions)[*currentState])
+    for (auto &cmd : (*stateTransitions)[*currentState])
     {
         if ((cmd.cmdName) == commandArg)
         {
@@ -93,14 +148,14 @@ void GameEngine::executeCommand(std::string commandArg)
 }
 
 // Overload of executeCommand which takes in an actual command object.
-void GameEngine::executeCommand(Command* command)
+void GameEngine::executeCommand(Command *command)
 {
     bool cmdSucessful = false;
 
     // We assume that the input command has already been validated.
 
     // These actions should probably be stored inside of the commands themselves, but I'm not sure how to approach it.
-    // 
+    //
     // Switch cases are not useable with strings :/
     if (command->cmdName == "loadmap")
     {
@@ -125,7 +180,7 @@ void GameEngine::executeCommand(Command* command)
     {
         if (players->size() < 6)
         {
-            Player* newPlayer = new Player(command->parameter); // Assuming the player's name is stored in the command's parameter field.
+            Player *newPlayer = new Player(command->parameter); // Assuming the player's name is stored in the command's parameter field.
             players->push_back(*newPlayer);
 
             cout << "New player " << command->parameter << " has beed added to the game." << endl;
@@ -142,11 +197,11 @@ void GameEngine::executeCommand(Command* command)
         // What to do if they cannot be evenly divided?
         int numPlayers = players->size();
         int numTerritories = gameMap->mapTerritories.size();
-        
+
         for (int i = 0; i < numTerritories; i++)
         {
-            int playerIndex = i % numPlayers; 
-  
+            int playerIndex = i % numPlayers;
+
             // Assign the territory at gameMap->mapTerritories[i] to the player at players[playerIndex].
             players->at(playerIndex).addOwnedTerritory(gameMap->mapTerritories.at(i));
             gameMap->mapTerritories.at(i)->occupierName = players->at(playerIndex).getPlayerName();
@@ -160,16 +215,15 @@ void GameEngine::executeCommand(Command* command)
         std::shuffle(players->begin(), players->end(), twister); // Shuffle the players vector so they won't necessarily go in their input order.
 
         // give 50 initial army units to the players, which are placed in their respective reinforcement pool
-        // 
-        // 
-        // let each player draw 2 initial cards from the deck using the deck’s draw() method
-        // 
+        //
+        //
+        // let each player draw 2 initial cards from the deck using the deckï¿½s draw() method
+        //
 
         // switch the game to the play phase
         cout << "StartUp phase completed. The game will now begin." << endl;
         *currentState = ASSIGN_REINFORCEMENTS;
     }
-
 
     if (!cmdSucessful)
     {
@@ -177,11 +231,9 @@ void GameEngine::executeCommand(Command* command)
     }
 }
 
-
-
 void GameEngine::startupPhase()
 {
-    Command* currentCommand = nullptr;
+    Command *currentCommand = nullptr;
 
     while (*currentState != ASSIGN_REINFORCEMENTS) // Remain in the startup phase until we switch to the gamestart/play phase.
     {
@@ -191,10 +243,10 @@ void GameEngine::startupPhase()
             executeCommand(currentCommand); // Execute the command; change the game engine's state.
         }
         else
-            cout << "Invalid command. Please re-enter.\n" << endl;
+            cout << "Invalid command. Please re-enter.\n"
+                 << endl;
     }
 }
-
 
 void GameEngine::operator=(GameState &newState)
 {
