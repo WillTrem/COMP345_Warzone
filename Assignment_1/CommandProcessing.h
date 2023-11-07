@@ -14,7 +14,7 @@ using namespace std;
 /**
  * Represents the various states a game can be in at any point in time
  */
-enum GameState
+const enum GameState
 {
 	// Start states
 	START,
@@ -26,7 +26,7 @@ enum GameState
 	ISSUE_ORDERS,
 	EXECUTE_ORDERS,
 	WIN,
-	END
+	END,
 };
 
 // Maps which state(s) a command is valid in.
@@ -36,7 +36,7 @@ const map<string, list<GameState>> stateTransitions = {
 	{"addplayer", {MAP_VALIDATED, PLAYERS_ADDED}},
 	{"gamestart", {PLAYERS_ADDED}},
 	{"replay", {WIN}},
-	{"quit", {WIN}} 
+	{"quit", {WIN}},
 };
 
 // Map which state a valid command leads to.
@@ -46,7 +46,7 @@ const map<string, GameState> commandTransitions = {
 	{"addplayer", PLAYERS_ADDED},
 	{"gamestart", ASSIGN_REINFORCEMENTS},
 	{"replay", START},
-	{"quit", END} 
+	{"quit", END},
 };
 
 
@@ -109,7 +109,7 @@ public:
 	// Stream Insertion Operator
 	friend ostream &operator<<(ostream &os, const CommandProcessor &commandProcessor);
 
-	static const map<string, list<GameState>> stateTransitions;
+	// static const map<string, list<GameState>> stateTransitions;
 };
 
 class FileCommandProcessorAdapter : public CommandProcessor
