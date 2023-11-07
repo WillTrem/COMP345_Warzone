@@ -16,7 +16,7 @@ Player::Player()
 	ownedTerritories = {new Territory(), new Territory(), new Territory()};
 	ordersList = new OrdersList();
 
-	playerName = "Player";
+	playerName = "Player " + (numPlayers++); // Make sure no player has the same name.
 }
 
 // Parametrized constructorw
@@ -26,7 +26,10 @@ Player::Player(string name)
 	ownedTerritories = {new Territory(), new Territory(), new Territory()};
 	ordersList = new OrdersList();
 
-	playerName = name;
+	if (name == "Player")
+		playerName = "Player " + (numPlayers++);
+	else
+		playerName = name;
 }
 Player::Player(Hand *initialHand, vector<Territory *> &initialTerritories, string name)
 {
@@ -34,7 +37,10 @@ Player::Player(Hand *initialHand, vector<Territory *> &initialTerritories, strin
 	ownedTerritories = initialTerritories;
 	ordersList = new OrdersList();
 
-	playerName = name;
+	if (name == "Player")
+		playerName = "Player " + (numPlayers++);
+	else
+		playerName = name;
 }
 
 // Copy constructor

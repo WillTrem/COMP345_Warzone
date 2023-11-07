@@ -13,6 +13,8 @@ using namespace std;
 class Player
 {
 private:
+	static int numPlayers;
+
 	vector<Territory *> ownedTerritories;
 	OrdersList *ordersList = nullptr;
 	Hand *hand = nullptr;
@@ -24,7 +26,7 @@ public:
 	Player();
 
 	// Parametrized constructors
-	Player(string name);
+	Player(string name = "Player");
 	Player(Hand *initialHand, vector<Territory *> &initialTerritories, string name = "Player");
 
 	// Copy constructor
