@@ -19,7 +19,6 @@ Command::Command(std::string cmdName, std::string parameter) : cmdName(cmdName),
 Command::Command(std::string *cmdName, void (*action)(), GameState *nextState) : cmdName(*cmdName),
 																				 action(action),
 																				 nextState(nextState) {}
-
 /**
  * Copy constructor
  */

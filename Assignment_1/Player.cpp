@@ -9,6 +9,9 @@
 #include "Map.h"
 
 using namespace std;
+
+int Player::numPlayers;
+
 // Default constructor
 Player::Player()
 {
@@ -16,7 +19,7 @@ Player::Player()
 	ownedTerritories = {new Territory(), new Territory(), new Territory()};
 	ordersList = new OrdersList();
 
-	playerName = "Player " + (numPlayers++); // Make sure no player has the same name.
+	playerName = string("Player " + (numPlayers++)); // Make sure no player has the same name.
 }
 
 // Parametrized constructorw
@@ -27,7 +30,7 @@ Player::Player(string name)
 	ordersList = new OrdersList();
 
 	if (name == "Player")
-		playerName = "Player " + (numPlayers++);
+		playerName = string("Player " + (numPlayers++));
 	else
 		playerName = name;
 }
@@ -38,7 +41,7 @@ Player::Player(Hand *initialHand, vector<Territory *> &initialTerritories, strin
 	ordersList = new OrdersList();
 
 	if (name == "Player")
-		playerName = "Player " + (numPlayers++);
+		playerName = string("Player " + (numPlayers++));
 	else
 		playerName = name;
 }

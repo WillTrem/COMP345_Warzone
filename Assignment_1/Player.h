@@ -10,6 +10,7 @@
 #include "Map.h"
 
 using namespace std;
+
 class Player
 {
 private:
@@ -26,7 +27,7 @@ public:
 	Player();
 
 	// Parametrized constructors
-	Player(string name = "Player");
+	Player(string name);
 	Player(Hand *initialHand, vector<Territory *> &initialTerritories, string name = "Player");
 
 	// Copy constructor
