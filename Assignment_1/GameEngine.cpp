@@ -146,7 +146,7 @@ void GameEngine::executeCommand(Command* command)
         for (int i = 0; i < numTerritories; i++)
         {
             int playerIndex = i % numPlayers; 
-            
+  
             // Assign the territory at gameMap->mapTerritories[i] to the player at players[playerIndex].
             players->at(playerIndex).addOwnedTerritory(gameMap->mapTerritories.at(i));
             gameMap->mapTerritories.at(i)->occupierName = players->at(playerIndex).getPlayerName();
@@ -154,15 +154,20 @@ void GameEngine::executeCommand(Command* command)
             cout << "Assigned territory " << gameMap->mapTerritories.at(i)->territoryName << " to player " << players->at(playerIndex).getPlayerName() << "." << endl;
         }
 
-
         // Determine randomly the order of play of the players in the game
         std::random_device randomizer;
         std::mt19937 twister(randomizer());
         std::shuffle(players->begin(), players->end(), twister); // Shuffle the players vector so they won't necessarily go in their input order.
 
         // give 50 initial army units to the players, which are placed in their respective reinforcement pool
+        // 
+        // 
         // let each player draw 2 initial cards from the deck using the deck’s draw() method
+        // 
+
         // switch the game to the play phase
+        cout << "StartUp phase completed. The game will now begin." << endl;
+        *currentState = ASSIGN_REINFORCEMENTS;
     }
 
 
