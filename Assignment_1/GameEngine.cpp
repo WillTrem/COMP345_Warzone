@@ -7,6 +7,7 @@ GameEngine::GameEngine()
     currentState = &startState;
     stateTransitions = nullptr;
 
+    deck = new Deck();
     players = {};
 
     commandProcessor = new CommandProcessor(); // The command processor to create depends on a command line parameter. How to handle this here?
@@ -18,6 +19,7 @@ GameEngine::GameEngine()
 GameEngine::GameEngine(GameState *currentState, std::map<GameState, std::list<Command>> *stateTransitions, bool fromFile, string fileName) : currentState(currentState),
                                                                                                                                              stateTransitions(stateTransitions)
 {
+    deck = new Deck();
     players = {};
 
     if (fromFile)
@@ -33,7 +35,8 @@ GameEngine::GameEngine(GameState *currentState, std::map<GameState, std::list<Co
  * Copy constructor
  */
 GameEngine::GameEngine(const GameEngine &gameEngine) : currentState(gameEngine.currentState),
-                                                       stateTransitions(gameEngine.stateTransitions)
+                                                       stateTransitions(gameEngine.stateTransitions),
+                                                       deck(gameEngine.deck)
 {
     players = {}; // Need to copy these also.
 
@@ -222,8 +225,9 @@ void GameEngine::executeCommand(Command *command)
             cout << "Awarded 50 reinforcement units to player " << players->at(i).getPlayerName() << "." << endl;
 
             // Let each player draw 2 initial cards from the deck using the deck's draw() method.
-            //players->at(i).getHand();
-            //testDeck.draw(&testHand); //twice
+            Hand * currentHand = players->at(i).getHand();
+            deck->draw(currentHand);
+            deck->draw(currentHand);
         }
 
         // switch the game to the play phase

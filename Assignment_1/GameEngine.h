@@ -22,6 +22,8 @@ private:
 
 public:
     GameState *currentState;
+
+    Deck* deck;
     Map *gameMap;
     std::vector<Player> *players;
 
