@@ -66,6 +66,10 @@ std::ostream& operator<<(std::ostream& output, const Order& order)
 
 //   ---   Deploy class   ---  
 
+// Deploy order: A deploy order tells a certain number of army units taken from the reinforcement pool to deploy to a target territory owned by the player issuing this order.
+// • If the target territory does not belong to the player that issued the order, the order is invalid.
+// • If the target territory belongs to the player that issued the deploy order, the selected number of army units is added to the number of army units on that territory.
+
 // default constructor
 Deploy::Deploy() 
 {
