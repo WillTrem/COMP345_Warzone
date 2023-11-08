@@ -154,13 +154,13 @@ void GameEngine::executeCommand(Command *command)
 
     // We assume that the input command has already been validated.
 
-    // These actions should probably be stored inside of the commands themselves, but I'm not sure how to approach it.
+    // These actions should probably be stored inside of the commands themselves, but I'm not sure how to approach it. Assign them in the command's validate function?
     //
     // Switch cases are not useable with strings :/
     if (command->cmdName == "loadmap")
     {
         gameMap = new Map();
-        gameMap->loadMap(command->parameter); // Assuming the map's filename is stored in the command's parameter field.
+        gameMap->loadMap(command->parameter); // Assuming the map's filename is stored in the command's parameter field..
 
         cout << "Successfully loaded map " << gameMap->mapName << "." << endl;
 
@@ -193,7 +193,7 @@ void GameEngine::executeCommand(Command *command)
     }
     if (command->cmdName == "gamestart")
     {
-        // Fairly distribute all the territories to the players
+        // Fairly distribute all the territories to the players.
         // What to do if they cannot be evenly divided?
         int numPlayers = players->size();
         int numTerritories = gameMap->mapTerritories.size();
@@ -209,20 +209,28 @@ void GameEngine::executeCommand(Command *command)
             cout << "Assigned territory " << gameMap->mapTerritories.at(i)->territoryName << " to player " << players->at(playerIndex).getPlayerName() << "." << endl;
         }
 
-        // Determine randomly the order of play of the players in the game
+        // Determine randomly the order of play of the players in the game.
         std::random_device randomizer;
         std::mt19937 twister(randomizer());
         std::shuffle(players->begin(), players->end(), twister); // Shuffle the players vector so they won't necessarily go in their input order.
 
-        // give 50 initial army units to the players, which are placed in their respective reinforcement pool
-        //
-        //
-        // let each player draw 2 initial cards from the deck using the deck�s draw() method
-        //
+        // Doing both steps C and D in the same loop for efficiency's sake.
+        for (int i = 0; i < numPlayers; i++)
+        {
+            // Give 50 initial army units to the players, which are placed in their respective reinforcement pool.
+            players->at(i).setReinforcementPool(players->at(i).getReinforcmentPool() + 50);
+            cout << "Awarded 50 reinforcement units to player " << players->at(i).getPlayerName() << "." << endl;
+
+            // Let each player draw 2 initial cards from the deck using the deck's draw() method.
+            //players->at(i).getHand();
+            //testDeck.draw(&testHand); //twice
+        }
 
         // switch the game to the play phase
         cout << "StartUp phase completed. The game will now begin." << endl;
-        *currentState = ASSIGN_REINFORCEMENTS;
+
+        currentState = command->nextState;
+        cmdSucessful = true;
     }
 
     if (!cmdSucessful)
