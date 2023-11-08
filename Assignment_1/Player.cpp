@@ -157,9 +157,11 @@ vector<Territory *> Player::toAttack()
 // Creates a new order and adds it to the player's list of current orders
 void Player::issueOrder()
 {
-	Order *newOrder = new Order();
+	// Order *newOrder = new Order();
 
-	ordersList->addOrder(newOrder);
+	// ordersList->addOrder(newOrder);
+
+	// TEMPORARILY REMOVED THE ABOVE LINES -- this function will be implemented with Part 3
 
 	cout << "An order has been issued" << endl;
 }
