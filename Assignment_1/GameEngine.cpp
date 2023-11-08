@@ -180,7 +180,7 @@ void GameEngine::executeCommand(Command *command)
     {
         gameMap->validate();
 
-        cout << "Successfully validated map " << gameMap->mapName << ".\n\n" << endl;
+        cout << "\nSuccessfully validated map " << gameMap->mapName << ".\n\n" << endl;
 
         currentState = command->nextState;
         cmdSucessful = true;
@@ -200,8 +200,10 @@ void GameEngine::executeCommand(Command *command)
         else
             cout << "The game is full; additional players may not be added.\n" << endl;
     }
-    if (command->cmdName == "gamestart")
+    if (command->cmdName == "gamestart" && players->size() > 1)
     {
+        cout << "Preparing to begin the game...\n\n" << endl;
+        
         // Fairly distribute all the territories to the players.
         // What to do if they cannot be evenly divided?
         int numPlayers = players->size();
@@ -228,7 +230,7 @@ void GameEngine::executeCommand(Command *command)
         {
             // Give 50 initial army units to the players, which are placed in their respective reinforcement pool.
             players->at(i)->setReinforcementPool(players->at(i)->getReinforcmentPool() + 50);
-            cout << "Awarded 50 reinforcement units to player " << players->at(i)->getPlayerName() << ".\n" << endl;
+            cout << "\nAwarded 50 reinforcement units to player " << players->at(i)->getPlayerName() << ".\n" << endl;
 
             // Let each player draw 2 initial cards from the deck using the deck's draw() method.
             Hand * currentHand = players->at(i)->getHand();
@@ -245,6 +247,11 @@ void GameEngine::executeCommand(Command *command)
 
     if (!cmdSucessful)
     {
+        if (players->size() == 1)
+        {
+            std::cout << "Please add at least one more player before starting the game.\n" << std::endl;
+        }
+        
         std::cout << "Something went wrong executing the command.\n" << std::endl;
     }
 }
@@ -256,13 +263,13 @@ void GameEngine::startupPhase()
     while (*currentState != ASSIGN_REINFORCEMENTS) // Remain in the startup phase until we switch to the gamestart/play phase.
     {
         currentCommand = commandProcessor->getCommand();
-        cout << "Current command: " << currentCommand->cmdName << endl;
+        //cout << "Current command: " << currentCommand->cmdName << endl;
 
         if (commandProcessor->validate(currentCommand, *currentState))
         {
             executeCommand(currentCommand); // Execute the command; change the game engine's state.
 
-            cout << "Current state: " << *currentState << endl << endl;
+            //cout << "Current state: " << *currentState << endl << endl;
         }
         else
             cout << "Invalid command. Please re-enter.\n"

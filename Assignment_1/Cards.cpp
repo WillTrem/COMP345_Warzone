@@ -401,7 +401,7 @@ void Deck::draw(Hand *drawingHand)
 	}
 	else
 	{
-		cout << "\nNo card could be drawn as the deck is empty." << endl;
+		cout << "No card could be drawn as the deck is empty.\n" << endl;
 	}
 
 	return;
