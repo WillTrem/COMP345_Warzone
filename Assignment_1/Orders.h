@@ -38,10 +38,10 @@ class Order
     virtual ~Order();
 
     // pure virtual method to execute order
-    virtual void execute() ;
+    virtual void execute() = 0;
 
     // pure virtual method to validate order
-    virtual bool validate() ;
+    virtual bool validate() = 0;
 
     // assignment operator
     Order& operator=(const Order& order);
