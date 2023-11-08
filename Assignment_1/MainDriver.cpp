@@ -27,18 +27,18 @@ int main(int argc, char* argv[])
 
 	if(argc == 2 && argv[0] == "-file"){
 		try{
+			cout << "Using file " << argv[1] << " as input source for commands." << endl;
 			commandProcessor = new FileCommandProcessorAdapter(argv[1]);
-			cout<<"Using file "<<argv[1]<<" as input source for commands."<<endl;
 		} 
 		catch(exception e){
 			cout<<"An error occured while reading the file "<< argv[1]<<". Defaulting to using console mode"<<endl;
 		};
 	}else{
+		cout << "Using console as input source for commands." << endl;
 		commandProcessor = new CommandProcessor();
-		cout<<"Using console as input source for commands."<<endl;
 	}
 
-	cout << "Hello CMake.\n"
+	cout << "\nHello CMake.\n"
 		 << endl;
 
 

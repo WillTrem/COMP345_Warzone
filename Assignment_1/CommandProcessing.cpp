@@ -119,11 +119,12 @@ bool CommandProcessor::validate(Command *command, GameState currentState)
 // Set a command's nextState and Action according to its type.
 void CommandProcessor::setUpCommand(Command* command)
 {
-	cout << command->cmdName << endl;
-	cout << command->nextState << endl;
-	
 	// We assume the command is already valid, as this function is called from inside the validate one.
-	//*(command->nextState) = (commandTransitions.at(command->cmdName));
+
+	GameState nextState = commandTransitions.at(command->cmdName);
+	command->nextState = &nextState;
+
+	cout << "Done setting up the command \"" << command->cmdName << "\"." << endl;
 
 	// Set up the command's corresponding action function here?
 };
