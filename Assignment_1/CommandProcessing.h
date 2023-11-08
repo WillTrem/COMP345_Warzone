@@ -1,5 +1,9 @@
 #pragma once
 
+#include "Player.h"
+#include "Map.h"
+#include "Cards.h"
+
 #include <sstream>
 #include <fstream>
 #include <map>
@@ -8,6 +12,8 @@
 #include <iostream>
 #include <functional>
 #include <vector>
+#include <algorithm>
+#include <random>
 
 using namespace std;
 
@@ -61,7 +67,8 @@ class Command
 public:
 	std::string cmdName;
 	std::string parameter;
-	void (*action)();
+	void (*action)(); // Had to do a second version, otherwise it breaks the existing code.
+	bool (Command::* execution)(GameState*& gameState, Map*& gameMap, std::vector<Player*>*& gamePlayers, Deck*& gameDeck);
 	GameState *nextState;
 	string effect;
 
@@ -73,7 +80,16 @@ public:
 
 	// Saves the effect of the command after execution
 	void saveEffect(string effect);
+
+	// Executive functions used by commands.
+	bool loadMap(GameState*& gameState, Map*& gameMap, std::vector<Player*>*& gamePlayers, Deck*& gameDeck);
+	bool validateMap(GameState*& gameState, Map*& gameMap, std::vector<Player*>*& gamePlayers, Deck*& gameDeck);
+	bool addPlayer(GameState*& gameState, Map*& gameMap, std::vector<Player*>*& gamePlayers, Deck*& gameDeck);
+	bool gameStart(GameState*& gameState, Map*& gameMap, std::vector<Player*>*& gamePlayers, Deck*& gameDeck);
 };
+
+
+// Command processors.
 
 class CommandProcessor
 {

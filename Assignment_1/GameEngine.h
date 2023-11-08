@@ -20,6 +20,12 @@ class GameEngine
 private:
     std::map<GameState, std::list<Command>> *stateTransitions;
 
+    // Executive functions used by commands.
+    bool loadMap();
+    bool validateMap();
+    bool addPlayer();
+    bool gameStart();
+
 public:
     GameState *currentState;
 

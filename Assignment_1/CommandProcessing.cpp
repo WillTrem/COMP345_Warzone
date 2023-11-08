@@ -28,6 +28,105 @@ Command::Command(const Command &command) : cmdName(command.cmdName),
 
 
 
+// Executive functions used by commands.
+bool Command::loadMap(GameState*& gameState, Map*& gameMap, std::vector<Player*>*& gamePlayers, Deck*& gameDeck)
+{
+	gameMap = new Map();
+	gameMap->loadMap(parameter);
+
+	cout << "\nSuccessfully loaded map " << gameMap->mapName << "." << endl;
+	cout << "Available commands: 'loadmap' , 'validatemap'.\n\n" << endl;
+
+	gameState = nextState;
+	return true;
+}
+
+bool Command::validateMap(GameState*& gameState, Map*& gameMap, std::vector<Player*>*& gamePlayers, Deck*& gameDeck)
+{
+	gameMap->validate();
+
+	cout << "\nSuccessfully validated map " << gameMap->mapName << "." << endl;
+	cout << "Available commands : 'addplayer'.\n\n" << endl;
+
+	gameState = nextState;
+	return true;
+}
+
+bool Command::addPlayer(GameState*& gameState, Map*& gameMap, std::vector<Player*>*& gamePlayers, Deck*& gameDeck)
+{
+	if (gamePlayers->size() < 6)
+	{
+		Player* newPlayer = new Player(parameter);
+		gamePlayers->push_back(newPlayer);
+
+		cout << "New player " << newPlayer->getPlayerName() << " has beed added to the game." << endl;
+		cout << "Available commands: 'addplayer' , 'gamestart'.\n\n" << endl;
+
+		gameState = nextState;
+		return true;
+	}
+	else
+	{
+		cout << "The game is full; additional players may not be added.\n" << endl;
+		return false;
+	}
+}
+
+bool Command::gameStart(GameState*& gameState, Map*& gameMap, std::vector<Player*>*& gamePlayers, Deck*& gameDeck)
+{
+	if (gamePlayers->size() > 1)
+	{
+		cout << "Preparing to begin the game...\n\n" << endl;
+
+		// Fairly distribute all the territories to the players.
+		// What to do if they cannot be evenly divided?
+		int numPlayers = gamePlayers->size();
+		int numTerritories = gameMap->mapTerritories.size();
+
+		for (int i = 0; i < numTerritories; i++)
+		{
+			int playerIndex = i % numPlayers;
+
+			// Assign the territory at gameMap->mapTerritories[i] to the player at players[playerIndex].
+			gamePlayers->at(playerIndex)->addOwnedTerritory(gameMap->mapTerritories.at(i));
+			gameMap->mapTerritories.at(i)->occupierName = gamePlayers->at(playerIndex)->getPlayerName();
+
+			cout << "Assigned territory " << gameMap->mapTerritories.at(i)->territoryName << " to player " << gamePlayers->at(playerIndex)->getPlayerName() << ".\n" << endl;
+		}
+
+		// Determine randomly the order of play of the players in the game.
+		std::random_device randomizer;
+		std::mt19937 twister(randomizer());
+		std::shuffle(gamePlayers->begin(), gamePlayers->end(), twister); // Shuffle the players vector so they won't necessarily go in their input order.
+
+		// Doing both steps C and D in the same loop for efficiency's sake.
+		for (int i = 0; i < numPlayers; i++)
+		{
+			// Give 50 initial army units to the players, which are placed in their respective reinforcement pool.
+			gamePlayers->at(i)->setReinforcementPool(gamePlayers->at(i)->getReinforcmentPool() + 50);
+			cout << "\nAwarded 50 reinforcement units to player " << gamePlayers->at(i)->getPlayerName() << ".\n" << endl;
+
+			// Let each player draw 2 initial cards from the deck using the deck's draw() method.
+			Hand* currentHand = gamePlayers->at(i)->getHand();
+			gameDeck->draw(currentHand);
+			gameDeck->draw(currentHand);
+		}
+
+		// switch the game to the play phase
+		cout << "\nStartUp phase completed. The game will now begin.\n" << endl;
+
+		gameState = nextState;
+		return true;
+	}
+	if (gamePlayers->size() == 1)
+	{
+		std::cout << "Please add at least one more player before starting the game.\n" << std::endl;
+		return false;
+	}
+}
+
+
+
 // COMMAND PROCESSOR.
 
 // Default Constructor
@@ -123,7 +222,15 @@ void CommandProcessor::setUpCommand(Command* command)
 	GameState* nextState = new GameState(commandTransitions.at(command->cmdName));
 	command->nextState = nextState;
 
-	// Set up the command's corresponding action function here?
+	//Set up the command's corresponding action function.
+	if (command->cmdName == "loadmap")
+		command->execution = &Command::loadMap;
+	if (command->cmdName == "validatemap")
+		command->execution = &Command::validateMap;
+	if (command->cmdName == "addplayer")
+		command->execution = &Command::addPlayer;
+	if (command->cmdName == "gamestart")
+		command->execution = &Command::gameStart;
 
 	//cout << "\nDone setting up the command \"" << command->cmdName << "\".\n" << endl;
 };
