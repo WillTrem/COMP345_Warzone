@@ -25,7 +25,7 @@ public:
 
     Deck* deck;
     Map *gameMap;
-    std::vector<Player> *players;
+    std::vector<Player*> *players;
 
     CommandProcessor *commandProcessor;
 

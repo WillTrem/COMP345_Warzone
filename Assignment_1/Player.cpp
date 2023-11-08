@@ -10,7 +10,7 @@
 
 using namespace std;
 
-int Player::numPlayers;
+int Player::numPlayers = 0;
 
 // Default constructor
 Player::Player()
@@ -19,20 +19,19 @@ Player::Player()
 	ownedTerritories = {new Territory(), new Territory(), new Territory()};
 	ordersList = new OrdersList();
 
-	playerName = string("Player " + (numPlayers++)); // Make sure no player has the same name.
+	numPlayers++;
+	playerName = new string("Player " + std::to_string(numPlayers)); // Make sure no player has the same name.
 }
 
 // Parametrized constructorw
 Player::Player(string name)
 {
 	hand = new Hand();
-	ownedTerritories = {new Territory(), new Territory(), new Territory()};
+	ownedTerritories = {}; // new Territory(), new Territory(), new Territory()
 	ordersList = new OrdersList();
 
-	if (name == "Player")
-		playerName = string("Player " + (numPlayers++));
-	else
-		playerName = name;
+	numPlayers++;
+	playerName = new string(name + " " + std::to_string(numPlayers));
 }
 Player::Player(Hand *initialHand, vector<Territory *> &initialTerritories, string name)
 {
@@ -40,10 +39,8 @@ Player::Player(Hand *initialHand, vector<Territory *> &initialTerritories, strin
 	ownedTerritories = initialTerritories;
 	ordersList = new OrdersList();
 
-	if (name == "Player")
-		playerName = string("Player " + (numPlayers++));
-	else
-		playerName = name;
+	numPlayers++;
+	playerName = new string(string(name) + " " + std::to_string(numPlayers));
 }
 
 // Copy constructor
@@ -53,12 +50,17 @@ Player::Player(const Player &player)
 	ownedTerritories = vector<Territory *>(player.ownedTerritories);
 	ordersList = new OrdersList(*player.ordersList);
 
-	playerName = *new string(player.playerName);
+	numPlayers++;
+	playerName = new string(*(player.playerName) + " " + std::to_string(numPlayers));
 }
 
 Player::~Player()
 {
 	cout << "Player destructor called" << endl;
+
+	// Delete name.
+	delete playerName;
+	playerName = NULL;
 
 	// Calling other destructors
 	hand->~Hand();
@@ -84,7 +86,7 @@ Player::~Player()
 // Returns the player's name
 string Player::getPlayerName()
 {
-	return playerName;
+	return *playerName;
 }
 
 int Player::getReinforcmentPool()

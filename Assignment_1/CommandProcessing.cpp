@@ -100,12 +100,11 @@ bool CommandProcessor::validate(Command *command, GameState currentState)
 		{
 			if (state == currentState)
 			{
+				// Assign valid commands their transitions states, potentially actions.
 				setUpCommand(command);
 				return true;
 			}
 		}
-
-		// Assign valid commands their transition state here?
 
 		string errorMessage = "Command \"" + command->cmdName + "\" is invalid for the current game state.";
 		cout << errorMessage << endl;
@@ -121,12 +120,12 @@ void CommandProcessor::setUpCommand(Command* command)
 {
 	// We assume the command is already valid, as this function is called from inside the validate one.
 
-	GameState nextState = commandTransitions.at(command->cmdName);
-	command->nextState = &nextState;
-
-	cout << "Done setting up the command \"" << command->cmdName << "\"." << endl;
+	GameState* nextState = new GameState(commandTransitions.at(command->cmdName));
+	command->nextState = nextState;
 
 	// Set up the command's corresponding action function here?
+
+	//cout << "\nDone setting up the command \"" << command->cmdName << "\".\n" << endl;
 };
 
 // Assignment operator

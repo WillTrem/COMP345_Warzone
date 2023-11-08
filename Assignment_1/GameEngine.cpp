@@ -8,7 +8,7 @@ GameEngine::GameEngine()
     stateTransitions = nullptr;
 
     deck = new Deck();
-    players = {};
+    players = new std::vector<Player*>;
 
     commandProcessor = new CommandProcessor(); // The command processor to create depends on a command line parameter. How to handle this here?
 }
@@ -20,7 +20,7 @@ GameEngine::GameEngine(GameState *currentState, std::map<GameState, std::list<Co
                                                                                                                                              stateTransitions(stateTransitions)
 {
     deck = new Deck();
-    players = {};
+    players = new std::vector<Player*>;
 
     if (fromFile)
     {
@@ -54,14 +54,20 @@ GameEngine::GameEngine(const GameEngine &gameEngine) : currentState(gameEngine.c
 // Destructor
 GameEngine::~GameEngine()
 {
+    delete commandProcessor;
+    commandProcessor = nullptr;
+    
     delete currentState;
     currentState = nullptr;
 
     delete gameMap;
     gameMap = nullptr;
 
-    delete commandProcessor;
-    commandProcessor = nullptr;
+    delete players;
+    players = nullptr;
+
+    delete deck;
+    deck = nullptr;
 }
 
 void GameEngine::mainGameLoop()
@@ -83,7 +89,7 @@ void GameEngine::reinforcementPhase()
             bool occupied = true;
             for (auto territory : continent->continentTerritories)
             {
-                if (territory->occupierName.compare(player.getPlayerName()) != 0)
+                if (territory->occupierName.compare(player->getPlayerName()) != 0)
                 {
                     occupied = false;
                     break;
@@ -104,14 +110,14 @@ void GameEngine::reinforcementPhase()
         }
 
         // Allocate units to player
-        int units = player.getOwnedTerritories().size() / 3 + continentBonus;
+        int units = player->getOwnedTerritories().size() / 3 + continentBonus;
         if (units >= 3)
         {
-            player.setReinforcementPool(units);
+            player->setReinforcementPool(units);
         }
         else
         {
-            player.setReinforcementPool(3);
+            player->setReinforcementPool(3);
         }
     }
 }
@@ -165,7 +171,7 @@ void GameEngine::executeCommand(Command *command)
         gameMap = new Map();
         gameMap->loadMap(command->parameter); // Assuming the map's filename is stored in the command's parameter field..
 
-        cout << "Successfully loaded map " << gameMap->mapName << "." << endl;
+        cout << "Successfully loaded map " << gameMap->mapName << ".\n\n" << endl;
 
         currentState = command->nextState;
         cmdSucessful = true;
@@ -174,7 +180,7 @@ void GameEngine::executeCommand(Command *command)
     {
         gameMap->validate();
 
-        cout << "Successfully validated map " << gameMap->mapName << "." << endl;
+        cout << "Successfully validated map " << gameMap->mapName << ".\n\n" << endl;
 
         currentState = command->nextState;
         cmdSucessful = true;
@@ -183,16 +189,16 @@ void GameEngine::executeCommand(Command *command)
     {
         if (players->size() < 6)
         {
-            Player *newPlayer = new Player(command->parameter); // Assuming the player's name is stored in the command's parameter field.
-            players->push_back(*newPlayer);
+            Player* newPlayer = new Player(command->parameter); // Assuming the player's name is stored in the command's parameter field.
+            players->push_back(newPlayer);
 
-            cout << "New player " << command->parameter << " has beed added to the game." << endl;
+            cout << "New player " << newPlayer->getPlayerName() << " has beed added to the game.\n" << endl;
 
             currentState = command->nextState;
             cmdSucessful = true;
         }
         else
-            cout << "The game is full; additional players may not be added." << endl;
+            cout << "The game is full; additional players may not be added.\n" << endl;
     }
     if (command->cmdName == "gamestart")
     {
@@ -206,10 +212,10 @@ void GameEngine::executeCommand(Command *command)
             int playerIndex = i % numPlayers;
 
             // Assign the territory at gameMap->mapTerritories[i] to the player at players[playerIndex].
-            players->at(playerIndex).addOwnedTerritory(gameMap->mapTerritories.at(i));
-            gameMap->mapTerritories.at(i)->occupierName = players->at(playerIndex).getPlayerName();
+            players->at(playerIndex)->addOwnedTerritory(gameMap->mapTerritories.at(i));
+            gameMap->mapTerritories.at(i)->occupierName = players->at(playerIndex)->getPlayerName();
 
-            cout << "Assigned territory " << gameMap->mapTerritories.at(i)->territoryName << " to player " << players->at(playerIndex).getPlayerName() << "." << endl;
+            cout << "Assigned territory " << gameMap->mapTerritories.at(i)->territoryName << " to player " << players->at(playerIndex)->getPlayerName() << ".\n" << endl;
         }
 
         // Determine randomly the order of play of the players in the game.
@@ -221,17 +227,17 @@ void GameEngine::executeCommand(Command *command)
         for (int i = 0; i < numPlayers; i++)
         {
             // Give 50 initial army units to the players, which are placed in their respective reinforcement pool.
-            players->at(i).setReinforcementPool(players->at(i).getReinforcmentPool() + 50);
-            cout << "Awarded 50 reinforcement units to player " << players->at(i).getPlayerName() << "." << endl;
+            players->at(i)->setReinforcementPool(players->at(i)->getReinforcmentPool() + 50);
+            cout << "Awarded 50 reinforcement units to player " << players->at(i)->getPlayerName() << ".\n" << endl;
 
             // Let each player draw 2 initial cards from the deck using the deck's draw() method.
-            Hand * currentHand = players->at(i).getHand();
+            Hand * currentHand = players->at(i)->getHand();
             deck->draw(currentHand);
             deck->draw(currentHand);
         }
 
         // switch the game to the play phase
-        cout << "StartUp phase completed. The game will now begin." << endl;
+        cout << "StartUp phase completed. The game will now begin.\n" << endl;
 
         currentState = command->nextState;
         cmdSucessful = true;
@@ -239,7 +245,7 @@ void GameEngine::executeCommand(Command *command)
 
     if (!cmdSucessful)
     {
-        std::cout << "Something went wrong executing the command." << std::endl;
+        std::cout << "Something went wrong executing the command.\n" << std::endl;
     }
 }
 
@@ -250,9 +256,13 @@ void GameEngine::startupPhase()
     while (*currentState != ASSIGN_REINFORCEMENTS) // Remain in the startup phase until we switch to the gamestart/play phase.
     {
         currentCommand = commandProcessor->getCommand();
+        cout << "Current command: " << currentCommand->cmdName << endl;
+
         if (commandProcessor->validate(currentCommand, *currentState))
         {
             executeCommand(currentCommand); // Execute the command; change the game engine's state.
+
+            cout << "Current state: " << *currentState << endl << endl;
         }
         else
             cout << "Invalid command. Please re-enter.\n"

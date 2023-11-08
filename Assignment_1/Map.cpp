@@ -664,14 +664,14 @@ void Map::loadMap(string fileName)
     }
     catch (const std::ifstream::failure &ex)
     {
-        std::cerr << "The file is cannot be loaded into a Map" << std::endl;
+        std::cerr << "The file is cannot be loaded into a Map.\n" << std::endl;
     }
     catch (const std::exception &ex)
     {
-        std::cerr << "The file is cannot be loaded into a Map" << std::endl;
+        std::cerr << "The file is cannot be loaded into a Map.\n" << std::endl;
     }
     catch (...)
     {
-        std::cerr << "The file is cannot be loaded into a Map" << std::endl;
+        std::cerr << "The file is cannot be loaded into a Map.\n" << std::endl;
     }
 }

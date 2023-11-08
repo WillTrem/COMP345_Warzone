@@ -9,6 +9,7 @@
 #include "Orders.h"
 #include "Map.h"
 
+
 using namespace std;
 
 class Player
@@ -19,7 +20,8 @@ private:
 	vector<Territory *> ownedTerritories;
 	OrdersList *ordersList = nullptr;
 	Hand *hand = nullptr;
-	string playerName;
+	string *playerName;
+
 	int reinforcementPool = 0;
 
 public:

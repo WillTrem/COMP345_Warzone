@@ -38,6 +38,13 @@ int main(int argc, char* argv[])
 		commandProcessor = new CommandProcessor();
 	}
 
+
+
+	// Part 2 (StartUp Phase) Test.
+	testStartupPhase();
+
+
+
 	cout << "\nHello CMake.\n"
 		 << endl;
 

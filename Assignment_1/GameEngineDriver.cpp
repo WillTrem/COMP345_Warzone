@@ -196,5 +196,10 @@ void testStartupPhase()
     GameEngine * gameEngineBasicCommandProcessor = new GameEngine(&currentState, &stateTransitions);
     //GameEngine * gameEngineFileCommandProcessor = new GameEngine(&currentState, &stateTransitions, true, "test.txt");
 
+    // Create cards to be drawn from.
+
+    cout << "\nTesting the game engine's startup phase.\n" << endl;
+    gameEngineBasicCommandProcessor->startupPhase();
+
 
 }
