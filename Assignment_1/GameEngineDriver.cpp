@@ -196,8 +196,16 @@ void testStartupPhase()
     GameEngine * gameEngineBasicCommandProcessor = new GameEngine(&currentState, &stateTransitions);
     //GameEngine * gameEngineFileCommandProcessor = new GameEngine(&currentState, &stateTransitions, true, "test.txt");
 
+    
     // Create cards to be drawn from.
+    cout << "\nGenerating some generic cards for testing...\n" << endl;
+    Card_Bomb cardBombTest = Card_Bomb(gameEngineBasicCommandProcessor->deck);
+    Card_Reinforcement cardReinforcementTest = Card_Reinforcement(gameEngineBasicCommandProcessor->deck);
+    Card_Blockade cardBlockadeTest = Card_Blockade(gameEngineBasicCommandProcessor->deck);
+    Card_Airlift carAirliftTest = Card_Airlift(gameEngineBasicCommandProcessor->deck);
+    Card_Diplomacy carDiplomacyTest = Card_Diplomacy(gameEngineBasicCommandProcessor->deck);
 
+    
     cout << "\nTesting the game engine's startup phase.\n" << endl;
     gameEngineBasicCommandProcessor->startupPhase();
 
