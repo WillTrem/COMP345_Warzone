@@ -1,0 +1,6 @@
+loadmap Aden.map
+validatemap
+addplayer Alice
+addplayer Bob
+addplayer Carl
+gamestart

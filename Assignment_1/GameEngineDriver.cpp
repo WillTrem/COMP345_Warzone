@@ -1,9 +1,11 @@
-#include "GameEngine.h"
+#pragma once
+
+#include "GameEngineDriver.h"
+
 #include <string>
 
-
 // Sample actions
-// TODO: Implement/replace the actual functions
+// TODO: Implement/replace the actual functions // Move these to the command processor?
 void start()
 {
     std::cout << "Started game\n"
@@ -134,5 +136,65 @@ void testGameEngine()
         std::cin >> command;
         gameEngine.executeCommand(command);
     }
+
+}
+
+void testStartupPhase()
+{
+    GameState START = GameState::START;
+    GameState MAP_LOADED = GameState::MAP_LOADED;
+    GameState MAP_VALIDATED = GameState::MAP_VALIDATED;
+    GameState PLAYERS_ADDED = GameState::PLAYERS_ADDED;
+    GameState ASSIGN_REINFORCEMENTS = GameState::ASSIGN_REINFORCEMENTS;
+    GameState ISSUE_ORDERS = GameState::ISSUE_ORDERS;
+    GameState EXECUTE_ORDERS = GameState::EXECUTE_ORDERS;
+    GameState WIN = GameState::WIN;
+    GameState END = GameState::END;
+
+    std::string loadMapCmd = "loadMap";
+    std::string validateMapCmd = "validateMap";
+    std::string addPlayerCmd = "addPlayer";
+    std::string assignCountriesCmd = "assignCountries";
+    std::string issueOrderCmd = "issueOrder";
+    std::string endIssueOrdersCmd = "endIssueOrders";
+    std::string executeOrderCmd = "executeOrder";
+    std::string endExecuteOrdersCmd = "endExecuteOrders";
+    std::string winCmd = "win";
+    std::string playCmd = "play";
+    std::string endCmd = "end";
+
+    // Game Engine FSM
+    std::map<GameState, std::list<Command>> stateTransitions = {
+        // Start states
+        {GameState::START, {
+            Command(&loadMapCmd, loadMap, &MAP_LOADED)}},
+        {GameState::MAP_LOADED, {
+            Command(&loadMapCmd, loadMap, &MAP_LOADED),
+            Command(&validateMapCmd, validateMap, &MAP_VALIDATED)}},
+        {GameState::MAP_VALIDATED, {
+            Command(&addPlayerCmd, addPlayer, &PLAYERS_ADDED)}},
+        {GameState::PLAYERS_ADDED, {
+            Command(&addPlayerCmd, addPlayer, &PLAYERS_ADDED),
+            Command(&assignCountriesCmd, assignCountries, &ASSIGN_REINFORCEMENTS)}},
+            // Play states
+            {GameState::ASSIGN_REINFORCEMENTS, {
+                Command(&issueOrderCmd, issueOrder, &ISSUE_ORDERS)}},
+            {GameState::ISSUE_ORDERS, {
+                Command(&issueOrderCmd, issueOrder, &ISSUE_ORDERS),
+                Command(&endIssueOrdersCmd, endIssueOrders, &EXECUTE_ORDERS)}},
+            {GameState::EXECUTE_ORDERS, {
+                Command(&executeOrderCmd, executeOrder, &EXECUTE_ORDERS),
+                Command(&endExecuteOrdersCmd, endExecuteOrders, &ASSIGN_REINFORCEMENTS),
+                Command(&winCmd, win, &WIN)}},
+            {GameState::WIN, {
+                Command(&playCmd, start, &START),
+                Command(&endCmd, end, &END)}},
+    };
+
+    GameState currentState = GameState::START;
+
+    GameEngine * gameEngineBasicCommandProcessor = new GameEngine(&currentState, &stateTransitions);
+    //GameEngine * gameEngineFileCommandProcessor = new GameEngine(&currentState, &stateTransitions, true, "test.txt");
+
 
 }

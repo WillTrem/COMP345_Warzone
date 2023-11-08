@@ -50,19 +50,19 @@ int main(int argc, char* argv[])
 	// Assignment 1.
 
 	// PART 1 test (shawn 40213581)
-	testLoadMap();
+	//testLoadMap();
 
 	// Part 2 test
-	testPlayers();
+	//testPlayers();
 
 	// PART 3 test (chris)
-	testOrdersLists();
+	//testOrdersLists();
 
 	// Part 4 test (Roxane.)
-	testCards();
+	//testCards();
 
 	// Part 5 test
-	testGameEngine();
+	//testGameEngine();
 
 
 	return 0;

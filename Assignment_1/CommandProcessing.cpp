@@ -88,29 +88,42 @@ Command *CommandProcessor::getCommand()
 // Verifies if a command is valid in the current game state
 bool CommandProcessor::validate(Command *command, GameState currentState)
 {
-	for (auto &state : stateTransitions.at(command->cmdName))
+	// Is this a known command?
+	if (stateTransitions.find(command->cmdName) == stateTransitions.end())
 	{
-		if (state == currentState)
-		{
-			setUpCommand(command);
-			return true;
-		}
+		cout << command->cmdName << " is not a recognized command." << endl;
+		return false;
 	}
+	else 
+	{
+		for (auto& state : stateTransitions.at(command->cmdName))
+		{
+			if (state == currentState)
+			{
+				setUpCommand(command);
+				return true;
+			}
+		}
 
-	// Assign valid commands their transition state here?
+		// Assign valid commands their transition state here?
 
-	string errorMessage = "Command \"" + command->cmdName + "\" is invalid for the current game state.";
-	cout << errorMessage << endl;
-	// Sets the effect of the command to an error message
-	command->effect = errorMessage;
-	return false;
+		string errorMessage = "Command \"" + command->cmdName + "\" is invalid for the current game state.";
+		cout << errorMessage << endl;
+		// Sets the effect of the command to an error message
+		command->effect = errorMessage;
+
+		return false;
+	}
 };
 
 // Set a command's nextState and Action according to its type.
 void CommandProcessor::setUpCommand(Command* command)
 {
+	cout << command->cmdName << endl;
+	cout << command->nextState << endl;
+	
 	// We assume the command is already valid, as this function is called from inside the validate one.
-	*(command->nextState) = (commandTransitions.at(command->cmdName));
+	//*(command->nextState) = (commandTransitions.at(command->cmdName));
 
 	// Set up the command's corresponding action function here?
 };
