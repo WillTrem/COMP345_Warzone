@@ -25,6 +25,8 @@ private:
 
 	int reinforcementPool = 0;
 
+	vector<Territory *> prioritizeTerritories(vector<Territory *> territories);
+
 public:
 	// Default constructor
 	Player();
