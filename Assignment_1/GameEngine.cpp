@@ -129,14 +129,16 @@ void GameEngine::issueOrdersPhase()
 {
     for (auto player : *players)
     {
-        vector<Territory *> territories = player->getOwnedTerritories();
+        vector<Territory *> territoriesToAttack = player->toAttack();
+
+        vector<Territory *> territoriesToDefend = player->toDefend();
         /*
             Deploy units from reinforcement pool
         */
         string territoryList = "";
-        for (int i = 0; i < territories.size(); i++)
+        for (int i = 0; i < territoriesToDefend.size(); i++)
         {
-            territoryList += territories[i]->territoryName + "( " + std::to_string(i) + " ), ";
+            territoryList += territoriesToDefend[i]->territoryName + "( " + std::to_string(i) + " ), ";
         }
 
         int numUnits = player->getReinforcmentPool();
@@ -148,9 +150,9 @@ void GameEngine::issueOrdersPhase()
             std::cin >> territory;
             int tIndex = std::stoi(territory);
 
-            if (!(tIndex >= 0 && tIndex < territories.size()))
+            if (!(tIndex >= 0 && tIndex < territoriesToDefend.size()))
             {
-                std::cout << "Invalid territory number/index" std::endl;
+                std::cout << "Invalid territory number/index" << std::endl;
             }
 
             std::cout << "How many units? " << std::endl;
@@ -160,21 +162,16 @@ void GameEngine::issueOrdersPhase()
 
             if (unitsI > 0 && unitsI + unitsDeployed <= numUnits)
             {
+                // TODO: implement Deploy constructor and issueOrder method in Player.cpp
                 // Deploy order(territories[tIndex], unitsI);
                 // player->issueOrder(order);
                 unitsDeployed += unitsI;
             }
             else
             {
-                std::cout << "Invalid number of units (1 to units left in pool) " std::endl;
+                std::cout << "Invalid number of units (1 to units left in pool) " << std::endl;
             }
         }
-
-        /*
-            Attack and defend
-        */
-        player->toAttack();
-        player->toDefend();
     }
 }
 
