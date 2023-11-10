@@ -20,7 +20,7 @@ using namespace std;
 /**
  * Represents the various states a game can be in at any point in time
  */
-const enum GameState
+enum GameState
 {
 	// Start states
 	START,
@@ -131,15 +131,43 @@ public:
 	// static const map<string, list<GameState>> stateTransitions; // Moved out of the class, now a free variable accessible to all.
 };
 
-class FileCommandProcessorAdapter : public CommandProcessor
-{
-private:
-	ifstream *fileStream = nullptr;
-	Command *readCommand();
-
-public:
+class FileLineReader {
+	private:
+	ifstream* fileStream = nullptr;
 	string fileName;
+	
+	public :
 	// Parametrized Constructor
+	FileLineReader(string fileName);
+
+	// Copy Constructor
+	FileLineReader(const FileLineReader& other);
+
+	// Destructor
+	~FileLineReader();
+
+	// Assignment operator
+	FileLineReader& operator=(const FileLineReader& other);
+
+	// Stream Insertion Operator
+	friend ostream& operator<<(ostream& os, const FileLineReader& fileLineReader);
+
+	// Returns the file name	
+	string getFileName();
+
+	// Reads a line from the file
+	string readLineFromFile();
+
+};
+
+// Adpater class between CommandProcessor and FileLineReader
+class FileCommandProcessorAdapter : public CommandProcessor{
+	private:
+	FileLineReader* fileLineReader = nullptr;	
+	Command* readCommand();
+
+	public:
+	//Parametrized Constructor
 	FileCommandProcessorAdapter(string fileName);
 
 	// Copy Constructor
@@ -152,5 +180,7 @@ public:
 	FileCommandProcessorAdapter &operator=(const FileCommandProcessorAdapter &other);
 
 	// Stream Insertion Operator
-	friend ostream &operator<<(ostream &os, const FileCommandProcessorAdapter &commandProcessor);
+	friend ostream& operator<<(ostream& os, const FileCommandProcessorAdapter& commandProcessor);
+
 };
+

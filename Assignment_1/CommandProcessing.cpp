@@ -127,7 +127,7 @@ bool Command::gameStart(GameState*& gameState, Map*& gameMap, std::vector<Player
 
 
 
-// COMMAND PROCESSOR.
+//-------------------- COMMAND PROCESSOR --------------------
 
 // Default Constructor
 CommandProcessor::CommandProcessor()
@@ -254,32 +254,27 @@ ostream &operator<<(ostream &os, const CommandProcessor &commandProcessor)
 
 
 
-// FILE COMMAND PROCESSOR ADAPTER.
+// ------------------- FILE COMMAND PROCESSOR ADAPTER -------------------
 
 // Parametrized Constructor
-FileCommandProcessorAdapter::FileCommandProcessorAdapter(string fileName) : fileName(fileName)
-{
-	fileStream = new ifstream(fileName);
+FileCommandProcessorAdapter::FileCommandProcessorAdapter(string fileName){
+	fileLineReader = new FileLineReader(fileName);
 };
 
 // Copy Constructor
-FileCommandProcessorAdapter::FileCommandProcessorAdapter(const FileCommandProcessorAdapter &other)
-{
-	fileStream = new ifstream(other.fileName);
+FileCommandProcessorAdapter::FileCommandProcessorAdapter(const FileCommandProcessorAdapter& other){
+	fileLineReader = new FileLineReader(other.fileLineReader->getFileName());
 };
 
 // Destructor
-FileCommandProcessorAdapter::~FileCommandProcessorAdapter()
-{
-	delete fileStream;
-	fileStream = NULL;
+FileCommandProcessorAdapter::~FileCommandProcessorAdapter(){
+	delete fileLineReader;
+	fileLineReader = NULL;
 };
 
 // Reads the command from a line of the file
-Command *FileCommandProcessorAdapter::readCommand()
-{
-	string input;
-	getline(*fileStream, input);
+Command* FileCommandProcessorAdapter::readCommand(){
+	string input = fileLineReader->readLineFromFile();
 
 	// split the input string into a vector of strings
 	vector<string> inputCommand;
@@ -297,9 +292,8 @@ Command *FileCommandProcessorAdapter::readCommand()
 };
 
 // Assignment Operator
-FileCommandProcessorAdapter &FileCommandProcessorAdapter::operator=(const FileCommandProcessorAdapter &other)
-{
-	fileStream = new ifstream(other.fileName);
+FileCommandProcessorAdapter& FileCommandProcessorAdapter::operator=(const FileCommandProcessorAdapter& other){
+	fileLineReader = new FileLineReader(other.fileLineReader->getFileName());
 	return *this;
 };
 
@@ -312,3 +306,48 @@ ostream &operator<<(ostream &os, const FileCommandProcessorAdapter &commandProce
 	}
 	return os;
 };
+
+
+// -----------------FILE LINE READER-----------------
+// Parametrized Constructor
+	FileLineReader::FileLineReader(string fileName){
+		fileName = fileName;
+		fileStream = new ifstream(fileName);
+	}
+
+	// Copy Constructor
+	FileLineReader::FileLineReader(const FileLineReader& other){
+		fileName = other.fileName;
+		fileStream = new ifstream(other.fileName);
+	}
+
+	// Destructor
+	FileLineReader::~FileLineReader(){
+		delete fileStream;
+		fileStream = NULL;
+	}
+
+	// Assignment operator
+	FileLineReader& FileLineReader::operator=(const FileLineReader& other){
+		fileName = other.fileName;
+		fileStream = new ifstream(other.fileName);
+		return *this;
+	}
+
+	// Stream Insertion Operator
+	ostream& operator<<(ostream& os, const FileLineReader& fileLineReader){
+		os<<fileLineReader.fileName<<endl;
+		return os;
+	}
+
+	// Returns the file name
+	string FileLineReader::getFileName(){
+		return fileName;
+	}
+
+	// Reads a line from the file
+	string FileLineReader::readLineFromFile(){
+		string input;
+		getline(*fileStream, input);
+		return input;
+	}
