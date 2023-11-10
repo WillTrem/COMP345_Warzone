@@ -11,7 +11,6 @@
 #include "Orders.h"
 #include "Map.h"
 
-
 using namespace std;
 
 class Player
@@ -59,7 +58,7 @@ public:
 	// TODO
 	vector<Territory *> toAttack();
 
-	void issueOrder();
+	void issueOrder(Order *order);
 
 	// Assignment operator overload
 	void operator=(Player &player);

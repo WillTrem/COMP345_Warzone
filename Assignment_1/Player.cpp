@@ -155,7 +155,7 @@ vector<Territory *> Player::toAttack()
 }
 
 // Creates a new order and adds it to the player's list of current orders
-void Player::issueOrder()
+void Player::issueOrder(Order* order)
 {
 	// Order *newOrder = new Order();
 
