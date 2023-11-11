@@ -70,6 +70,74 @@ GameEngine::~GameEngine()
     deck = nullptr;
 }
 
+void GameEngine::transition(GameState *newState)
+{
+    currentState = newState;
+    Notify(*this);
+}
+
+/**
+ * 1. Checks to see if the commmand is a valid command at the current state
+ * 2. executes the transistion function (action)
+ * 3. Make currentState point to the new state
+ */
+void GameEngine::executeCommand(std::string commandArg)
+{
+    bool cmdSucessful = false;
+
+    // passed by reference instead of value so no new variables are created
+    for (auto &cmd : (*stateTransitions)[*currentState])
+    {
+        if ((cmd.cmdName) == commandArg)
+        {
+            cmd.action();
+            transition(cmd.nextState);
+            cmdSucessful = true;
+        }
+    }
+
+    if (!cmdSucessful)
+    {
+        std::cout << "Invalid command. See above for valid commands" << std::endl;
+    }
+}
+
+// Overload of executeCommand which takes in an actual command object.
+void GameEngine::executeCommand(Command *command)
+{
+    // We assume that the input command has already been validated.
+
+    bool cmdSucessful = (command->*command->execution)(currentState, gameMap, players, deck);
+    // cout << "Current state: " << *currentState << endl;
+
+    if (!cmdSucessful)
+    {
+        std::cout << "Something went wrong executing the command.\n"
+                  << std::endl;
+    }
+}
+
+void GameEngine::startupPhase()
+{
+    Command *currentCommand = nullptr;
+
+    while (*currentState != ASSIGN_REINFORCEMENTS) // Remain in the startup phase until we switch to the gamestart/play phase.
+    {
+        currentCommand = commandProcessor->getCommand();
+        // cout << "Current command: " << currentCommand->cmdName << endl;
+
+        if (commandProcessor->validate(currentCommand, *currentState))
+        {
+            executeCommand(currentCommand); // Execute the command; change the game engine's state.
+
+            // cout << "Current state: " << *currentState << endl << endl;
+        }
+        else
+            cout << "Invalid command. Please re-enter.\n"
+                 << endl;
+    }
+}
+
 void GameEngine::mainGameLoop()
 {
     reinforcementPhase();
@@ -177,68 +245,6 @@ void GameEngine::issueOrdersPhase()
 
 void GameEngine::executeOrdersPhase()
 {
-}
-
-/**
- * 1. Checks to see if the commmand is a valid command at the current state
- * 2. executes the transistion function (action)
- * 3. Make currentState point to the new state
- */
-void GameEngine::executeCommand(std::string commandArg)
-{
-    bool cmdSucessful = false;
-
-    // passed by reference instead of value so no new variables are created
-    for (auto &cmd : (*stateTransitions)[*currentState])
-    {
-        if ((cmd.cmdName) == commandArg)
-        {
-            cmd.action();
-            currentState = cmd.nextState;
-            cmdSucessful = true;
-        }
-    }
-
-    if (!cmdSucessful)
-    {
-        std::cout << "Invalid command. See above for valid commands" << std::endl;
-    }
-}
-
-// Overload of executeCommand which takes in an actual command object.
-void GameEngine::executeCommand(Command *command)
-{
-    // We assume that the input command has already been validated.
-
-    bool cmdSucessful = (command->*command->execution)(currentState, gameMap, players, deck);
-    // cout << "Current state: " << *currentState << endl;
-
-    if (!cmdSucessful)
-    {
-        std::cout << "Something went wrong executing the command.\n"
-                  << std::endl;
-    }
-}
-
-void GameEngine::startupPhase()
-{
-    Command *currentCommand = nullptr;
-
-    while (*currentState != ASSIGN_REINFORCEMENTS) // Remain in the startup phase until we switch to the gamestart/play phase.
-    {
-        currentCommand = commandProcessor->getCommand();
-        // cout << "Current command: " << currentCommand->cmdName << endl;
-
-        if (commandProcessor->validate(currentCommand, *currentState))
-        {
-            executeCommand(currentCommand); // Execute the command; change the game engine's state.
-
-            // cout << "Current state: " << *currentState << endl << endl;
-        }
-        else
-            cout << "Invalid command. Please re-enter.\n"
-                 << endl;
-    }
 }
 
 void GameEngine::operator=(GameState &newState)

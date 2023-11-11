@@ -21,12 +21,6 @@ class GameEngine : public Subject, public ILoggable
 private:
     std::map<GameState, std::list<Command>> *stateTransitions;
 
-    // Executive functions used by commands.
-    bool loadMap();
-    bool validateMap();
-    bool addPlayer();
-    bool gameStart();
-
 public:
     GameState *currentState;
 
@@ -43,15 +37,17 @@ public:
 
     ~GameEngine();
 
-    void mainGameLoop();
-    void reinforcementPhase();
-    void issueOrdersPhase();
-    void executeOrdersPhase();
+    void transition(GameState* newState);
 
     void executeCommand(std::string command);
     void executeCommand(Command *command);
 
     void startupPhase();
+
+    void mainGameLoop();
+    void reinforcementPhase();
+    void issueOrdersPhase();
+    void executeOrdersPhase();
 
     // Operator overloads
     void operator=(GameState &newState);
