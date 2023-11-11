@@ -169,6 +169,8 @@ vector<Territory *> Player::toDefend()
 			i--;
 		}
 	}
+
+	return territoriesToDefend;
 }
 
 // Returns an arbitrary list of territories to attack
