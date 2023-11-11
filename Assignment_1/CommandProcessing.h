@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "Map.h"
 #include "Cards.h"
+#include "LogObserver.h"
 
 #include <sstream>
 #include <fstream>
@@ -55,20 +56,19 @@ const map<string, GameState> commandTransitions = {
 	{"quit", END},
 };
 
-
 /**
  * A command consists of:
  * 1. The command string that needs to be provided as input to run it
  * 2. The function that gets called when the command is entered
  * 3. The next state to transition into after command is ran
  */
-class Command
+class Command : public Subject, public ILoggable
 {
 public:
 	std::string cmdName;
 	std::string parameter;
 	void (*action)(); // Had to do a second version, otherwise it breaks the existing code.
-	bool (Command::* execution)(GameState*& gameState, Map*& gameMap, std::vector<Player*>*& gamePlayers, Deck*& gameDeck);
+	bool (Command::*execution)(GameState *&gameState, Map *&gameMap, std::vector<Player *> *&gamePlayers, Deck *&gameDeck);
 	GameState *nextState;
 	string effect;
 
@@ -82,16 +82,15 @@ public:
 	void saveEffect(string effect);
 
 	// Executive functions used by commands.
-	bool loadMap(GameState*& gameState, Map*& gameMap, std::vector<Player*>*& gamePlayers, Deck*& gameDeck);
-	bool validateMap(GameState*& gameState, Map*& gameMap, std::vector<Player*>*& gamePlayers, Deck*& gameDeck);
-	bool addPlayer(GameState*& gameState, Map*& gameMap, std::vector<Player*>*& gamePlayers, Deck*& gameDeck);
-	bool gameStart(GameState*& gameState, Map*& gameMap, std::vector<Player*>*& gamePlayers, Deck*& gameDeck);
+	bool loadMap(GameState *&gameState, Map *&gameMap, std::vector<Player *> *&gamePlayers, Deck *&gameDeck);
+	bool validateMap(GameState *&gameState, Map *&gameMap, std::vector<Player *> *&gamePlayers, Deck *&gameDeck);
+	bool addPlayer(GameState *&gameState, Map *&gameMap, std::vector<Player *> *&gamePlayers, Deck *&gameDeck);
+	bool gameStart(GameState *&gameState, Map *&gameMap, std::vector<Player *> *&gamePlayers, Deck *&gameDeck);
 };
-
 
 // Command processors.
 
-class CommandProcessor
+class CommandProcessor : public Subject, public ILoggable
 {
 protected:
 	// List of commands to execute
@@ -105,7 +104,7 @@ private:
 	void saveCommand(Command *command);
 
 	// Set a command's nextState and Action according to its type.
-	void setUpCommand(Command* command);
+	void setUpCommand(Command *command);
 
 public:
 	// Default Constructor
@@ -131,43 +130,44 @@ public:
 	// static const map<string, list<GameState>> stateTransitions; // Moved out of the class, now a free variable accessible to all.
 };
 
-class FileLineReader {
-	private:
-	ifstream* fileStream = nullptr;
+class FileLineReader
+{
+private:
+	ifstream *fileStream = nullptr;
 	string fileName;
-	
-	public :
+
+public:
 	// Parametrized Constructor
 	FileLineReader(string fileName);
 
 	// Copy Constructor
-	FileLineReader(const FileLineReader& other);
+	FileLineReader(const FileLineReader &other);
 
 	// Destructor
 	~FileLineReader();
 
 	// Assignment operator
-	FileLineReader& operator=(const FileLineReader& other);
+	FileLineReader &operator=(const FileLineReader &other);
 
 	// Stream Insertion Operator
-	friend ostream& operator<<(ostream& os, const FileLineReader& fileLineReader);
+	friend ostream &operator<<(ostream &os, const FileLineReader &fileLineReader);
 
-	// Returns the file name	
+	// Returns the file name
 	string getFileName();
 
 	// Reads a line from the file
 	string readLineFromFile();
-
 };
 
 // Adpater class between CommandProcessor and FileLineReader
-class FileCommandProcessorAdapter : public CommandProcessor{
-	private:
-	FileLineReader* fileLineReader = nullptr;	
-	Command* readCommand();
+class FileCommandProcessorAdapter : public CommandProcessor
+{
+private:
+	FileLineReader *fileLineReader = nullptr;
+	Command *readCommand();
 
-	public:
-	//Parametrized Constructor
+public:
+	// Parametrized Constructor
 	FileCommandProcessorAdapter(string fileName);
 
 	// Copy Constructor
@@ -180,7 +180,5 @@ class FileCommandProcessorAdapter : public CommandProcessor{
 	FileCommandProcessorAdapter &operator=(const FileCommandProcessorAdapter &other);
 
 	// Stream Insertion Operator
-	friend ostream& operator<<(ostream& os, const FileCommandProcessorAdapter& commandProcessor);
-
+	friend ostream &operator<<(ostream &os, const FileCommandProcessorAdapter &commandProcessor);
 };
-

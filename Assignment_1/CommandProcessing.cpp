@@ -1,4 +1,5 @@
 #include "CommandProcessing.h"
+#include "LogObserver.h"
 
 #include <sstream>
 #include <fstream>
@@ -26,57 +27,60 @@ Command::Command(const Command &command) : cmdName(command.cmdName),
 										   action(command.action),
 										   nextState(command.nextState) {}
 
-
-
 // Executive functions used by commands.
-bool Command::loadMap(GameState*& gameState, Map*& gameMap, std::vector<Player*>*& gamePlayers, Deck*& gameDeck)
+bool Command::loadMap(GameState *&gameState, Map *&gameMap, std::vector<Player *> *&gamePlayers, Deck *&gameDeck)
 {
 	gameMap = new Map();
 	gameMap->loadMap(parameter);
 
 	cout << "\nSuccessfully loaded map " << gameMap->mapName << "." << endl;
-	cout << "Available commands: 'loadmap' , 'validatemap'.\n\n" << endl;
+	cout << "Available commands: 'loadmap' , 'validatemap'.\n\n"
+		 << endl;
 
 	gameState = nextState;
 	return true;
 }
 
-bool Command::validateMap(GameState*& gameState, Map*& gameMap, std::vector<Player*>*& gamePlayers, Deck*& gameDeck)
+bool Command::validateMap(GameState *&gameState, Map *&gameMap, std::vector<Player *> *&gamePlayers, Deck *&gameDeck)
 {
 	gameMap->validate();
 
 	cout << "\nSuccessfully validated map " << gameMap->mapName << "." << endl;
-	cout << "Available commands : 'addplayer'.\n\n" << endl;
+	cout << "Available commands : 'addplayer'.\n\n"
+		 << endl;
 
 	gameState = nextState;
 	return true;
 }
 
-bool Command::addPlayer(GameState*& gameState, Map*& gameMap, std::vector<Player*>*& gamePlayers, Deck*& gameDeck)
+bool Command::addPlayer(GameState *&gameState, Map *&gameMap, std::vector<Player *> *&gamePlayers, Deck *&gameDeck)
 {
 	if (gamePlayers->size() < 6)
 	{
-		Player* newPlayer = new Player(parameter);
+		Player *newPlayer = new Player(parameter);
 		gamePlayers->push_back(newPlayer);
 
 		cout << "New player " << newPlayer->getPlayerName() << " has beed added to the game." << endl;
-		cout << "Available commands: 'addplayer' , 'gamestart'.\n\n" << endl;
+		cout << "Available commands: 'addplayer' , 'gamestart'.\n\n"
+			 << endl;
 
 		gameState = nextState;
 		return true;
 	}
 	else
 	{
-		cout << "The game is full; additional players may not be added.\n" << endl;
+		cout << "The game is full; additional players may not be added.\n"
+			 << endl;
 		return false;
 	}
 }
 
-bool Command::gameStart(GameState*& gameState, Map*& gameMap, std::vector<Player*>*& gamePlayers, Deck*& gameDeck)
+bool Command::gameStart(GameState *&gameState, Map *&gameMap, std::vector<Player *> *&gamePlayers, Deck *&gameDeck)
 {
 	if (gamePlayers->size() > 1)
 	{
-		cout << "Preparing to begin the game...\n\n" << endl;
+		cout << "Preparing to begin the game...\n\n"
+			 << endl;
 
 		// Fairly distribute all the territories to the players.
 		// What to do if they cannot be evenly divided?
@@ -91,7 +95,8 @@ bool Command::gameStart(GameState*& gameState, Map*& gameMap, std::vector<Player
 			gamePlayers->at(playerIndex)->addOwnedTerritory(gameMap->mapTerritories.at(i));
 			gameMap->mapTerritories.at(i)->occupierName = gamePlayers->at(playerIndex)->getPlayerName();
 
-			cout << "Assigned territory " << gameMap->mapTerritories.at(i)->territoryName << " to player " << gamePlayers->at(playerIndex)->getPlayerName() << ".\n" << endl;
+			cout << "Assigned territory " << gameMap->mapTerritories.at(i)->territoryName << " to player " << gamePlayers->at(playerIndex)->getPlayerName() << ".\n"
+				 << endl;
 		}
 
 		// Determine randomly the order of play of the players in the game.
@@ -104,28 +109,29 @@ bool Command::gameStart(GameState*& gameState, Map*& gameMap, std::vector<Player
 		{
 			// Give 50 initial army units to the players, which are placed in their respective reinforcement pool.
 			gamePlayers->at(i)->setReinforcementPool(gamePlayers->at(i)->getReinforcmentPool() + 50);
-			cout << "\nAwarded 50 reinforcement units to player " << gamePlayers->at(i)->getPlayerName() << ".\n" << endl;
+			cout << "\nAwarded 50 reinforcement units to player " << gamePlayers->at(i)->getPlayerName() << ".\n"
+				 << endl;
 
 			// Let each player draw 2 initial cards from the deck using the deck's draw() method.
-			Hand* currentHand = gamePlayers->at(i)->getHand();
+			Hand *currentHand = gamePlayers->at(i)->getHand();
 			gameDeck->draw(currentHand);
 			gameDeck->draw(currentHand);
 		}
 
 		// switch the game to the play phase
-		cout << "\nStartUp phase completed. The game will now begin.\n" << endl;
+		cout << "\nStartUp phase completed. The game will now begin.\n"
+			 << endl;
 
 		gameState = nextState;
 		return true;
 	}
 	if (gamePlayers->size() == 1)
 	{
-		std::cout << "Please add at least one more player before starting the game.\n" << std::endl;
+		std::cout << "Please add at least one more player before starting the game.\n"
+				  << std::endl;
 		return false;
 	}
 }
-
-
 
 //-------------------- COMMAND PROCESSOR --------------------
 
@@ -174,6 +180,7 @@ Command *CommandProcessor::readCommand()
 void CommandProcessor::saveCommand(Command *command)
 {
 	commandList.push_back(command);
+	Notify(*this); // Notify Subject
 };
 
 // Gets a command from the user
@@ -193,9 +200,9 @@ bool CommandProcessor::validate(Command *command, GameState currentState)
 		cout << command->cmdName << " is not a recognized command." << endl;
 		return false;
 	}
-	else 
+	else
 	{
-		for (auto& state : stateTransitions.at(command->cmdName))
+		for (auto &state : stateTransitions.at(command->cmdName))
 		{
 			if (state == currentState)
 			{
@@ -215,14 +222,14 @@ bool CommandProcessor::validate(Command *command, GameState currentState)
 };
 
 // Set a command's nextState and Action according to its type.
-void CommandProcessor::setUpCommand(Command* command)
+void CommandProcessor::setUpCommand(Command *command)
 {
 	// We assume the command is already valid, as this function is called from inside the validate one.
 
-	GameState* nextState = new GameState(commandTransitions.at(command->cmdName));
+	GameState *nextState = new GameState(commandTransitions.at(command->cmdName));
 	command->nextState = nextState;
 
-	//Set up the command's corresponding action function.
+	// Set up the command's corresponding action function.
 	if (command->cmdName == "loadmap")
 		command->execution = &Command::loadMap;
 	if (command->cmdName == "validatemap")
@@ -232,7 +239,7 @@ void CommandProcessor::setUpCommand(Command* command)
 	if (command->cmdName == "gamestart")
 		command->execution = &Command::gameStart;
 
-	//cout << "\nDone setting up the command \"" << command->cmdName << "\".\n" << endl;
+	// cout << "\nDone setting up the command \"" << command->cmdName << "\".\n" << endl;
 };
 
 // Assignment operator
@@ -252,28 +259,30 @@ ostream &operator<<(ostream &os, const CommandProcessor &commandProcessor)
 	return os;
 };
 
-
-
 // ------------------- FILE COMMAND PROCESSOR ADAPTER -------------------
 
 // Parametrized Constructor
-FileCommandProcessorAdapter::FileCommandProcessorAdapter(string fileName){
+FileCommandProcessorAdapter::FileCommandProcessorAdapter(string fileName)
+{
 	fileLineReader = new FileLineReader(fileName);
 };
 
 // Copy Constructor
-FileCommandProcessorAdapter::FileCommandProcessorAdapter(const FileCommandProcessorAdapter& other){
+FileCommandProcessorAdapter::FileCommandProcessorAdapter(const FileCommandProcessorAdapter &other)
+{
 	fileLineReader = new FileLineReader(other.fileLineReader->getFileName());
 };
 
 // Destructor
-FileCommandProcessorAdapter::~FileCommandProcessorAdapter(){
+FileCommandProcessorAdapter::~FileCommandProcessorAdapter()
+{
 	delete fileLineReader;
 	fileLineReader = NULL;
 };
 
 // Reads the command from a line of the file
-Command* FileCommandProcessorAdapter::readCommand(){
+Command *FileCommandProcessorAdapter::readCommand()
+{
 	string input = fileLineReader->readLineFromFile();
 
 	// split the input string into a vector of strings
@@ -292,7 +301,8 @@ Command* FileCommandProcessorAdapter::readCommand(){
 };
 
 // Assignment Operator
-FileCommandProcessorAdapter& FileCommandProcessorAdapter::operator=(const FileCommandProcessorAdapter& other){
+FileCommandProcessorAdapter &FileCommandProcessorAdapter::operator=(const FileCommandProcessorAdapter &other)
+{
 	fileLineReader = new FileLineReader(other.fileLineReader->getFileName());
 	return *this;
 };
@@ -307,47 +317,53 @@ ostream &operator<<(ostream &os, const FileCommandProcessorAdapter &commandProce
 	return os;
 };
 
-
 // -----------------FILE LINE READER-----------------
 // Parametrized Constructor
-	FileLineReader::FileLineReader(string fileName){
-		fileName = fileName;
-		fileStream = new ifstream(fileName);
-	}
+FileLineReader::FileLineReader(string fileName)
+{
+	fileName = fileName;
+	fileStream = new ifstream(fileName);
+}
 
-	// Copy Constructor
-	FileLineReader::FileLineReader(const FileLineReader& other){
-		fileName = other.fileName;
-		fileStream = new ifstream(other.fileName);
-	}
+// Copy Constructor
+FileLineReader::FileLineReader(const FileLineReader &other)
+{
+	fileName = other.fileName;
+	fileStream = new ifstream(other.fileName);
+}
 
-	// Destructor
-	FileLineReader::~FileLineReader(){
-		delete fileStream;
-		fileStream = NULL;
-	}
+// Destructor
+FileLineReader::~FileLineReader()
+{
+	delete fileStream;
+	fileStream = NULL;
+}
 
-	// Assignment operator
-	FileLineReader& FileLineReader::operator=(const FileLineReader& other){
-		fileName = other.fileName;
-		fileStream = new ifstream(other.fileName);
-		return *this;
-	}
+// Assignment operator
+FileLineReader &FileLineReader::operator=(const FileLineReader &other)
+{
+	fileName = other.fileName;
+	fileStream = new ifstream(other.fileName);
+	return *this;
+}
 
-	// Stream Insertion Operator
-	ostream& operator<<(ostream& os, const FileLineReader& fileLineReader){
-		os<<fileLineReader.fileName<<endl;
-		return os;
-	}
+// Stream Insertion Operator
+ostream &operator<<(ostream &os, const FileLineReader &fileLineReader)
+{
+	os << fileLineReader.fileName << endl;
+	return os;
+}
 
-	// Returns the file name
-	string FileLineReader::getFileName(){
-		return fileName;
-	}
+// Returns the file name
+string FileLineReader::getFileName()
+{
+	return fileName;
+}
 
-	// Reads a line from the file
-	string FileLineReader::readLineFromFile(){
-		string input;
-		getline(*fileStream, input);
-		return input;
-	}
+// Reads a line from the file
+string FileLineReader::readLineFromFile()
+{
+	string input;
+	getline(*fileStream, input);
+	return input;
+}

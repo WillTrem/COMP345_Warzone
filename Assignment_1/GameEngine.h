@@ -12,10 +12,11 @@
 #include "Cards.h"
 #include "Player.h"
 #include "CommandProcessing.h"
+#include "LogObserver.h"
 
 // Moved GameStates and Command to the CommandProcessing file.
 
-class GameEngine
+class GameEngine : public Subject, public ILoggable
 {
 private:
     std::map<GameState, std::list<Command>> *stateTransitions;
@@ -29,9 +30,9 @@ private:
 public:
     GameState *currentState;
 
-    Deck* deck;
+    Deck *deck;
     Map *gameMap;
-    std::vector<Player*> *players;
+    std::vector<Player *> *players;
 
     CommandProcessor *commandProcessor;
 
