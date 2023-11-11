@@ -36,7 +36,10 @@ Order::~Order() {}
 bool Order::validate() { return true; }
 
 // execute method
-void Order::execute() { this->executed = true; }
+void Order::execute() { 
+    this->executed = true; 
+    Notify(*this);
+}
 
 // assignment operator
 Order &Order::operator=(const Order &order)

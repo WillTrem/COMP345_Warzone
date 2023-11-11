@@ -27,13 +27,12 @@ Command::Command(const Command &command) : cmdName(command.cmdName),
 										   action(command.action),
 										   nextState(command.nextState) {}
 
-
 // Save the command's effect to a string; called upon its execution.
 void Command::saveEffect(string effectString = "A command did a thing.")
 {
 	effect = new string(effectString);
+	Notify(*this);
 }
-
 
 // Executive functions used by commands.
 bool Command::loadMap(GameState *&gameState, Map *&gameMap, std::vector<Player *> *&gamePlayers, Deck *&gameDeck)
@@ -123,7 +122,8 @@ bool Command::gameStart(GameState *&gameState, Map *&gameMap, std::vector<Player
 		{
 			// Give 50 initial army units to the players, which are placed in their respective reinforcement pool.
 			gamePlayers->at(i)->setReinforcementPool(gamePlayers->at(i)->getReinforcmentPool() + 50);
-			cout << "Awarded 50 reinforcement units to player " << gamePlayers->at(i)->getPlayerName() << ".\n" << endl;
+			cout << "Awarded 50 reinforcement units to player " << gamePlayers->at(i)->getPlayerName() << ".\n"
+				 << endl;
 
 			// Let each player draw 2 initial cards from the deck using the deck's draw() method.
 			Hand *currentHand = gamePlayers->at(i)->getHand();
