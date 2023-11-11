@@ -27,6 +27,12 @@ Command::Command(const Command &command) : cmdName(command.cmdName),
 										   nextState(command.nextState) {}
 
 
+// Save the command's effect to a string; called upon its execution.
+void Command::saveEffect(string effectString = "A command did a thing.")
+{
+	effect = new string(effectString);
+}
+
 
 // Executive functions used by commands.
 bool Command::loadMap(GameState*& gameState, Map*& gameMap, std::vector<Player*>*& gamePlayers, Deck*& gameDeck)
@@ -36,6 +42,8 @@ bool Command::loadMap(GameState*& gameState, Map*& gameMap, std::vector<Player*>
 
 	cout << "\nSuccessfully loaded map " << gameMap->mapName << "." << endl;
 	cout << "Available commands: 'loadmap' , 'validatemap'.\n\n" << endl;
+
+	saveEffect("Successfully loaded map " + gameMap->mapName + ".");
 
 	gameState = nextState;
 	return true;
@@ -47,6 +55,8 @@ bool Command::validateMap(GameState*& gameState, Map*& gameMap, std::vector<Play
 
 	cout << "\nSuccessfully validated map " << gameMap->mapName << "." << endl;
 	cout << "Available commands : 'addplayer'.\n\n" << endl;
+
+	saveEffect("Successfully validated map " + gameMap->mapName + ".");
 
 	gameState = nextState;
 	return true;
@@ -61,6 +71,8 @@ bool Command::addPlayer(GameState*& gameState, Map*& gameMap, std::vector<Player
 
 		cout << "New player " << newPlayer->getPlayerName() << " has beed added to the game." << endl;
 		cout << "Available commands: 'addplayer' , 'gamestart'.\n\n" << endl;
+
+		saveEffect("New player " + newPlayer->getPlayerName() + " has beed added to the game.");
 
 		gameState = nextState;
 		return true;
@@ -104,7 +116,7 @@ bool Command::gameStart(GameState*& gameState, Map*& gameMap, std::vector<Player
 		{
 			// Give 50 initial army units to the players, which are placed in their respective reinforcement pool.
 			gamePlayers->at(i)->setReinforcementPool(gamePlayers->at(i)->getReinforcmentPool() + 50);
-			cout << "\nAwarded 50 reinforcement units to player " << gamePlayers->at(i)->getPlayerName() << ".\n" << endl;
+			cout << "Awarded 50 reinforcement units to player " << gamePlayers->at(i)->getPlayerName() << ".\n" << endl;
 
 			// Let each player draw 2 initial cards from the deck using the deck's draw() method.
 			Hand* currentHand = gamePlayers->at(i)->getHand();
@@ -114,6 +126,8 @@ bool Command::gameStart(GameState*& gameState, Map*& gameMap, std::vector<Player
 
 		// switch the game to the play phase
 		cout << "\nStartUp phase completed. The game will now begin.\n" << endl;
+
+		saveEffect("The start up phase has been completed; territories and cards have been distributed.\nThe game will now begin.");
 
 		gameState = nextState;
 		return true;
@@ -208,7 +222,7 @@ bool CommandProcessor::validate(Command *command, GameState currentState)
 		string errorMessage = "Command \"" + command->cmdName + "\" is invalid for the current game state.";
 		cout << errorMessage << endl;
 		// Sets the effect of the command to an error message
-		command->effect = errorMessage;
+		command->effect = new string(errorMessage);
 
 		return false;
 	}

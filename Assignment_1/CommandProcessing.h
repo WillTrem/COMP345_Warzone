@@ -70,7 +70,7 @@ public:
 	void (*action)(); // Had to do a second version, otherwise it breaks the existing code.
 	bool (Command::* execution)(GameState*& gameState, Map*& gameMap, std::vector<Player*>*& gamePlayers, Deck*& gameDeck);
 	GameState *nextState;
-	string effect;
+	string *effect;
 
 	// Constructor
 	Command(std::string cmdName);
@@ -79,7 +79,7 @@ public:
 	Command(const Command &command);
 
 	// Saves the effect of the command after execution
-	void saveEffect(string effect);
+	void saveEffect(string effectString);
 
 	// Executive functions used by commands.
 	bool loadMap(GameState*& gameState, Map*& gameMap, std::vector<Player*>*& gamePlayers, Deck*& gameDeck);
