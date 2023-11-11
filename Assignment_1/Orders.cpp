@@ -14,7 +14,7 @@
 #include <iostream>
 #include <string>
 
-//   ---   Order class   ---   
+//   ---   Order class   ---
 
 // default constructor
 Order::Order()
@@ -23,23 +23,23 @@ Order::Order()
 }
 
 // copy constructor
-Order::Order(const Order& existingOrder)
+Order::Order(const Order &existingOrder)
 {
     this->effect = existingOrder.effect;
-    std::cout << "parent class Order copy constructor called" << std:: endl;
+    std::cout << "parent class Order copy constructor called" << std::endl;
 }
 
 // virtual destructor
 Order::~Order() {}
 
 // validate method
-bool Order::validate() {return true;}
+bool Order::validate() { return true; }
 
 // execute method
-void Order::execute() {this->executed = true;}
+void Order::execute() { this->executed = true; }
 
 // assignment operator
-Order& Order::operator=(const Order& order)
+Order &Order::operator=(const Order &order)
 {
     this->effect = order.effect;
     this->executed = order.executed;
@@ -48,14 +48,14 @@ Order& Order::operator=(const Order& order)
 }
 
 // print helper method for stream insertion operator overload
-void Order::print(std::ostream& output) const
+void Order::print(std::ostream &output) const
 {
     output << "Order" << std::endl;
 }
 
 // stream insertion operator overload
-std::ostream& operator<<(std::ostream& output, const Order& order)
-{   
+std::ostream &operator<<(std::ostream &output, const Order &order)
+{
     order.print(output);
     if (order.executed)
     {
@@ -64,23 +64,24 @@ std::ostream& operator<<(std::ostream& output, const Order& order)
     return output;
 }
 
-//   ---   Deploy class   ---  
+//   ---   Deploy class   ---
 
 // Deploy order: A deploy order tells a certain number of army units taken from the reinforcement pool to deploy to a target territory owned by the player issuing this order.
 // • If the target territory does not belong to the player that issued the order, the order is invalid.
 // • If the target territory belongs to the player that issued the deploy order, the selected number of army units is added to the number of army units on that territory.
 
 // default constructor
-Deploy::Deploy() 
+Deploy::Deploy()
 {
-    std::cout << "Deploy object created using default constructor\n" << std:: endl;
+    std::cout << "Deploy object created using default constructor\n"
+              << std::endl;
 }
 
 // copy constructor
-Deploy::Deploy(const Deploy& existingDeploy)
+Deploy::Deploy(const Deploy &existingDeploy)
 {
     this->effect = existingDeploy.effect;
-    std::cout << "Deploy object created using copy constructor" << std:: endl;
+    std::cout << "Deploy object created using copy constructor" << std::endl;
 }
 
 // destructor
@@ -104,7 +105,7 @@ void Deploy::execute()
 }
 
 // assignment operator
-Deploy& Deploy::operator=(const Deploy& deploy)
+Deploy &Deploy::operator=(const Deploy &deploy)
 {
     this->effect = deploy.effect;
     this->executed = deploy.executed;
@@ -113,14 +114,14 @@ Deploy& Deploy::operator=(const Deploy& deploy)
 }
 
 // print helper method for stream insertion overload
-void Deploy::print(std::ostream& output) const
+void Deploy::print(std::ostream &output) const
 {
     output << "Deploy" << std::endl;
 }
 
 // stream insertion operator overload
-std::ostream& operator<<(std::ostream& output, const Deploy& deploy)
-{   
+std::ostream &operator<<(std::ostream &output, const Deploy &deploy)
+{
     deploy.print(output);
     if (deploy.executed)
     {
@@ -129,19 +130,20 @@ std::ostream& operator<<(std::ostream& output, const Deploy& deploy)
     return output;
 }
 
-//   ---   Advance class   ---  
+//   ---   Advance class   ---
 
 // default constructor
 Advance::Advance()
 {
-    std::cout << "Advance object created using default constructor\n" << std:: endl;
+    std::cout << "Advance object created using default constructor\n"
+              << std::endl;
 }
 
 // copy constructor
-Advance::Advance(const Advance& existingAdvance)
+Advance::Advance(const Advance &existingAdvance)
 {
     this->effect = existingAdvance.effect;
-    std::cout << "Advance object created using copy constructor" << std:: endl;
+    std::cout << "Advance object created using copy constructor" << std::endl;
 }
 
 // destructor
@@ -165,7 +167,7 @@ void Advance::execute()
 }
 
 // assignment operator
-Advance& Advance::operator=(const Advance& advance)
+Advance &Advance::operator=(const Advance &advance)
 {
     this->effect = advance.effect;
     this->executed = advance.executed;
@@ -174,14 +176,14 @@ Advance& Advance::operator=(const Advance& advance)
 }
 
 // print helper method for stream insertion overload
-void Advance::print(std::ostream& output) const
+void Advance::print(std::ostream &output) const
 {
     output << "Advance" << std::endl;
 }
 
 // stream insertion operator overload
-std::ostream& operator<<(std::ostream& output, const Advance& advance)
-{   
+std::ostream &operator<<(std::ostream &output, const Advance &advance)
+{
     advance.print(output);
     if (advance.executed)
     {
@@ -190,19 +192,20 @@ std::ostream& operator<<(std::ostream& output, const Advance& advance)
     return output;
 }
 
-//   ---   Bomb class   ---  
+//   ---   Bomb class   ---
 
 // default constructor
 Bomb::Bomb()
 {
-    std::cout << "Bomb object created using default constructor\n" << std:: endl;
+    std::cout << "Bomb object created using default constructor\n"
+              << std::endl;
 }
 
 // copy constructor
-Bomb::Bomb(const Bomb& existingBomb)
+Bomb::Bomb(const Bomb &existingBomb)
 {
     this->effect = existingBomb.effect;
-    std::cout << "Bomb object created using copy constructor" << std:: endl;
+    std::cout << "Bomb object created using copy constructor" << std::endl;
 }
 
 // destructor
@@ -211,7 +214,8 @@ Bomb::~Bomb() {}
 // validate method override
 bool Bomb::validate()
 {
-    std::cout << "validate() called in a Bomb object\n" << std::endl;
+    std::cout << "validate() called in a Bomb object\n"
+              << std::endl;
     return true;
 }
 
@@ -226,7 +230,7 @@ void Bomb::execute()
 }
 
 // assignment operator
-Bomb& Bomb::operator=(const Bomb& bomb)
+Bomb &Bomb::operator=(const Bomb &bomb)
 {
     this->effect = bomb.effect;
     this->executed = bomb.executed;
@@ -235,14 +239,14 @@ Bomb& Bomb::operator=(const Bomb& bomb)
 }
 
 // print helper method for stream insertion overload
-void Bomb::print(std::ostream& output) const
+void Bomb::print(std::ostream &output) const
 {
     output << "Bomb" << std::endl;
 }
 
 // stream insertion operator overload
-std::ostream& operator<<(std::ostream& output, const Bomb& bomb)
-{   
+std::ostream &operator<<(std::ostream &output, const Bomb &bomb)
+{
     bomb.print(output);
     if (bomb.executed)
     {
@@ -251,19 +255,20 @@ std::ostream& operator<<(std::ostream& output, const Bomb& bomb)
     return output;
 }
 
-//   ---   Blockade class   ---  
+//   ---   Blockade class   ---
 
 // default constructor
 Blockade::Blockade()
 {
-    std::cout << "Blockade object created using default constructor\n" << std:: endl;
+    std::cout << "Blockade object created using default constructor\n"
+              << std::endl;
 }
 
 // copy constructor
-Blockade::Blockade(const Blockade& existingBlockade)
+Blockade::Blockade(const Blockade &existingBlockade)
 {
     this->effect = existingBlockade.effect;
-    std::cout << "Blockade object created using copy constructor" << std:: endl;
+    std::cout << "Blockade object created using copy constructor" << std::endl;
 }
 
 // destructor
@@ -287,7 +292,7 @@ void Blockade::execute()
 }
 
 // assignment operator
-Blockade& Blockade::operator=(const Blockade& blockade)
+Blockade &Blockade::operator=(const Blockade &blockade)
 {
     this->effect = blockade.effect;
     this->executed = blockade.executed;
@@ -296,14 +301,14 @@ Blockade& Blockade::operator=(const Blockade& blockade)
 }
 
 // print helper method for stream insertion overload
-void Blockade::print(std::ostream& output) const
+void Blockade::print(std::ostream &output) const
 {
     output << "Blockade" << std::endl;
 }
 
 // stream insertion operator overload
-std::ostream& operator<<(std::ostream& output, const Blockade& blockade)
-{   
+std::ostream &operator<<(std::ostream &output, const Blockade &blockade)
+{
     blockade.print(output);
     if (blockade.executed)
     {
@@ -312,19 +317,20 @@ std::ostream& operator<<(std::ostream& output, const Blockade& blockade)
     return output;
 }
 
-//   ---   Airlift class   ---  
+//   ---   Airlift class   ---
 
 // default constructor
 Airlift::Airlift()
 {
-    std::cout << "Airlift object created using default constructor\n" << std:: endl;
+    std::cout << "Airlift object created using default constructor\n"
+              << std::endl;
 }
 
 // copy constructor
-Airlift::Airlift(const Airlift& existingAirlift)
+Airlift::Airlift(const Airlift &existingAirlift)
 {
     this->effect = existingAirlift.effect;
-    std::cout << "Airlift object created using copy constructor" << std:: endl;
+    std::cout << "Airlift object created using copy constructor" << std::endl;
 }
 
 // destructor
@@ -348,7 +354,7 @@ void Airlift::execute()
 }
 
 // assignment operator
-Airlift& Airlift::operator=(const Airlift& airlift)
+Airlift &Airlift::operator=(const Airlift &airlift)
 {
     this->effect = airlift.effect;
     this->executed = airlift.executed;
@@ -357,14 +363,14 @@ Airlift& Airlift::operator=(const Airlift& airlift)
 }
 
 // print helper method for stream insertion overload
-void Airlift::print(std::ostream& output) const
+void Airlift::print(std::ostream &output) const
 {
     output << "Airlift" << std::endl;
 }
 
 // stream insertion operator overload
-std::ostream& operator<<(std::ostream& output, const Airlift& airlift)
-{   
+std::ostream &operator<<(std::ostream &output, const Airlift &airlift)
+{
     airlift.print(output);
     if (airlift.executed)
     {
@@ -373,19 +379,20 @@ std::ostream& operator<<(std::ostream& output, const Airlift& airlift)
     return output;
 }
 
-//   ---   Negotiate class   ---  
+//   ---   Negotiate class   ---
 
 // default constructor
 Negotiate::Negotiate()
 {
-    std::cout << "Negotiate object created using default constructor\n" << std:: endl;
+    std::cout << "Negotiate object created using default constructor\n"
+              << std::endl;
 }
 
 // copy constructor
-Negotiate::Negotiate(const Negotiate& existingNegotiate)
+Negotiate::Negotiate(const Negotiate &existingNegotiate)
 {
     this->effect = existingNegotiate.effect;
-    std::cout << "Negotiate object created using copy constructor" << std:: endl;
+    std::cout << "Negotiate object created using copy constructor" << std::endl;
 }
 
 // destructor
@@ -409,7 +416,7 @@ void Negotiate::execute()
 }
 
 // assignment operator
-Negotiate& Negotiate::operator=(const Negotiate& negotiate)
+Negotiate &Negotiate::operator=(const Negotiate &negotiate)
 {
     this->effect = negotiate.effect;
     this->executed = negotiate.executed;
@@ -418,14 +425,14 @@ Negotiate& Negotiate::operator=(const Negotiate& negotiate)
 }
 
 // print helper method for stream insertion overload
-void Negotiate::print(std::ostream& output) const
+void Negotiate::print(std::ostream &output) const
 {
     output << "Negotiate" << std::endl;
 }
 
 // stream insertion operator overload
-std::ostream& operator<<(std::ostream& output, const Negotiate& negotiate)
-{   
+std::ostream &operator<<(std::ostream &output, const Negotiate &negotiate)
+{
     negotiate.print(output);
     if (negotiate.executed)
     {
@@ -434,50 +441,52 @@ std::ostream& operator<<(std::ostream& output, const Negotiate& negotiate)
     return output;
 }
 
-//   ---   OrdersList class   ---   
+//   ---   OrdersList class   ---
 
 // default constructor
 OrdersList::OrdersList()
 {
-    std::cout << "OrdersList object created using default constructor" << std:: endl;
+    std::cout << "OrdersList object created using default constructor" << std::endl;
 }
 
 // copy constructor
-OrdersList::OrdersList(const OrdersList& existingOrdersList)
+OrdersList::OrdersList(const OrdersList &existingOrdersList)
 {
     this->ordersList = existingOrdersList.ordersList;
-    std::cout << "OrdersList object created using copy constructor" << std:: endl;
+    std::cout << "OrdersList object created using copy constructor" << std::endl;
 }
 
 OrdersList::~OrdersList()
-{   
+{
     // change all the pointers to nullptr
-    for (Order* order : ordersList)
+    for (Order *order : ordersList)
     {
         order = nullptr;
     }
 }
 
 // add an order to the list
-void OrdersList::addOrder(Order* order)
+void OrdersList::addOrder(Order *order)
 {
     this->ordersList.push_back(order);
+    Notify(*this);
 }
 
 // get next order on the list
-Order* OrdersList::getNextOrder()
+Order *OrdersList::getNextOrder()
 {
-    std::cout << "getNextOrder() was called\n" << std::endl;
+    std::cout << "getNextOrder() was called\n"
+              << std::endl;
 
     // if list not empty, pop and return next order
     if (!ordersList.empty())
-    {   
-        Order* nextOrderPtr = ordersList.front(); 
+    {
+        Order *nextOrderPtr = ordersList.front();
         ordersList.pop_front();
         return nextOrderPtr;
     }
     else
-    {   // if list is empty, print a message
+    { // if list is empty, print a message
         std::cout << " -- Order list is empty !" << std::endl;
         return nullptr;
     }
@@ -485,47 +494,49 @@ Order* OrdersList::getNextOrder()
 
 // remove an order from the list [takes an int, which is a menu number]
 void OrdersList::remove(int num)
-{   
+{
     // index is one less than menu numbering
     num--;
 
     this->ordersList.erase(this->ordersList.begin() + num);
 
-     std::cout << "an order was removed\n" << std::endl;
+    std::cout << "an order was removed\n"
+              << std::endl;
 }
 
 // swap two orders in the list [takes two ints, which are menu numbers]
 void OrdersList::move(int a, int b)
-{   
+{
     // index is one less than menu numbering
     a--;
     b--;
 
-    Order* temp = this->ordersList[a];
+    Order *temp = this->ordersList[a];
 
     this->ordersList[a] = this->ordersList[b];
     this->ordersList[b] = temp;
 
-    std::cout << "orders were swapped\n" << std::endl;
+    std::cout << "orders were swapped\n"
+              << std::endl;
 }
 
 // assignment operator
-OrdersList& OrdersList::operator=(const OrdersList& orderslist)
+OrdersList &OrdersList::operator=(const OrdersList &orderslist)
 {
     this->ordersList = orderslist.ordersList;
-    
+
     return *this;
 }
 
 // stream insertion operator overload
-std::ostream& operator<<(std::ostream& output, const OrdersList& orderslist)
-{   
+std::ostream &operator<<(std::ostream &output, const OrdersList &orderslist)
+{
     // creates a temporary copy of orderlist and traverse it to print it out
-    std::deque<Order*> temp = orderslist.ordersList;
+    std::deque<Order *> temp = orderslist.ordersList;
     int i = 1;
-    while(!temp.empty())
-    {   
-        Order* tempObj = temp.front();
+    while (!temp.empty())
+    {
+        Order *tempObj = temp.front();
         std::cout << std::to_string(i) + ": ";
         std::cout << *tempObj << std::endl;
         temp.pop_front();
