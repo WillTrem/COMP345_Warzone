@@ -8,7 +8,7 @@ GameEngine::GameEngine()
     stateTransitions = nullptr;
 
     deck = new Deck();
-    players = new std::vector<Player*>;
+    players = new std::vector<Player *>;
 
     commandProcessor = new CommandProcessor(); // The command processor to create depends on a command line parameter. How to handle this here?
 }
@@ -20,7 +20,7 @@ GameEngine::GameEngine(GameState *currentState, std::map<GameState, std::list<Co
                                                                                                                                              stateTransitions(stateTransitions)
 {
     deck = new Deck();
-    players = new std::vector<Player*>;
+    players = new std::vector<Player *>;
 
     if (fromFile)
     {
@@ -56,7 +56,7 @@ GameEngine::~GameEngine()
 {
     delete commandProcessor;
     commandProcessor = nullptr;
-    
+
     delete currentState;
     currentState = nullptr;
 
@@ -113,10 +113,13 @@ void GameEngine::reinforcementPhase()
         int units = player->getOwnedTerritories().size() / 3 + continentBonus;
         if (units >= 3)
         {
+            std::cout << "+" << units << " units in " << player->getPlayerName() << "'s reinforcement pool" << std::endl;
             player->setReinforcementPool(units);
         }
         else
         {
+            std::cout << "+3 units in " << player->getPlayerName() << "'s reinforcement pool" << std::endl;
+
             player->setReinforcementPool(3);
         }
     }
@@ -124,6 +127,52 @@ void GameEngine::reinforcementPhase()
 
 void GameEngine::issueOrdersPhase()
 {
+    for (auto player : *players)
+    {
+        vector<Territory *> territoriesToAttack = player->toAttack();
+
+        vector<Territory *> territoriesToDefend = player->toDefend();
+        /*
+            Deploy units from reinforcement pool
+        */
+        string territoryList = "";
+        for (int i = 0; i < territoriesToDefend.size(); i++)
+        {
+            territoryList += territoriesToDefend[i]->territoryName + "( " + std::to_string(i) + " ), ";
+        }
+
+        int numUnits = player->getReinforcmentPool();
+        int unitsDeployed = 0;
+        while (unitsDeployed < numUnits)
+        {
+            std::cout << "Deploy units to which territory? " << territoryList << std::endl;
+            string territory;
+            std::cin >> territory;
+            int tIndex = std::stoi(territory);
+
+            if (!(tIndex >= 0 && tIndex < territoriesToDefend.size()))
+            {
+                std::cout << "Invalid territory number/index" << std::endl;
+            }
+
+            std::cout << "How many units? " << std::endl;
+            string units;
+            std::cin >> units;
+            int unitsI = std::stoi(units);
+
+            if (unitsI > 0 && unitsI + unitsDeployed <= numUnits)
+            {
+                // TODO: implement Deploy constructor and issueOrder method in Player.cpp
+                // Deploy order(territories[tIndex], unitsI);
+                // player->issueOrder(order);
+                unitsDeployed += unitsI;
+            }
+            else
+            {
+                std::cout << "Invalid number of units (1 to units left in pool) " << std::endl;
+            }
+        }
+    }
 }
 
 void GameEngine::executeOrdersPhase()
@@ -157,16 +206,17 @@ void GameEngine::executeCommand(std::string commandArg)
 }
 
 // Overload of executeCommand which takes in an actual command object.
-void GameEngine::executeCommand(Command* command)
+void GameEngine::executeCommand(Command *command)
 {
     // We assume that the input command has already been validated.
 
     bool cmdSucessful = (command->*command->execution)(currentState, gameMap, players, deck);
-    //cout << "Current state: " << *currentState << endl;
+    // cout << "Current state: " << *currentState << endl;
 
     if (!cmdSucessful)
     {
-        std::cout << "Something went wrong executing the command.\n" << std::endl;
+        std::cout << "Something went wrong executing the command.\n"
+                  << std::endl;
     }
 }
 
@@ -177,13 +227,13 @@ void GameEngine::startupPhase()
     while (*currentState != ASSIGN_REINFORCEMENTS) // Remain in the startup phase until we switch to the gamestart/play phase.
     {
         currentCommand = commandProcessor->getCommand();
-        //cout << "Current command: " << currentCommand->cmdName << endl;
+        // cout << "Current command: " << currentCommand->cmdName << endl;
 
         if (commandProcessor->validate(currentCommand, *currentState))
         {
             executeCommand(currentCommand); // Execute the command; change the game engine's state.
 
-            //cout << "Current state: " << *currentState << endl << endl;
+            // cout << "Current state: " << *currentState << endl << endl;
         }
         else
             cout << "Invalid command. Please re-enter.\n"

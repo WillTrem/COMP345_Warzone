@@ -142,20 +142,81 @@ Territory *Player::removeOwnedTerritory(Territory *territory)
 	return nullptr; // If the territory was not found in the vector, simply return the nullpointer.
 }
 
-// Returns an arbitrary list of territories to attack
+// Returns an arbitrary list of territories to Defend
 vector<Territory *> Player::toDefend()
 {
-	return {new Territory(), new Territory(), new Territory()};
+	// Prioritize territory to defend
+	vector<Territory *> territoriesToDefend;
+	vector<Territory *> ownedTerritories = getOwnedTerritories();
+	for (int i = 0; i < ownedTerritories.size(); i++)
+	{
+		std::cout << "Prioritize which territory to attack: priority " << i + 1 << std::endl;
+		for (int j = 0; j < ownedTerritories.size(); j++)
+		{
+			std::cout << ownedTerritories[j]->territoryName << "? (y/n) " << std::endl;
+			string answer;
+			std::cin >> answer;
+			if (answer.compare("y") == 0)
+			{
+				territoriesToDefend.push_back(ownedTerritories[j]);
+				break;
+			}
+		}
+
+		// If user didn't say yes to any of them, restart last iteration
+		if (territoriesToDefend.size() < i + 1)
+		{
+			i--;
+		}
+	}
 }
 
 // Returns an arbitrary list of territories to attack
 vector<Territory *> Player::toAttack()
 {
-	return {new Territory(), new Territory(), new Territory()};
+
+	// Retrieve all enemy neighboring territories
+	vector<Territory *> enemyTerritories;
+	for (auto territory : getOwnedTerritories())
+	{
+		for (auto neighbor : territory->neighboringTerritories)
+		{
+			if (neighbor->occupierName.compare(*playerName) != 0)
+			{
+				enemyTerritories.push_back(neighbor);
+			}
+		}
+	}
+
+	// Prioritize territory to attack
+	vector<Territory *> territoriesToAttack;
+	for (int i = 0; i < enemyTerritories.size(); i++)
+	{
+		std::cout << "Prioritize which territory to attack: priority " << i + 1 << std::endl;
+		for (int j = 0; j < enemyTerritories.size(); j++)
+		{
+			std::cout << enemyTerritories[j]->territoryName << "? (y/n) " << std::endl;
+			string answer;
+			std::cin >> answer;
+			if (answer.compare("y") == 0)
+			{
+				territoriesToAttack.push_back(enemyTerritories[j]);
+				break;
+			}
+		}
+
+		// If user didn't say yes to any of them, restart last iteration
+		if (territoriesToAttack.size() < i + 1)
+		{
+			i--;
+		}
+	}
+
+	return territoriesToAttack;
 }
 
 // Creates a new order and adds it to the player's list of current orders
-void Player::issueOrder()
+void Player::issueOrder(Order *order)
 {
 	// Order *newOrder = new Order();
 
