@@ -38,22 +38,10 @@ enum GameState
 };
 
 // Maps which state(s) a command is valid in.
-std::map<std::string, std::vector<GameState>> stateTransitions{
-	{"loadmap", {START, MAP_LOADED}},
-	{"validatemap", {MAP_LOADED}},
-	{"addplayer", {MAP_VALIDATED, PLAYERS_ADDED}},
-	{"gamestart", {PLAYERS_ADDED}},
-	{"replay", {WIN}},
-	{"quit", {WIN}}};
+extern std::map<std::string, std::vector<GameState> > stateTransitions;
 
 // Maps which state(s) a command is valid in.
-std::map<std::string, GameState> commandTransitions{
-	{"loadmap", MAP_LOADED},
-	{"validatemap", MAP_VALIDATED},
-	{"addplayer", PLAYERS_ADDED},
-	{"gamestart", ASSIGN_REINFORCEMENTS},
-	{"replay", START},
-	{"quit", END}};
+extern std::map<std::string, GameState> commandTransitions;
 
 /**
  * A command consists of:
@@ -102,9 +90,6 @@ private:
 	// Reads command input from user via console
 	virtual Command *readCommand();
 
-	// Saves command to the list of
-	void saveCommand(Command *command);
-
 	// Set a command's nextState and Action according to its type.
 	void setUpCommand(Command *command);
 
@@ -125,6 +110,9 @@ public:
 
 	// Function to log to GameLog.txt
 	string stringToLog() const override;
+
+	// Saves command to the list of
+	void saveCommand(Command *command);
 
 	// Assignment operator
 	CommandProcessor &operator=(const CommandProcessor &other);

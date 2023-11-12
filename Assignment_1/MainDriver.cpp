@@ -13,34 +13,36 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-	testCommandProcessor();
+	// testCommandProcessor();
 
-	// Parsing arguments
-	CommandProcessor *commandProcessor = nullptr;
+	// // Parsing arguments
+	// CommandProcessor *commandProcessor = nullptr;
 
-	if (argc == 2 && argv[0] == "-file")
-	{
-		try
-		{
-			cout << "Using file " << argv[1] << " as input source for commands." << endl;
-			commandProcessor = new FileCommandProcessorAdapter(argv[1]);
-		}
-		catch (exception e)
-		{
-			cout << "An error occured while reading the file " << argv[1] << ". Defaulting to using console mode" << endl;
-		};
-	}
-	else
-	{
-		cout << "Using console as input source for commands." << endl;
-		commandProcessor = new CommandProcessor();
-	}
+	// if (argc == 2 && argv[0] == "-file")
+	// {
+	// 	try
+	// 	{
+	// 		cout << "Using file " << argv[1] << " as input source for commands." << endl;
+	// 		commandProcessor = new FileCommandProcessorAdapter(argv[1]);
+	// 	}
+	// 	catch (exception e)
+	// 	{
+	// 		cout << "An error occured while reading the file " << argv[1] << ". Defaulting to using console mode" << endl;
+	// 	};
+	// }
+	// else
+	// {
+	// 	cout << "Using console as input source for commands." << endl;
+	// 	commandProcessor = new CommandProcessor();
+	// }
 
-	// Part 2 (StartUp Phase) Test.
-	testStartupPhase();
+	// // Part 2 (StartUp Phase) Test.
+	// testStartupPhase();
 
-	cout << "\nHello CMake.\n"
-		 << endl;
+	// cout << "\nHello CMake.\n"
+	// 	 << endl;
+
+	testLoggingObserver();
 
 	// Assignment 1.
 

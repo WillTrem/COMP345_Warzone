@@ -1,5 +1,4 @@
 #include "CommandProcessing.h"
-#include "LogObserver.h"
 
 #include <sstream>
 #include <fstream>
@@ -7,6 +6,24 @@
 #include <string>
 
 using namespace std;
+
+// Definition of stateTransitions
+std::map<std::string, std::vector<GameState>> stateTransitions = {
+	{"loadmap", {START, MAP_LOADED}},
+	{"validatemap", {MAP_LOADED}},
+	{"addplayer", {MAP_VALIDATED, PLAYERS_ADDED}},
+	{"gamestart", {PLAYERS_ADDED}},
+	{"replay", {WIN}},
+	{"quit", {WIN}}};
+
+// Definition of commandTransitions
+std::map<std::string, GameState> commandTransitions = {
+	{"loadmap", MAP_LOADED},
+	{"validatemap", MAP_VALIDATED},
+	{"addplayer", PLAYERS_ADDED},
+	{"gamestart", ASSIGN_REINFORCEMENTS},
+	{"replay", START},
+	{"quit", END}};
 
 // Constructor with only command name
 Command::Command(std::string cmdName) : cmdName(cmdName) {}
@@ -36,7 +53,7 @@ void Command::saveEffect(string effectString = "A command did a thing.")
 
 string Command::stringToLog() const
 {
-	return "Command log string";
+	return "Command Log: Effect Saved - " + *this->effect;
 }
 
 // Executive functions used by commands.
@@ -198,7 +215,7 @@ Command *CommandProcessor::readCommand()
 
 string CommandProcessor::stringToLog() const
 {
-	return "Command Processor log string";
+	return "Command Processor Log: Command Saved - " + this->commandList.back()->cmdName;
 }
 
 // Saves the command in the list of commands

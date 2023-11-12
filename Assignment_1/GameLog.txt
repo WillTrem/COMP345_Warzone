@@ -1,0 +1,20 @@
+------------------------------------ NEW LOG ---------------------------------
+Command Processor Log: Command Saved - NewCommand
+
+
+------------------------------------ NEW LOG ---------------------------------
+Command Log: Effect Saved - random
+
+
+------------------------------------ NEW LOG ---------------------------------
+Order Log: Order was executed. Type of Order: 6Deploy - effect attribute printed from Order object
+
+
+------------------------------------ NEW LOG ---------------------------------
+Orders List Log: An Order was successfully added. Order Type: 6Deploy
+
+
+------------------------------------ NEW LOG ---------------------------------
+Game Engine Log: Game Engine transitioned to state - WIN
+
+

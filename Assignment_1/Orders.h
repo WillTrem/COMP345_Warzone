@@ -8,7 +8,7 @@
 //
 // provide a group of C++ classes that implements the execution of orders following the official rules of the Warzone game
 
-// written by Chris Anglin --- 40216346 
+// written by Chris Anglin --- 40216346
 
 #pragma once
 
@@ -16,6 +16,7 @@
 #include <deque>
 #include "Player.h"
 #include "Map.h"
+#include "LogObserver.h"
 
 #ifndef ORDERS_H
 #define ORDERS_H
@@ -104,6 +105,16 @@ public:
 
     // stream insertion operator
     friend std::ostream &operator<<(std::ostream &output, const Deploy &deploy);
+
+    // Getters
+    Player *getWhichPlayer() const;
+    int getHowManyUnits() const;
+    Territory *getTarget() const;
+
+    // Setters
+    void setWhichPlayer(Player *player);
+    void setHowManyUnits(int units);
+    void setTarget(Territory *territory);
 };
 
 //   ---   Advance class   ---
@@ -132,9 +143,6 @@ public:
 
     // parameterized constructor
     Advance(Player *p, int n, Territory *s, Territory *t);
-
-    // parameterized constructor
-    Advance(Player* p, int n, Territory* s, Territory* t);
 
     // default destructor
     ~Advance();

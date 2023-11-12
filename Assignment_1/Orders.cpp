@@ -39,12 +39,12 @@ bool Order::validate() { return true; }
 void Order::execute()
 {
     this->executed = true;
-    Notify(*this);
 }
 
 string Order::stringToLog() const
 {
-    return "Order log string";
+    const char *className = typeid(*this).name();
+    return "Order Log: Order was executed. Type of Order: " + std::string(className) + " - " + this->effect;
 }
 
 // assignment operator
@@ -90,7 +90,7 @@ Deploy::Deploy(const Deploy &existingDeploy)
 }
 
 // parameterized constructor
-Deploy::Deploy(Player* p, int n, Territory* t)
+Deploy::Deploy(Player *p, int n, Territory *t)
 {
     this->whichPlayer = p;
     this->howManyUnits = n;
@@ -104,21 +104,28 @@ Deploy::~Deploy() {}
 bool Deploy::validate()
 {
     // if the target territory doesn't belong to player who made the Deploy order, not valid
-    if (this->whichPlayer->getPlayerName() != this->target->occupierName) { return false; }
+    if (this->whichPlayer->getPlayerName() != this->target->occupierName)
+    {
+        return false;
+    }
 
     // if the number of armies is more than the player has in the reinforcement pool, not valid
-    if (this->howManyUnits > this->whichPlayer->getReinforcmentPool()) { return false; }
+    if (this->howManyUnits > this->whichPlayer->getReinforcmentPool())
+    {
+        return false;
+    }
 
     std::cout << "validate() called in a Deploy object" << std::endl;
-    
+
     return true;
 }
 
 // execute method override
 void Deploy::execute()
 {
+
     if (this->validate())
-    {   
+    {
         // subtract units from player's reinforcement pool
         this->whichPlayer->setReinforcementPool(this->whichPlayer->getReinforcmentPool() - this->howManyUnits);
 
@@ -135,6 +142,8 @@ void Deploy::execute()
     this->executed = true; // should this only happen if valid? or both so it can be removed? (double check)
     std::cout << "execute() called in a Deploy object" << std::endl;
     std::cout << this->effect << std::endl;
+
+    Notify(*this);
 }
 
 // assignment operator
@@ -163,6 +172,38 @@ std::ostream &operator<<(std::ostream &output, const Deploy &deploy)
     return output;
 }
 
+// Getters
+Player *Deploy::getWhichPlayer() const
+{
+    return whichPlayer;
+}
+
+int Deploy::getHowManyUnits() const
+{
+    return howManyUnits;
+}
+
+Territory *Deploy::getTarget() const
+{
+    return target;
+}
+
+// Setters
+void Deploy::setWhichPlayer(Player *player)
+{
+    whichPlayer = player;
+}
+
+void Deploy::setHowManyUnits(int units)
+{
+    howManyUnits = units;
+}
+
+void Deploy::setTarget(Territory *territory)
+{
+    target = territory;
+}
+
 //   ---   Advance class   ---
 
 // default constructor
@@ -180,7 +221,7 @@ Advance::Advance(const Advance &existingAdvance)
 }
 
 // parameterized constructor
-Advance::Advance(Player* p, int n, Territory* s, Territory* t)
+Advance::Advance(Player *p, int n, Territory *s, Territory *t)
 {
     this->whichPlayer = p;
     this->howManyUnits = n;
@@ -194,17 +235,26 @@ Advance::~Advance() {}
 // validate method override
 bool Advance::validate()
 {
-    // not valid if source doesn't belong to player 
-    if (this->source->occupierName != this->whichPlayer->getPlayerName()) { return false; }
+    // not valid if source doesn't belong to player
+    if (this->source->occupierName != this->whichPlayer->getPlayerName())
+    {
+        return false;
+    }
 
     // not valid if number of units is more than available at source
-    if (this->howManyUnits > this->source->numOfArmies) { return false; }
+    if (this->howManyUnits > this->source->numOfArmies)
+    {
+        return false;
+    }
 
     // not valid if target not adjacent to source
-    if (this->source->isAdjacent(this->target) == false) { return false; }
+    if (this->source->isAdjacent(this->target) == false)
+    {
+        return false;
+    }
 
     std::cout << "validate() called in an Advance object" << std::endl;
-    
+
     return true;
 }
 
@@ -212,10 +262,10 @@ bool Advance::validate()
 void Advance::execute()
 {
     if (this->validate())
-    {   
+    {
         // if target is friendly move units to defend
         if (this->source->occupierName == this->target->occupierName)
-        {   
+        {
             this->source->numOfArmies -= this->howManyUnits;
             this->target->numOfArmies += this->howManyUnits;
         }
@@ -223,7 +273,7 @@ void Advance::execute()
         else
         {
             // implement attack simulation.
-        }    
+        }
     }
     else
     {
@@ -591,7 +641,17 @@ void OrdersList::move(int a, int b)
 
 string OrdersList::stringToLog() const
 {
-    return "Command Processor log string";
+    Order *latestOrder = ordersList.back();
+    const char *className = typeid(*latestOrder).name();
+    if (!this->ordersList.empty())
+    {
+        // Get the last order in the list
+        return "Orders List Log: An Order was successfully added. Order Type: " + std::string(className);
+    }
+    else
+    {
+        return "Orders List Log: No orders in the list.";
+    }
 }
 
 // assignment operator

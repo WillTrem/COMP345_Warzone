@@ -1,16 +1,15 @@
 #include "GameEngine.h"
 
-// Default constuctor for GameEngine
+// Default constructor for GameEngine
 GameEngine::GameEngine()
 {
-    GameState startState = START;
-    currentState = &startState;
+    currentState = new GameState(START); // Allocate a new GameState on the heap
     stateTransitions = nullptr;
 
     deck = new Deck();
     players = new std::vector<Player *>;
 
-    commandProcessor = new CommandProcessor(); // The command processor to create depends on a command line parameter. How to handle this here?
+    commandProcessor = new CommandProcessor();
 }
 
 /**
@@ -70,15 +69,52 @@ GameEngine::~GameEngine()
     deck = nullptr;
 }
 
+string GameEngine::gameStateToString(GameState state) const
+{
+    switch (state)
+    {
+    case START:
+        return "START";
+    case MAP_LOADED:
+        return "MAP_LOADED";
+    case MAP_VALIDATED:
+        return "MAP_VALIDATED";
+    case PLAYERS_ADDED:
+        return "PLAYERS_ADDED";
+    case ASSIGN_REINFORCEMENTS:
+        return "ASSIGN_REINFORCEMENTS";
+    case ISSUE_ORDERS:
+        return "ISSUE_ORDERS";
+    case EXECUTE_ORDERS:
+        return "EXECUTE_ORDERS";
+    case WIN:
+        return "WIN";
+    case END:
+        return "END";
+    default:
+        return "UNKNOWN";
+    }
+}
+
 void GameEngine::transition(GameState *newState)
 {
-    currentState = newState;
-    Notify(*this);
+    if (currentState != nullptr)
+    {
+        *currentState = *newState;
+        Notify(*this);
+    }
 }
 
 string GameEngine::stringToLog() const
 {
-    return "Game Engine log string";
+    if (currentState != nullptr)
+    {
+        return "Game Engine Log: Game Engine transitioned to state - " + gameStateToString(*currentState);
+    }
+    else
+    {
+        return "";
+    }
 }
 
 /**

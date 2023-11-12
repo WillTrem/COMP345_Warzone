@@ -13,5 +13,6 @@
 #include "MapDriver.h"
 #include "CommandProcessing.h"
 #include "CommandProcessingDriver.h"
+#include "LoggingObserverDriver.h"
 
 // TODO: Reference additional headers your program requires here.

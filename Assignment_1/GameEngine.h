@@ -47,7 +47,7 @@ public:
 
     // Function to log to GameLog.txt
     string stringToLog() const override;
-
+    string gameStateToString(GameState state) const;
     void mainGameLoop();
     void reinforcementPhase();
     void issueOrdersPhase();
