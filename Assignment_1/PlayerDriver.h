@@ -4,4 +4,7 @@
 // Written by William Tremblay, 40174212.
 #pragma once
 
+#include "Player.h"
+#include "Cards.h"
+
 void testPlayers();

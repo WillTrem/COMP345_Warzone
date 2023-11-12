@@ -6,4 +6,12 @@
 #include <iostream>
 #include <string>
 
+#include "CardsDriver.h"
+#include "GameEngineDriver.h"
+#include "PlayerDriver.h"
+#include "OrdersDriver.h"
+#include "MapDriver.h"
+#include "CommandProcessing.h"
+#include "CommandProcessingDriver.h"
+
 // TODO: Reference additional headers your program requires here.

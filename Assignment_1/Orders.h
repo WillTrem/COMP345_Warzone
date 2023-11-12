@@ -10,12 +10,12 @@
 
 // written by Chris Anglin --- 40216346 
 
-#ifndef ORDERS_H
-#define ORDERS_H
+#pragma once
 
 #include <iostream>
 #include <deque>
 #include "Player.h"
+#include "Map.h"
 
 //   ---   Order class    ---   [each ORDER type (below) inherits from this class and overrides execute() and validate()]
 
@@ -336,5 +336,3 @@ class OrdersList
     //stream insertion operator
     friend std::ostream& operator<<(std::ostream& output, const OrdersList& ordersList);
 };
-
-#endif

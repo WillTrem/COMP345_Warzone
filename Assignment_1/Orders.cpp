@@ -10,9 +10,9 @@
 
 // written by Chris Anglin --- 40216346
 
-#include "Orders.h"
 #include <iostream>
 #include <string>
+#include "Orders.h"
 
 //   ---   Order class   ---   
 
