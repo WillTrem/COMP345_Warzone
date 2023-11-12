@@ -70,8 +70,7 @@ GameEngine::~GameEngine()
     deck = nullptr;
 }
 
-
-void GameEngine::transition(GameState* newState)
+void GameEngine::transition(GameState *newState)
 {
     currentState = newState;
 }
@@ -86,7 +85,7 @@ void GameEngine::executeCommand(std::string commandArg)
     bool cmdSucessful = false;
 
     // passed by reference instead of value so no new variables are created
-    for (auto& cmd : (*stateTransitions)[*currentState])
+    for (auto &cmd : (*stateTransitions)[*currentState])
     {
         if ((cmd.cmdName) == commandArg)
         {
@@ -103,7 +102,7 @@ void GameEngine::executeCommand(std::string commandArg)
 }
 
 // Overload of executeCommand which takes in an actual command object.
-void GameEngine::executeCommand(Command* command)
+void GameEngine::executeCommand(Command *command)
 {
     // We assume that the input command has already been validated.
 
@@ -113,13 +112,13 @@ void GameEngine::executeCommand(Command* command)
     if (!cmdSucessful)
     {
         std::cout << "Something went wrong executing the command.\n"
-            << std::endl;
+                  << std::endl;
     }
 }
 
 void GameEngine::startupPhase()
 {
-    Command* currentCommand = nullptr;
+    Command *currentCommand = nullptr;
 
     while (*currentState != ASSIGN_REINFORCEMENTS) // Remain in the startup phase until we switch to the gamestart/play phase.
     {
@@ -134,7 +133,7 @@ void GameEngine::startupPhase()
         }
         else
             cout << "Invalid command. Please re-enter.\n"
-            << endl;
+                 << endl;
     }
 }
 
@@ -245,9 +244,11 @@ void GameEngine::issueOrdersPhase()
 
 void GameEngine::executeOrdersPhase()
 {
+    for (auto player : *players)
+    {
+        
+    }
 }
-
-
 
 void GameEngine::operator=(GameState &newState)
 {
