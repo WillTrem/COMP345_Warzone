@@ -83,7 +83,7 @@ Deploy::Deploy(const Deploy& existingDeploy)
     std::cout << "Deploy object created using copy constructor" << std:: endl;
 }
 
- // parametered constructor
+// parameterized constructor
 Deploy::Deploy(Player* p, int n, Territory* t)
 {
     this->whichPlayer = p;
@@ -169,6 +169,15 @@ Advance::Advance(const Advance& existingAdvance)
 {
     this->effect = existingAdvance.effect;
     std::cout << "Advance object created using copy constructor" << std:: endl;
+}
+
+// parameterized constructor
+Advance::Advance(Player* p, int n, Territory* s, Territory* t)
+{
+    this->whichPlayer = p;
+    this->howManyUnits = n;
+    this->source = s;
+    this->target = t;
 }
 
 // destructor

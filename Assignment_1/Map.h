@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <map>
 #include <vector>
@@ -6,6 +7,7 @@ using namespace std;
 
 #ifndef MAP_H
 #define MAP_H
+
 class Territory
 {
 public:

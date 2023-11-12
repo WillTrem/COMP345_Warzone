@@ -79,7 +79,7 @@ class Deploy : public Order
     // copy constructor
     Deploy(const Deploy& existingDeploy);
 
-    // parametered constructor
+    // parameterized constructor
     Deploy(Player* p, int n, Territory* t);
 
     // default destructor
@@ -112,12 +112,21 @@ class Advance : public Order
     // boolean set true if action object has been executed
     bool executed = false;
 
+    // attributes i need as parameters for Advance's validate() and execute() methods:
+    Player* whichPlayer;
+    int howManyUnits;
+    Territory* source;
+    Territory* target;
+
     public:
     // default constructor
     Advance();
 
     // copy constructor
     Advance(const Advance& existingAdvance);
+
+    // parameterized constructor
+    Advance(Player* p, int n, Territory* s, Territory* t);
 
     // default destructor
     ~Advance();
