@@ -1,7 +1,5 @@
 
-//#pragma once
-#ifndef CARDS_H
-#define CARDS_H
+#pragma once
 
 #include <string>
 #include <algorithm>
@@ -158,5 +156,3 @@ class Deck
 	void operator=(Deck& Deck);
 	friend std::ostream& operator<<(std::ostream& out, const Deck& d);
 };
-
-#endif
