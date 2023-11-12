@@ -98,10 +98,10 @@ Deploy::~Deploy() {}
 bool Deploy::validate()
 {
     // if the target territory doesn't belong to player who made the Deploy order, not valid
-    if (whichPlayer->getPlayerName() != target->occupierName) {return false;}
+    if (this->whichPlayer->getPlayerName() != this->target->occupierName) {return false;}
 
     // if the number of armies is more than the player has in the reinforcement pool, not valid
-    if (howManyUnits > whichPlayer->getReinforcmentPool()) {return false;}
+    if (this->howManyUnits > this->whichPlayer->getReinforcmentPool()) {return false;}
 
     std::cout << "validate() called in a Deploy object" << std::endl;
     
@@ -112,10 +112,22 @@ bool Deploy::validate()
 void Deploy::execute()
 {
     if (this->validate())
+    {   
+        // subtract units from player's reinforcement pool
+        this->whichPlayer->setReinforcementPool(this->whichPlayer->getReinforcmentPool() - this->howManyUnits);
+
+        // add units to the target territory
+        this->target->numOfArmies = this->target->numOfArmies + this->howManyUnits;
+
+        this->effect = this->whichPlayer->getPlayerName() + " deployed " + std::to_string(this->howManyUnits) + " to " + this->target->territoryName;
+    } else
     {
-        std::cout << "execute() called in a Deploy object" << std::endl;
-        this->executed = true;
+        this->effect = this->whichPlayer->getPlayerName() + "'s Deploy was not valid..";
     }
+
+    this->executed = true; // should this only happen if valid? or both so it can be removed? (double check)
+    std::cout << "execute() called in a Deploy object" << std::endl;
+    std::cout << this->effect << std::endl;
 }
 
 // assignment operator
