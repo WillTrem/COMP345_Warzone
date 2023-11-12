@@ -52,6 +52,8 @@ public:
 
     void setNeighboringTerritories(vector<Territory *> neighboringTerritoriesVal);
     // ****************************************************
+
+    bool isAdjacent(Territory* target);
 };
 
 class Continent
