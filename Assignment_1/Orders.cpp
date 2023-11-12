@@ -10,8 +10,14 @@
 
 // written by Chris Anglin --- 40216346
 
+
+// TO-DO: add logic so player gets a card at end of turn if capturedTerritoryThisTurn is true
+//      : make sure airlift can only be called by player with airlift card
+
 #include <iostream>
 #include <string>
+#include <cstdlib>
+
 #include "Orders.h"
 
 //   ---   Order class   ---
@@ -103,6 +109,8 @@ Deploy::~Deploy() {}
 // validate method override
 bool Deploy::validate()
 {
+    std::cout << "validate() called in a Deploy object" << std::endl;
+
     // if the target territory doesn't belong to player who made the Deploy order, not valid
     if (this->whichPlayer->getPlayerName() != this->target->occupierName)
     {
@@ -114,8 +122,6 @@ bool Deploy::validate()
     {
         return false;
     }
-
-    std::cout << "validate() called in a Deploy object" << std::endl;
 
     return true;
 }
@@ -130,8 +136,7 @@ void Deploy::execute()
         this->whichPlayer->setReinforcementPool(this->whichPlayer->getReinforcmentPool() - this->howManyUnits);
 
         // add units to the target territory
-        this->target->numOfArmies += this->howManyUnits;
-
+        this->target->setTerritoryNumberOfArmies(this->target->numOfArmies + this->howManyUnits);
         this->effect = this->whichPlayer->getPlayerName() + " deployed " + std::to_string(this->howManyUnits) + " to " + this->target->territoryName;
     }
     else
@@ -235,11 +240,10 @@ Advance::~Advance() {}
 // validate method override
 bool Advance::validate()
 {
-    // not valid if source doesn't belong to player
-    if (this->source->occupierName != this->whichPlayer->getPlayerName())
-    {
-        return false;
-    }
+    std::cout << "validate() called in an Advance object" << std::endl;
+
+    // not valid if source doesn't belong to player 
+    if (this->source->occupierName != this->whichPlayer->getPlayerName()) { return false; }
 
     // not valid if number of units is more than available at source
     if (this->howManyUnits > this->source->numOfArmies)
@@ -248,13 +252,8 @@ bool Advance::validate()
     }
 
     // not valid if target not adjacent to source
-    if (this->source->isAdjacent(this->target) == false)
-    {
-        return false;
-    }
-
-    std::cout << "validate() called in an Advance object" << std::endl;
-
+    if (this->source->isAdjacent(this->target) == false) { return false; }
+    
     return true;
 }
 
@@ -265,15 +264,55 @@ void Advance::execute()
     {
         // if target is friendly move units to defend
         if (this->source->occupierName == this->target->occupierName)
-        {
-            this->source->numOfArmies -= this->howManyUnits;
-            this->target->numOfArmies += this->howManyUnits;
+        {   
+            this->source->setTerritoryNumberOfArmies(this->source->numOfArmies - this->howManyUnits);
+            this->target->setTerritoryNumberOfArmies(this->target->numOfArmies + this->howManyUnits);
+            this->effect = this->whichPlayer->getPlayerName() + " advanced " + std::to_string(this->howManyUnits) + " units from " + this->source->territoryName + " to " + this->target->territoryName;
         }
         // otherwise attack
         else
         {
-            // implement attack simulation.
-        }
+            int attackerCount = this->howManyUnits;
+            int defenderCount = this->target->numOfArmies;
+
+            // attacker goes first
+            for (int i = 0; i < attackerCount; i++)
+            {
+            if ((rand() % 11) >= 4) // 60% success rate
+                {
+                    defenderCount--;
+                }
+            }
+
+            // then defender strikes back
+            for (int i = 0; i < defenderCount; i++)
+            {
+                if ((rand() % 11) >= 3) // 70% success rate
+                {
+                    attackerCount--;
+                }
+            }
+            
+            // if attacker wins, take the territory and move the remaining attackers over
+            if (defenderCount <= 0 && attackerCount > 0)
+            {
+                this->target->setOccupierName(this->source->occupierName);
+                this->target->setTerritoryNumberOfArmies(attackerCount);
+                this->source->setTerritoryNumberOfArmies(this->source->numOfArmies - this->howManyUnits);
+                this->effect = this->whichPlayer->getPlayerName() + " captured " + this->target->territoryName;
+                this->whichPlayer->setCapturedTerritoryThisTurn(true); // this Player has captured a territory now and gets a card
+            }
+            // otherwise just update the unit counts on the territories
+            else
+            {
+                if (defenderCount < 0) { defenderCount = 0; }
+                if (attackerCount < 0) { attackerCount = 0; }
+
+                this->target->setTerritoryNumberOfArmies(defenderCount);
+                this->source->setTerritoryNumberOfArmies(this->source->numOfArmies - (howManyUnits - attackerCount));
+                this->effect = this->whichPlayer->getPlayerName() + "'s attack on " + this->target->territoryName + " was unsuccesful";
+            }
+        }    
     }
     else
     {
@@ -327,14 +366,24 @@ Bomb::Bomb(const Bomb &existingBomb)
     std::cout << "Bomb object created using copy constructor" << std::endl;
 }
 
+// parameterized constructor
+Bomb::Bomb(Player* p, Territory* t)
+{
+    this->whichPlayer = p;
+    this->target = t;
+}
+
 // destructor
 Bomb::~Bomb() {}
 
 // validate method override
 bool Bomb::validate()
 {
-    std::cout << "validate() called in a Bomb object\n"
-              << std::endl;
+    std::cout << "validate() called in a Bomb object\n" << std::endl;
+
+    // check target belongs to other player
+    if (this->whichPlayer->getPlayerName() == this->target->occupierName) { return false; }
+
     return true;
 }
 
@@ -343,9 +392,17 @@ void Bomb::execute()
 {
     if (this->validate())
     {
-        std::cout << "execute() called in a Bomb object" << std::endl;
-        this->executed = true;
+        this->target->setTerritoryNumberOfArmies(this->target->numOfArmies / 2); // halve the target's army count
+        this->effect = this->whichPlayer->getPlayerName() + " bombed " + this->target->territoryName;
     }
+    else
+    {
+        this->effect = this->whichPlayer->getPlayerName() + "'s bomb failed..";
+    }
+
+    std::cout << "execute() called in a Bomb object" << std::endl;
+    this->executed = true;
+    std::cout << this->effect << std::endl;
 }
 
 // assignment operator
@@ -452,6 +509,15 @@ Airlift::Airlift(const Airlift &existingAirlift)
     std::cout << "Airlift object created using copy constructor" << std::endl;
 }
 
+// parameterized constructor
+Airlift::Airlift(Player* p, int n, Territory* s, Territory* t)
+{
+    this->whichPlayer = p;
+    this->howManyUnits = n;
+    this->source = s;
+    this->target = t;
+}
+
 // destructor
 Airlift::~Airlift() {}
 
@@ -459,6 +525,13 @@ Airlift::~Airlift() {}
 bool Airlift::validate()
 {
     std::cout << "validate() called in an Airlift object" << std::endl;
+
+    // check source and target belong to the player
+    if (!(this->source->occupierName == this->target->occupierName && this->source->occupierName == this->whichPlayer->getPlayerName())) { return false; }
+
+    // check source has enough units available to move
+    if (this->howManyUnits > this->source->numOfArmies) { return false; }
+
     return true;
 }
 
@@ -467,9 +540,18 @@ void Airlift::execute()
 {
     if (this->validate())
     {
-        std::cout << "execute() called in an Airlift object" << std::endl;
-        this->executed = true;
+        this->source->setTerritoryNumberOfArmies(this->source->numOfArmies - this->howManyUnits);
+        this->target->setTerritoryNumberOfArmies(this->target->numOfArmies + this->howManyUnits);
+        this->effect = this->whichPlayer->getPlayerName() + " airlifted " + std::to_string(this->howManyUnits) + " from " + this->source->territoryName + " to " + this->target->territoryName;
     }
+    else
+    {
+        this->effect = this->whichPlayer->getPlayerName() + "'s airlift not valid..";
+    }
+
+    std::cout << "execute() called in an Airlift object" << std::endl;
+    this->executed = true;
+    std::cout << this->effect << std::endl;
 }
 
 // assignment operator

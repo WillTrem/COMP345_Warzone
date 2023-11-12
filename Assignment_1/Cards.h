@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <string>
@@ -155,17 +156,3 @@ class Deck
 	void operator=(Deck& Deck);
 	friend std::ostream& operator<<(std::ostream& out, const Deck& d);
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -154,7 +154,7 @@ void GameEngine::executeCommand(Command *command)
     if (!cmdSucessful)
     {
         std::cout << "Something went wrong executing the command.\n"
-                  << std::endl;
+                        << std::endl;
     }
 }
 
@@ -175,7 +175,7 @@ void GameEngine::startupPhase()
         }
         else
             cout << "Invalid command. Please re-enter.\n"
-                 << endl;
+                      << endl;
     }
 }
 
@@ -286,6 +286,10 @@ void GameEngine::issueOrdersPhase()
 
 void GameEngine::executeOrdersPhase()
 {
+    for (auto player : *players)
+    {
+        
+    }
 }
 
 void GameEngine::operator=(GameState &newState)
