@@ -10,8 +10,12 @@
 
 // written by Chris Anglin --- 40216346
 
+
+// TO-DO: add logic so player gets a card at end of turn if capturedTerritoryThisTurn is true
+
 #include <iostream>
 #include <string>
+#include <cstdlib>
 
 #include "Orders.h"
 
@@ -208,11 +212,51 @@ void Advance::execute()
         {   
             this->source->numOfArmies -= this->howManyUnits;
             this->target->numOfArmies += this->howManyUnits;
+            this->effect = this->whichPlayer->getPlayerName() + " advanced " + std::to_string(this->howManyUnits) + " units from " + this->source->territoryName + " to " + this->target->territoryName;
         }
         // otherwise attack
         else
         {
-            // implement attack simulation.
+            int attackerCount = this->howManyUnits;
+            int defenderCount = this->target->numOfArmies;
+
+            while (attackerCount > 0 && defenderCount > 0)
+            {
+                // attacker goes first
+                for (int i = 0; i < attackerCount; i++)
+                {
+                    if ((rand() % 11) >= 4) // 60% success rate
+                    {
+                        defenderCount--;
+                    }
+                }
+
+                // then defender strikes back
+                for (int i = 0; i < defenderCount; i++)
+                {
+                    if ((rand() % 11) >= 3) // 70% success rate
+                    {
+                        attackerCount--;
+                    }
+                }
+            }
+
+            // if attacker wins, take the territory and move the remaining attackers over, subtract attackers from source too
+            if (defenderCount <= 0 && attackerCount > 0)
+            {
+                this->target->setOccupierName(this->source->occupierName);
+                this->target->setTerritoryNumberOfArmies(attackerCount);
+                this->source->setTerritoryNumberOfArmies(this->source->numOfArmies - this->howManyUnits);
+                this->effect = this->whichPlayer->getPlayerName() + " captured " + this->target->territoryName;
+                this->whichPlayer->setCapturedTerritoryThisTurn(true); // this Player has captured a territory now and gets a card
+            }
+            // otherwise just update the unit counts on the territories
+            else
+            {
+                this->target->setTerritoryNumberOfArmies(defenderCount);
+                this->source->setTerritoryNumberOfArmies(this->source->numOfArmies - (howManyUnits - attackerCount));
+                this->effect = this->whichPlayer->getPlayerName() + "'s attack on " + this->target->territoryName + " was unsuccesful";
+            }
         }    
     }
     else

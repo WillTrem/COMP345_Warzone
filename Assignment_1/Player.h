@@ -31,6 +31,8 @@ private:
 
 	vector<Territory *> prioritizeTerritories(vector<Territory *> territories);
 
+	bool capturedTerritoryThisTurn = false;
+
 public:
 	// Default constructor
 	Player();
@@ -58,6 +60,8 @@ public:
 
 	int getReinforcmentPool();
 	void setReinforcementPool(int numUnits);
+
+	void setCapturedTerritoryThisTurn(bool update);
 
 	// TODO
 	vector<Territory *> toDefend();

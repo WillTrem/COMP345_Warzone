@@ -98,6 +98,11 @@ void Player::setReinforcementPool(int numUnits)
 	reinforcementPool = numUnits;
 }
 
+void Player::setCapturedTerritoryThisTurn(bool update)
+{
+	this->capturedTerritoryThisTurn = update;
+}
+
 // Returns the hand of the player
 Hand *Player::getHand()
 {
