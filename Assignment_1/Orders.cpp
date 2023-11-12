@@ -83,6 +83,14 @@ Deploy::Deploy(const Deploy& existingDeploy)
     std::cout << "Deploy object created using copy constructor" << std:: endl;
 }
 
+ // parametered constructor
+Deploy::Deploy(Player* p, int n, Territory* t)
+{
+    this->whichPlayer = p;
+    this->howManyUnits = n;
+    this->target = t;
+}
+
 // destructor
 Deploy::~Deploy() {}
 

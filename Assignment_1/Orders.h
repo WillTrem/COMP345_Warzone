@@ -15,6 +15,7 @@
 
 #include <iostream>
 #include <deque>
+#include "Player.h"
 
 //   ---   Order class    ---   [each ORDER type (below) inherits from this class and overrides execute() and validate()]
 
@@ -66,12 +67,20 @@ class Deploy : public Order
     // boolean set true if action object has been executed
     bool executed = false;
 
+    // attributes i need as parameters for Deploy's validate() and execute() methods:
+    Player* whichPlayer;
+    int howManyUnits;
+    Territory* target;
+
     public:
     // default constructor
     Deploy();
 
     // copy constructor
     Deploy(const Deploy& existingDeploy);
+
+    // parametered constructor
+    Deploy(Player* p, int n, Territory* t);
 
     // default destructor
     ~Deploy();
