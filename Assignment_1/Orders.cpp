@@ -66,10 +66,6 @@ std::ostream& operator<<(std::ostream& output, const Order& order)
 
 //   ---   Deploy class   ---  
 
-// Deploy order: A deploy order tells a certain number of army units taken from the reinforcement pool to deploy to a target territory owned by the player issuing this order.
-// • If the target territory does not belong to the player that issued the order, the order is invalid.
-// • If the target territory belongs to the player that issued the deploy order, the selected number of army units is added to the number of army units on that territory.
-
 // default constructor
 Deploy::Deploy() 
 {
@@ -98,10 +94,10 @@ Deploy::~Deploy() {}
 bool Deploy::validate()
 {
     // if the target territory doesn't belong to player who made the Deploy order, not valid
-    if (this->whichPlayer->getPlayerName() != this->target->occupierName) {return false;}
+    if (this->whichPlayer->getPlayerName() != this->target->occupierName) { return false; }
 
     // if the number of armies is more than the player has in the reinforcement pool, not valid
-    if (this->howManyUnits > this->whichPlayer->getReinforcmentPool()) {return false;}
+    if (this->howManyUnits > this->whichPlayer->getReinforcmentPool()) { return false; }
 
     std::cout << "validate() called in a Deploy object" << std::endl;
     
@@ -117,10 +113,11 @@ void Deploy::execute()
         this->whichPlayer->setReinforcementPool(this->whichPlayer->getReinforcmentPool() - this->howManyUnits);
 
         // add units to the target territory
-        this->target->numOfArmies = this->target->numOfArmies + this->howManyUnits;
+        this->target->numOfArmies += this->howManyUnits;
 
         this->effect = this->whichPlayer->getPlayerName() + " deployed " + std::to_string(this->howManyUnits) + " to " + this->target->territoryName;
-    } else
+    }
+    else
     {
         this->effect = this->whichPlayer->getPlayerName() + "'s Deploy was not valid..";
     }
@@ -186,18 +183,45 @@ Advance::~Advance() {}
 // validate method override
 bool Advance::validate()
 {
+    // not valid if source doesn't belong to player 
+    if (this->source->occupierName != this->whichPlayer->getPlayerName()) { return false; }
+
+    // not valid if number of units is more than available at source
+    if (this->howManyUnits > this->source->numOfArmies) { return false; }
+
+    // not valid if target not adjacent to source
+    if (this->source->isAdjacent(this->target) == false) { return false; }
+
     std::cout << "validate() called in an Advance object" << std::endl;
+    
     return true;
 }
 
-// execute method override
+// execute method override   [!!! finish implementing this]
 void Advance::execute()
 {
     if (this->validate())
-    {
-        std::cout << "execute() called in an Advance object" << std::endl;
-        this->executed = true;
+    {   
+        // if target is friendly move units to defend
+        if (this->source->occupierName == this->target->occupierName)
+        {   
+            this->source->numOfArmies -= this->howManyUnits;
+            this->target->numOfArmies += this->howManyUnits;
+        }
+        // otherwise attack
+        else
+        {
+            // implement attack simulation.
+        }    
     }
+    else
+    {
+        this->effect = this->whichPlayer->getPlayerName() + "'s Advance was not valid..";
+    }
+
+    this->executed = true; // should this only happen if valid? or both so it can be removed? (double check)
+    std::cout << "execute() called in an Advance object" << std::endl;
+    std::cout << this->effect << std::endl;
 }
 
 // assignment operator
