@@ -97,7 +97,14 @@ Deploy::~Deploy() {}
 // validate method override
 bool Deploy::validate()
 {
+    // if the target territory doesn't belong to player who made the Deploy order, not valid
+    if (whichPlayer->getPlayerName() != target->occupierName) {return false;}
+
+    // if the number of armies is more than the player has in the reinforcement pool, not valid
+    if (howManyUnits > whichPlayer->getReinforcmentPool()) {return false;}
+
     std::cout << "validate() called in a Deploy object" << std::endl;
+    
     return true;
 }
 
