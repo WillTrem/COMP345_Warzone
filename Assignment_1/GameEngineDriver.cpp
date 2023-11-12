@@ -98,7 +98,7 @@ void testGameEngine()
     std::string endCmd= "end";
 
     // Game Engine FSM
-    std::map<GameState, std::list<Command>> stateTransitions = {
+    std::map<GameState, std::list<Command> > stateTransitions = {
         // Start states
         {GameState::START, { 
             Command(&loadMapCmd, loadMap, &MAP_LOADED)}},
@@ -164,7 +164,7 @@ void testStartupPhase()
     std::string endCmd = "end";
 
     // Game Engine FSM
-    std::map<GameState, std::list<Command>> stateTransitions = {
+    std::map<GameState, std::list<Command> > stateTransitions = {
         // Start states
         {GameState::START, {
             Command(&loadMapCmd, loadMap, &MAP_LOADED)}},

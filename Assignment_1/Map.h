@@ -89,7 +89,7 @@ public:
     map<std::string, int> mapContinents = map<std::string, int>();
     vector<string> neighborTerritories = vector<string>();
     vector<Territory *> continentTerritories = vector<Territory *>();
-    map<Territory *, vector<string>> neighborTerritoryMappingList;
+    map<Territory *, vector<string> > neighborTerritoryMappingList;
 
     // default constructor
     Map();

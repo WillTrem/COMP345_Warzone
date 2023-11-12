@@ -21,10 +21,12 @@ void testOrderExecution()
 void testOrdersLists()
 {
     // make my testing output look nice
-    std::cout << "\n\n ---   PART 3 : testing   --- \n" << std::endl;
+    std::cout << "\n\n ---   PART 3 : testing   --- \n"
+              << std::endl;
 
     // create orders of every kind (including the plain Order object, why not)
-    std::cout << "\n -- create orders of every kind :\n" << std::endl;
+    std::cout << "\n -- create orders of every kind :\n"
+              << std::endl;
     Deploy deploy_test = Deploy();
     Advance advance_test = Advance();
     Bomb bomb_test = Bomb();
@@ -35,7 +37,8 @@ void testOrdersLists()
     std::cout << std::endl;
 
     // create an OrdersList object to hold the orders
-    std::cout << " -- create an OrdersList object to hold the orders :\n" << std::endl;
+    std::cout << " -- create an OrdersList object to hold the orders :\n"
+              << std::endl;
     OrdersList orderslist_test = OrdersList();
 
     std::cout << std::endl;
@@ -49,24 +52,30 @@ void testOrdersLists()
     orderslist_test.addOrder(&negotiate_test);
 
     // print out the contents of the orderlist
-    std::cout << "\n -- print out the contents of the orderlist :\n" << std::endl;
+    std::cout << "\n -- print out the contents of the orderlist :\n"
+              << std::endl;
     std::cout << orderslist_test << std::endl;
 
     // remove blockade order and reprint the orderlist
-    std::cout << " -- remove blockade order and reprint the orderlist :\n" << std::endl;
+    std::cout << " -- remove blockade order and reprint the orderlist :\n"
+              << std::endl;
     orderslist_test.remove(4);
     std::cout << orderslist_test << std::endl;
 
     // swap deploy and bomb in the orderlist using move() and reprint it
-    std::cout << " -- swap deploy and bomb in the orderlist using move() and reprint it :\n" << std::endl;
+    std::cout << " -- swap deploy and bomb in the orderlist using move() and reprint it :\n"
+              << std::endl;
     orderslist_test.move(3, 1);
     std::cout << orderslist_test << std::endl;
 
     // execute the first order and reprint the list
-    std::cout << " -- execute the first order and reprint the list :\n" << std::endl;
-    Order* nextOrder = orderslist_test.getNextOrder();
+    std::cout << " -- execute the first order and reprint the list :\n"
+              << std::endl;
+    Order *nextOrder = orderslist_test.getNextOrder();
     nextOrder->execute();
-    std::cout << std::endl << orderslist_test << std::endl;
+    std::cout << std::endl
+              << orderslist_test << std::endl;
 
-    std::cout << " ---   PART 3: testing done :)   ---\n\n" << std::endl;
+    std::cout << " ---   PART 3: testing done :)   ---\n\n"
+              << std::endl;
 }

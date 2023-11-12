@@ -9,16 +9,13 @@
 #include <string>
 #include <iostream>
 #include <memory>
+#include <fstream>
 
 using namespace std;
 
 // ********** OBSERVER ********** //
 Observer::Observer() {}
 Observer::~Observer() {}
-void Observer::Update()
-{
-    // Provide the implementation for the pure virtual function
-}
 // ********** OBSERVER ********** //
 
 // ********** SUBJECT ********** //
@@ -42,7 +39,7 @@ void Subject::Notify(const ILoggable &loggable)
 {
     list<Observer *>::iterator i = _observers->begin();
     for (; i != _observers->end(); ++i)
-        (*i)->Update();
+        (*i)->Update(loggable);
 };
 
 // ********** SUBJECT ********** //
@@ -50,8 +47,31 @@ void Subject::Notify(const ILoggable &loggable)
 // ********** ILOGGABLE ********** //
 ILoggable::~ILoggable() = default;
 
-std::string ILoggable::stringToLog()
+std::string ILoggable::stringToLog() const
 {
     return "Default log string";
 }
 // ********** ILOGGABLE ********** //
+
+// ********** LOGOBSERVER ********** //
+
+void LogObserver::Update(const ILoggable &loggable)
+{
+    // Open the file in append mode
+    std::ofstream file("GameLog.txt", std::ios::app);
+
+    if (file.is_open())
+    {
+        // Write the log entry to the file
+        file << "Logging to GameLog.txt: " << loggable.stringToLog() << std::endl;
+
+        // Close the file
+        file.close();
+    }
+    else
+    {
+        // Handle the case where the file couldn't be opened
+        std::cerr << "Unable to open GameLog.txt for writing." << std::endl;
+    }
+}
+// ********** LOGOBSERVER ********** //

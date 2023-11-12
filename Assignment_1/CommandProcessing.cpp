@@ -34,6 +34,11 @@ void Command::saveEffect(string effectString = "A command did a thing.")
 	Notify(*this);
 }
 
+string Command::stringToLog() const
+{
+	return "Command log string";
+}
+
 // Executive functions used by commands.
 bool Command::loadMap(GameState *&gameState, Map *&gameMap, std::vector<Player *> *&gamePlayers, Deck *&gameDeck)
 {
@@ -58,7 +63,7 @@ bool Command::validateMap(GameState *&gameState, Map *&gameMap, std::vector<Play
 	cout << "Available commands : 'addplayer'.\n\n"
 		 << endl;
 
-	saveEffect("Successfully validated map " + gameMap->mapName + ".");
+	saveEffect("Successfully validatedF map " + gameMap->mapName + ".");
 
 	gameState = nextState;
 	return true;
@@ -190,6 +195,11 @@ Command *CommandProcessor::readCommand()
 	Command *newCommand = (inputCommand.size() == 1) ? new Command(inputCommand[0]) : new Command(inputCommand[0], inputCommand[1]);
 	return newCommand;
 };
+
+string CommandProcessor::stringToLog() const
+{
+	return "Command Processor log string";
+}
 
 // Saves the command in the list of commands
 void CommandProcessor::saveCommand(Command *command)

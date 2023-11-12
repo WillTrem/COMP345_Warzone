@@ -44,6 +44,9 @@ public:
     // pure virtual method to validate order
     virtual bool validate() = 0;
 
+    // Function to log to GameLog.txt
+    string stringToLog() const override;
+
     // assignment operator
     Order &operator=(const Order &order);
 
@@ -309,6 +312,9 @@ public:
 
     // move around an order in the list (use menu numbers)
     void move(int a, int b);
+
+    // Function to log to GameLog.txt
+    string stringToLog() const override;
 
     // assignment operator
     OrdersList &operator=(const OrdersList &ordersList);

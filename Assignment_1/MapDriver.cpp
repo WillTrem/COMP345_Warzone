@@ -20,9 +20,9 @@ void testLoadMap()
     mapFiles.push_back("3D Cliff.map");
     mapFiles.push_back("Lorem.txt");
 
-    for (const string& mapFile : mapFiles)
+    for (const string &mapFile : mapFiles)
     {
-        Map* newMap = new Map(mapFile);
+        Map *newMap = new Map(mapFile);
         newMap->loadMap(mapFile);
         try
         {
@@ -42,10 +42,9 @@ void testLoadMap()
             std::cerr << "File/Map is Invalid" << std::endl;
         }
         cout << endl
-            << endl
-            << endl;
+             << endl
+             << endl;
     }
 
     std::cout << std::endl;
 };
-

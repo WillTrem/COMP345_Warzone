@@ -1,4 +1,5 @@
 #pragma once
+#pragma clang diagnostic ignored "-Wc++11-extensions"
 
 #include "Player.h"
 #include "Map.h"
@@ -37,24 +38,39 @@ enum GameState
 };
 
 // Maps which state(s) a command is valid in.
-const map<string, list<GameState>> stateTransitions = {
-	{"loadmap", {START, MAP_LOADED}},
-	{"validatemap", {MAP_LOADED}},
-	{"addplayer", {MAP_VALIDATED, PLAYERS_ADDED}},
-	{"gamestart", {PLAYERS_ADDED}},
-	{"replay", {WIN}},
-	{"quit", {WIN}},
-};
+std::map<std::string, std::vector<GameState> > stateTransitions;
 
-// Map which state a valid command leads to.
-const map<string, GameState> commandTransitions = {
-	{"loadmap", MAP_LOADED},
-	{"validatemap", MAP_VALIDATED},
-	{"addplayer", PLAYERS_ADDED},
-	{"gamestart", ASSIGN_REINFORCEMENTS},
-	{"replay", START},
-	{"quit", END},
-};
+// Maps which state(s) a command is valid in.
+std::map<std::string, GameState> commandTransitions;
+
+void initializeStateTransitions()
+{
+	stateTransitions["loadmap"].push_back(START);
+	stateTransitions["loadmap"].push_back(MAP_LOADED);
+
+	stateTransitions["validatemap"].push_back(MAP_LOADED);
+
+	stateTransitions["addplayer"].push_back(MAP_VALIDATED);
+	stateTransitions["addplayer"].push_back(PLAYERS_ADDED);
+
+	stateTransitions["gamestart"].push_back(PLAYERS_ADDED);
+
+	stateTransitions["replay"].push_back(WIN);
+
+	stateTransitions["quit"].push_back(WIN);
+}
+
+void initializeCommandTransitions()
+{
+	commandTransitions["loadmap"] = MAP_LOADED;
+	commandTransitions["validatemap"] = MAP_VALIDATED;
+	commandTransitions["addplayer"] = PLAYERS_ADDED;
+	commandTransitions["gamestart"] = ASSIGN_REINFORCEMENTS;
+	commandTransitions["replay"] = START;
+	commandTransitions["quit"] = END;
+}
+
+static bool initialized = (initializeStateTransitions(), initializeCommandTransitions(), true);
 
 /**
  * A command consists of:
@@ -80,6 +96,9 @@ public:
 
 	// Saves the effect of the command after execution
 	void saveEffect(string effectString);
+
+	// Function to log to GameLog.txt
+	string stringToLog() const override;
 
 	// Executive functions used by commands.
 	bool loadMap(GameState *&gameState, Map *&gameMap, std::vector<Player *> *&gamePlayers, Deck *&gameDeck);
@@ -120,6 +139,9 @@ public:
 
 	// Validates if a command is valid in the current game state;
 	bool validate(Command *command, GameState currentState);
+
+	// Function to log to GameLog.txt
+	string stringToLog() const override;
 
 	// Assignment operator
 	CommandProcessor &operator=(const CommandProcessor &other);

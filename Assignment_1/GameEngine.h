@@ -15,11 +15,12 @@
 #include "LogObserver.h"
 
 // Moved GameStates and Command to the CommandProcessing file.
-
+#ifndef GAMEENGINE_H
+#define GAMEENGINE_H
 class GameEngine : public Subject, public ILoggable
 {
 private:
-    std::map<GameState, std::list<Command>> *stateTransitions;
+    std::map<GameState, std::list<Command> > *stateTransitions;
 
 public:
     GameState *currentState;
@@ -32,17 +33,20 @@ public:
 
     // Constructors
     GameEngine();
-    GameEngine(GameState *currentState, std::map<GameState, std::list<Command>> *stateTransitions, bool fromFile = false, string fileName = "test");
+    GameEngine(GameState *currentState, std::map<GameState, std::list<Command> > *stateTransitions, bool fromFile = false, string fileName = "test");
     GameEngine(const GameEngine &gameEngine);
 
     ~GameEngine();
 
-    void transition(GameState* newState);
+    void transition(GameState *newState);
 
     void executeCommand(std::string command);
     void executeCommand(Command *command);
 
     void startupPhase();
+
+    // Function to log to GameLog.txt
+    string stringToLog() const override;
 
     void mainGameLoop();
     void reinforcementPhase();
@@ -53,3 +57,4 @@ public:
     void operator=(GameState &newState);
     friend std::ostream &operator<<(std::ostream &os, const GameEngine &gameEngine);
 };
+#endif // GAMEENGINE_H

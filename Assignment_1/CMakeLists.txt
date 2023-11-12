@@ -35,6 +35,10 @@ add_executable (Assignment_1
     "GameEngine.cpp"
     "GameEngineDriver.cpp"
     "GameEngineDriver.h"
+    "LogObserver.h"
+    "LogObserver.cpp"
+    "LoggingObserverDriver.h"
+    "LoggingObserverDriver.cpp"
     )
 
 # TODO: Add tests and install targets if needed.

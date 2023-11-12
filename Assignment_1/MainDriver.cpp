@@ -18,59 +18,53 @@
 
 using namespace std;
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
 	testCommandProcessor();
 
 	// Parsing arguments
-	CommandProcessor* commandProcessor = nullptr;
+	CommandProcessor *commandProcessor = nullptr;
 
-	if(argc == 2 && argv[0] == "-file"){
-		try{
+	if (argc == 2 && argv[0] == "-file")
+	{
+		try
+		{
 			cout << "Using file " << argv[1] << " as input source for commands." << endl;
 			commandProcessor = new FileCommandProcessorAdapter(argv[1]);
-		} 
-		catch(exception e){
-			cout<<"An error occured while reading the file "<< argv[1]<<". Defaulting to using console mode"<<endl;
+		}
+		catch (exception e)
+		{
+			cout << "An error occured while reading the file " << argv[1] << ". Defaulting to using console mode" << endl;
 		};
-	}else{
+	}
+	else
+	{
 		cout << "Using console as input source for commands." << endl;
 		commandProcessor = new CommandProcessor();
 	}
 
-
-
 	// Part 2 (StartUp Phase) Test.
 	testStartupPhase();
-
-
 
 	cout << "\nHello CMake.\n"
 		 << endl;
 
-
-
-
-
-	
-
 	// Assignment 1.
 
 	// PART 1 test (shawn 40213581)
-	//testLoadMap();
+	// testLoadMap();
 
 	// Part 2 test
-	//testPlayers();
+	// testPlayers();
 
 	// PART 3 test (chris)
-	//testOrdersLists();
+	// testOrdersLists();
 
 	// Part 4 test (Roxane.)
-	//testCards();
+	// testCards();
 
 	// Part 5 test
-	//testGameEngine();
-
+	// testGameEngine();
 
 	return 0;
 };

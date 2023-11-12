@@ -36,9 +36,15 @@ Order::~Order() {}
 bool Order::validate() { return true; }
 
 // execute method
-void Order::execute() { 
-    this->executed = true; 
+void Order::execute()
+{
+    this->executed = true;
     Notify(*this);
+}
+
+string Order::stringToLog() const
+{
+    return "Order log string";
 }
 
 // assignment operator
@@ -521,6 +527,11 @@ void OrdersList::move(int a, int b)
 
     std::cout << "orders were swapped\n"
               << std::endl;
+}
+
+string OrdersList::stringToLog() const
+{
+    return "Command Processor log string";
 }
 
 // assignment operator

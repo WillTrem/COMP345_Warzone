@@ -12,12 +12,19 @@
 
 using namespace std;
 
+class ILoggable
+{
+public:
+    virtual ~ILoggable();
+    virtual std::string stringToLog() const = 0;
+};
+
 class Observer
 {
 public:
     Observer();
     ~Observer();
-    void Update();
+    virtual void Update(const ILoggable &loggable) = 0;
 };
 
 class Subject
@@ -33,9 +40,8 @@ private:
     list<Observer *> *_observers;
 };
 
-class ILoggable
+class LogObserver : public Observer
 {
 public:
-    virtual ~ILoggable();
-    virtual std::string stringToLog();
+    void Update(const ILoggable &loggable) override;
 };
