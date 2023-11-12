@@ -220,28 +220,25 @@ void Advance::execute()
             int attackerCount = this->howManyUnits;
             int defenderCount = this->target->numOfArmies;
 
-            while (attackerCount > 0 && defenderCount > 0)
+            // attacker goes first
+            for (int i = 0; i < attackerCount; i++)
             {
-                // attacker goes first
-                for (int i = 0; i < attackerCount; i++)
+            if ((rand() % 11) >= 4) // 60% success rate
                 {
-                    if ((rand() % 11) >= 4) // 60% success rate
-                    {
-                        defenderCount--;
-                    }
-                }
-
-                // then defender strikes back
-                for (int i = 0; i < defenderCount; i++)
-                {
-                    if ((rand() % 11) >= 3) // 70% success rate
-                    {
-                        attackerCount--;
-                    }
+                    defenderCount--;
                 }
             }
 
-            // if attacker wins, take the territory and move the remaining attackers over, subtract attackers from source too
+            // then defender strikes back
+            for (int i = 0; i < defenderCount; i++)
+            {
+                if ((rand() % 11) >= 3) // 70% success rate
+                {
+                    attackerCount--;
+                }
+            }
+            
+            // if attacker wins, take the territory and move the remaining attackers over
             if (defenderCount <= 0 && attackerCount > 0)
             {
                 this->target->setOccupierName(this->source->occupierName);
