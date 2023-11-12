@@ -8,10 +8,14 @@
 #include <string>
 
 #include "Cards.h"
-#include "Orders.h"
 #include "Map.h"
 
 using namespace std;
+
+// putting these forward declarations here to avoid circular dependency!
+class OrdersList;
+class Order;
+class Deploy;
 
 class Player
 {

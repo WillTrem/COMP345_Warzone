@@ -1,4 +1,7 @@
-#pragma once
+
+//#pragma once
+#ifndef CARDS_H
+#define CARDS_H
 
 #include <string>
 #include <algorithm>
@@ -156,16 +159,4 @@ class Deck
 	friend std::ostream& operator<<(std::ostream& out, const Deck& d);
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif

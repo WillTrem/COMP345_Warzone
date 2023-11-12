@@ -3,7 +3,9 @@
 // Implement a group of C++ classes that implement a Warzone player.
 // Written by William Tremblay, 40174212.
 
+#include "Orders.h" // put this here to avoid circular dependency
 #include "Player.h"
+
 
 using namespace std;
 
