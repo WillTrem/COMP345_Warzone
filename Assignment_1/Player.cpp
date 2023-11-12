@@ -142,35 +142,40 @@ Territory *Player::removeOwnedTerritory(Territory *territory)
 	return nullptr; // If the territory was not found in the vector, simply return the nullpointer.
 }
 
-// Returns an arbitrary list of territories to Defend
-vector<Territory *> Player::toDefend()
+vector<Territory *> Player::prioritizeTerritories(vector<Territory *> territories)
 {
-	// Prioritize territory to defend
-	vector<Territory *> territoriesToDefend;
-	vector<Territory *> ownedTerritories = getOwnedTerritories();
-	for (int i = 0; i < ownedTerritories.size(); i++)
+	vector<Territory *> territoriesPrioritized;
+	for (int i = 0; i < territories.size(); i++)
 	{
 		std::cout << "Prioritize which territory to attack: priority " << i + 1 << std::endl;
-		for (int j = 0; j < ownedTerritories.size(); j++)
+		for (int j = 0; j < territories.size(); j++)
 		{
-			std::cout << ownedTerritories[j]->territoryName << "? (y/n) " << std::endl;
+			std::cout << territories[j]->territoryName << "? (y/n) " << std::endl;
 			string answer;
 			std::cin >> answer;
 			if (answer.compare("y") == 0)
 			{
-				territoriesToDefend.push_back(ownedTerritories[j]);
+				territoriesPrioritized.push_back(territories[j]);
 				break;
 			}
 		}
 
 		// If user didn't say yes to any of them, restart last iteration
-		if (territoriesToDefend.size() < i + 1)
+		if (territoriesPrioritized.size() < i + 1)
 		{
 			i--;
 		}
 	}
 
-	return territoriesToDefend;
+	return territoriesPrioritized;
+}
+
+// Returns an arbitrary list of territories to Defend
+vector<Territory *> Player::toDefend()
+{
+	// Prioritize territory to defend
+	vector<Territory *> ownedTerritories = getOwnedTerritories();
+	return prioritizeTerritories(ownedTerritories);
 }
 
 // Returns an arbitrary list of territories to attack
@@ -191,30 +196,7 @@ vector<Territory *> Player::toAttack()
 	}
 
 	// Prioritize territory to attack
-	vector<Territory *> territoriesToAttack;
-	for (int i = 0; i < enemyTerritories.size(); i++)
-	{
-		std::cout << "Prioritize which territory to attack: priority " << i + 1 << std::endl;
-		for (int j = 0; j < enemyTerritories.size(); j++)
-		{
-			std::cout << enemyTerritories[j]->territoryName << "? (y/n) " << std::endl;
-			string answer;
-			std::cin >> answer;
-			if (answer.compare("y") == 0)
-			{
-				territoriesToAttack.push_back(enemyTerritories[j]);
-				break;
-			}
-		}
-
-		// If user didn't say yes to any of them, restart last iteration
-		if (territoriesToAttack.size() < i + 1)
-		{
-			i--;
-		}
-	}
-
-	return territoriesToAttack;
+	return prioritizeTerritories(enemyTerritories);
 }
 
 // Creates a new order and adds it to the player's list of current orders
