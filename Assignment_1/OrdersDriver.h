@@ -10,13 +10,12 @@
 
 // written by Chris Anglin --- 40216346 
 
-#ifndef ORDERSDRIVER_H
-#define ORDERSDRIVER_H
+#pragma once
+
+#include "Orders.h"
 
 // test function for A1
 void testOrdersLists();
 
 // test function for A2
 void testOrderExecution();
-
-#endif

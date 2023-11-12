@@ -136,6 +136,18 @@ void Territory::setNeighboringTerritories(vector<Territory *> neighboringTerrito
     neighboringTerritories = neighboringTerritoriesVal;
 }
 
+bool Territory::isAdjacent(Territory* target)
+{
+    bool isItOrIsItNotAdjacent;
+
+    for (Territory* territory: this->neighboringTerritories)
+    {
+        if (territory->territoryName == target->territoryName) { isItOrIsItNotAdjacent = true; }
+    }
+
+    return isItOrIsItNotAdjacent;
+}
+
 // ***************************** TERRITORY *****************************
 
 // ***************************** CONTINENT *****************************

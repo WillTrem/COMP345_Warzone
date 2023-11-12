@@ -8,8 +8,10 @@
 //
 // provide a group of C++ classes that implements the execution of orders following the official rules of the Warzone game
 
-// written by Chris Anglin --- 40216346
-#include "LogObserver.h"
+// written by Chris Anglin --- 40216346 
+
+#pragma once
+
 #include <iostream>
 #include <deque>
 #include "Player.h"
@@ -82,7 +84,7 @@ public:
     // copy constructor
     Deploy(const Deploy &existingDeploy);
 
-    // parametered constructor
+    // parameterized constructor
     Deploy(Player *p, int n, Territory *t);
 
     // default destructor
@@ -115,12 +117,24 @@ private:
     // boolean set true if action object has been executed
     bool executed = false;
 
+    // attributes i need as parameters for Advance's validate() and execute() methods:
+    Player *whichPlayer;
+    int howManyUnits;
+    Territory *source;
+    Territory *target;
+
 public:
     // default constructor
     Advance();
 
     // copy constructor
     Advance(const Advance &existingAdvance);
+
+    // parameterized constructor
+    Advance(Player *p, int n, Territory *s, Territory *t);
+
+    // parameterized constructor
+    Advance(Player* p, int n, Territory* s, Territory* t);
 
     // default destructor
     ~Advance();
@@ -330,5 +344,4 @@ public:
     // stream insertion operator
     friend std::ostream &operator<<(std::ostream &output, const OrdersList &ordersList);
 };
-
-#endif
+#endif ORDERS_H

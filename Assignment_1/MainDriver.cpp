@@ -8,13 +8,6 @@
 // Shawn 40213581
 
 #include "MainDriver.h"
-#include "CardsDriver.h"
-#include "GameEngineDriver.h"
-#include "PlayerDriver.h"
-#include "OrdersDriver.h"
-#include "MapDriver.h"
-#include "CommandProcessingDriver.h"
-#include "LoggingObserverDriver.h"
 
 using namespace std;
 

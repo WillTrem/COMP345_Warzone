@@ -4,9 +4,6 @@
 // Written by William Tremblay, 40174212.
 
 #include "Player.h"
-#include "Cards.h"
-#include "Orders.h"
-#include "Map.h"
 
 using namespace std;
 
