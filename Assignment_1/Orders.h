@@ -157,12 +157,19 @@ class Bomb : public Order
     // boolean set true if action object has been executed
     bool executed = false;
 
+    // attributes i need as parameters for Bomb's validate() and execute() methods:
+    Player* whichPlayer;
+    Territory* target;
+
     public:
     // default constructor
     Bomb();
 
     // copy constructor
     Bomb(const Bomb& existingBomb);
+
+    // parameterized constructor
+    Bomb(Player* p, Territory* t);
 
     // default destructor
     ~Bomb();
@@ -231,12 +238,21 @@ class Airlift : public Order
     // boolean set true if action object has been executed
     bool executed = false;
 
+    // attributes i need as parameters for Airlift's validate() and execute() methods:
+    Player* whichPlayer;
+    int howManyUnits;
+    Territory* source;
+    Territory* target;
+
     public:
     // default constructor
     Airlift();
 
     // copy constructor
     Airlift(const Airlift& existingAirlift);
+
+    // parameterized constructor
+    Airlift(Player* p, int n, Territory* s, Territory* t);
 
     // default destructor
     ~Airlift();
