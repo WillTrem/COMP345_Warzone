@@ -14,8 +14,12 @@
 using namespace std;
 
 // ********** OBSERVER ********** //
-Observer::Observer() {}
-Observer::~Observer() {}
+Observer::Observer()
+{
+}
+Observer::~Observer()
+{
+}
 // ********** OBSERVER ********** //
 
 // ********** SUBJECT ********** //

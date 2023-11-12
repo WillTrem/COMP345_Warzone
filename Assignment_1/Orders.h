@@ -1,4 +1,4 @@
-
+#pragma once
 // A1 PART 3
 //
 // implement a group of C++ classes that implement a Warzone player orders using the following design:
@@ -10,16 +10,15 @@
 
 // written by Chris Anglin --- 40216346
 #include "LogObserver.h"
-
-#ifndef ORDERS_H
-#define ORDERS_H
-
 #include <iostream>
 #include <deque>
 #include "Player.h"
+#include "Map.h"
 
+#ifndef ORDERS_H
+#define ORDERS_H
+class Player;
 //   ---   Order class    ---   [each ORDER type (below) inherits from this class and overrides execute() and validate()]
-
 class Order : public Subject, public ILoggable
 {
 private:
@@ -46,7 +45,7 @@ public:
     virtual bool validate() = 0;
 
     // Function to log to GameLog.txt
-    string stringToLog() const override;
+    std::string stringToLog() const override;
 
     // assignment operator
     Order &operator=(const Order &order);
@@ -72,11 +71,11 @@ private:
     bool executed = false;
 
     // attributes i need as parameters for Deploy's validate() and execute() methods:
-    Player* whichPlayer;
+    Player *whichPlayer;
     int howManyUnits;
-    Territory* target;
+    Territory *target;
 
-    public:
+public:
     // default constructor
     Deploy();
 
@@ -84,7 +83,7 @@ private:
     Deploy(const Deploy &existingDeploy);
 
     // parametered constructor
-    Deploy(Player* p, int n, Territory* t);
+    Deploy(Player *p, int n, Territory *t);
 
     // default destructor
     ~Deploy();

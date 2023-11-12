@@ -1,9 +1,5 @@
 #pragma once
 
-#include "Player.h"
-#include "Map.h"
-#include "Cards.h"
-
 #include <map>
 #include <string>
 #include <iostream>

@@ -13,8 +13,8 @@
 #include "PlayerDriver.h"
 #include "OrdersDriver.h"
 #include "MapDriver.h"
-#include "CommandProcessing.h"
 #include "CommandProcessingDriver.h"
+#include "LoggingObserverDriver.h"
 
 using namespace std;
 

@@ -16,7 +16,7 @@ GameEngine::GameEngine()
 /**
  * Normal constructor
  */
-GameEngine::GameEngine(GameState *currentState, std::map<GameState, std::list<Command> > *stateTransitions, bool fromFile, string fileName) : currentState(currentState),
+GameEngine::GameEngine(GameState *currentState, std::map<GameState, std::list<Command>> *stateTransitions, bool fromFile, string fileName) : currentState(currentState),
                                                                                                                                              stateTransitions(stateTransitions)
 {
     deck = new Deck();

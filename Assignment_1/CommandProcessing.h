@@ -38,39 +38,22 @@ enum GameState
 };
 
 // Maps which state(s) a command is valid in.
-std::map<std::string, std::vector<GameState> > stateTransitions;
+std::map<std::string, std::vector<GameState>> stateTransitions{
+	{"loadmap", {START, MAP_LOADED}},
+	{"validatemap", {MAP_LOADED}},
+	{"addplayer", {MAP_VALIDATED, PLAYERS_ADDED}},
+	{"gamestart", {PLAYERS_ADDED}},
+	{"replay", {WIN}},
+	{"quit", {WIN}}};
 
 // Maps which state(s) a command is valid in.
-std::map<std::string, GameState> commandTransitions;
-
-void initializeStateTransitions()
-{
-	stateTransitions["loadmap"].push_back(START);
-	stateTransitions["loadmap"].push_back(MAP_LOADED);
-
-	stateTransitions["validatemap"].push_back(MAP_LOADED);
-
-	stateTransitions["addplayer"].push_back(MAP_VALIDATED);
-	stateTransitions["addplayer"].push_back(PLAYERS_ADDED);
-
-	stateTransitions["gamestart"].push_back(PLAYERS_ADDED);
-
-	stateTransitions["replay"].push_back(WIN);
-
-	stateTransitions["quit"].push_back(WIN);
-}
-
-void initializeCommandTransitions()
-{
-	commandTransitions["loadmap"] = MAP_LOADED;
-	commandTransitions["validatemap"] = MAP_VALIDATED;
-	commandTransitions["addplayer"] = PLAYERS_ADDED;
-	commandTransitions["gamestart"] = ASSIGN_REINFORCEMENTS;
-	commandTransitions["replay"] = START;
-	commandTransitions["quit"] = END;
-}
-
-static bool initialized = (initializeStateTransitions(), initializeCommandTransitions(), true);
+std::map<std::string, GameState> commandTransitions{
+	{"loadmap", MAP_LOADED},
+	{"validatemap", MAP_VALIDATED},
+	{"addplayer", PLAYERS_ADDED},
+	{"gamestart", ASSIGN_REINFORCEMENTS},
+	{"replay", START},
+	{"quit", END}};
 
 /**
  * A command consists of:

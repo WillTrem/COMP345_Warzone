@@ -20,7 +20,7 @@
 class GameEngine : public Subject, public ILoggable
 {
 private:
-    std::map<GameState, std::list<Command> > *stateTransitions;
+    std::map<GameState, std::list<Command>> *stateTransitions;
 
 public:
     GameState *currentState;
@@ -33,7 +33,7 @@ public:
 
     // Constructors
     GameEngine();
-    GameEngine(GameState *currentState, std::map<GameState, std::list<Command> > *stateTransitions, bool fromFile = false, string fileName = "test");
+    GameEngine(GameState *currentState, std::map<GameState, std::list<Command>> *stateTransitions, bool fromFile = false, string fileName = "test");
     GameEngine(const GameEngine &gameEngine);
 
     ~GameEngine();
