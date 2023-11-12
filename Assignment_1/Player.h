@@ -8,10 +8,14 @@
 #include <string>
 
 #include "Cards.h"
-#include "Orders.h"
 #include "Map.h"
 
 using namespace std;
+
+// putting these forward declarations here to avoid circular dependency!
+class OrdersList;
+class Order;
+class Deploy;
 
 class Player
 {
@@ -26,6 +30,8 @@ private:
 	int reinforcementPool = 0;
 
 	vector<Territory *> prioritizeTerritories(vector<Territory *> territories);
+
+	bool capturedTerritoryThisTurn = false;
 
 public:
 	// Default constructor
@@ -54,6 +60,8 @@ public:
 
 	int getReinforcmentPool();
 	void setReinforcementPool(int numUnits);
+
+	void setCapturedTerritoryThisTurn(bool update);
 
 	// TODO
 	vector<Territory *> toDefend();

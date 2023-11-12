@@ -1,11 +1,12 @@
+
+#pragma once
+
 #include <iostream>
 #include <map>
 #include <vector>
 
 using namespace std;
 
-#ifndef MAP_H
-#define MAP_H
 class Territory
 {
 public:
@@ -50,6 +51,8 @@ public:
 
     void setNeighboringTerritories(vector<Territory *> neighboringTerritoriesVal);
     // ****************************************************
+
+    bool isAdjacent(Territory* target);
 };
 
 class Continent
@@ -125,4 +128,3 @@ public:
 
     void loadMap(string fileName);
 };
-#endif // end define MAP_H

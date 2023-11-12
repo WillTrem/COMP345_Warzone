@@ -3,10 +3,9 @@
 // Implement a group of C++ classes that implement a Warzone player.
 // Written by William Tremblay, 40174212.
 
+#include "Orders.h" // put this here to avoid circular dependency
 #include "Player.h"
-#include "Cards.h"
-#include "Orders.h"
-#include "Map.h"
+
 
 using namespace std;
 
@@ -97,6 +96,11 @@ int Player::getReinforcmentPool()
 void Player::setReinforcementPool(int numUnits)
 {
 	reinforcementPool = numUnits;
+}
+
+void Player::setCapturedTerritoryThisTurn(bool update)
+{
+	this->capturedTerritoryThisTurn = update;
 }
 
 // Returns the hand of the player

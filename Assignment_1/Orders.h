@@ -10,11 +10,11 @@
 
 // written by Chris Anglin --- 40216346 
 
-#ifndef ORDERS_H
-#define ORDERS_H
+#pragma once
 
 #include <iostream>
 #include <deque>
+#include "Player.h"
 
 //   ---   Order class    ---   [each ORDER type (below) inherits from this class and overrides execute() and validate()]
 
@@ -66,12 +66,20 @@ class Deploy : public Order
     // boolean set true if action object has been executed
     bool executed = false;
 
+    // attributes i need as parameters for Deploy's validate() and execute() methods:
+    Player* whichPlayer;
+    int howManyUnits;
+    Territory* target;
+
     public:
     // default constructor
     Deploy();
 
     // copy constructor
     Deploy(const Deploy& existingDeploy);
+
+    // parameterized constructor
+    Deploy(Player* p, int n, Territory* t);
 
     // default destructor
     ~Deploy();
@@ -103,12 +111,21 @@ class Advance : public Order
     // boolean set true if action object has been executed
     bool executed = false;
 
+    // attributes i need as parameters for Advance's validate() and execute() methods:
+    Player* whichPlayer;
+    int howManyUnits;
+    Territory* source;
+    Territory* target;
+
     public:
     // default constructor
     Advance();
 
     // copy constructor
     Advance(const Advance& existingAdvance);
+
+    // parameterized constructor
+    Advance(Player* p, int n, Territory* s, Territory* t);
 
     // default destructor
     ~Advance();
@@ -140,12 +157,19 @@ class Bomb : public Order
     // boolean set true if action object has been executed
     bool executed = false;
 
+    // attributes i need as parameters for Bomb's validate() and execute() methods:
+    Player* whichPlayer;
+    Territory* target;
+
     public:
     // default constructor
     Bomb();
 
     // copy constructor
     Bomb(const Bomb& existingBomb);
+
+    // parameterized constructor
+    Bomb(Player* p, Territory* t);
 
     // default destructor
     ~Bomb();
@@ -214,12 +238,21 @@ class Airlift : public Order
     // boolean set true if action object has been executed
     bool executed = false;
 
+    // attributes i need as parameters for Airlift's validate() and execute() methods:
+    Player* whichPlayer;
+    int howManyUnits;
+    Territory* source;
+    Territory* target;
+
     public:
     // default constructor
     Airlift();
 
     // copy constructor
     Airlift(const Airlift& existingAirlift);
+
+    // parameterized constructor
+    Airlift(Player* p, int n, Territory* s, Territory* t);
 
     // default destructor
     ~Airlift();
@@ -318,5 +351,3 @@ class OrdersList
     //stream insertion operator
     friend std::ostream& operator<<(std::ostream& output, const OrdersList& ordersList);
 };
-
-#endif

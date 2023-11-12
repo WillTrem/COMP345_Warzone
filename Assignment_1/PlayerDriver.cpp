@@ -2,12 +2,12 @@
 //
 // Implement a group of C++ classes that implement a Warzone player.
 // Written by William Tremblay, 40174212.
-#pragma once
-#include "Player.h"
-#include "Cards.h"
+
+#include "Orders.h"
 #include "PlayerDriver.h"
 
 using namespace std;
+
 void testPlayers()
 {
 	Player p1 = Player();
