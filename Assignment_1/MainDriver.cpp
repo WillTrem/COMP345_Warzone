@@ -13,7 +13,9 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-	testOrderExecution();
+	// uncomment line below for PART 4 TESTING:
+	//testOrderExecution();
+	
 	// testCommandProcessor();
 
 	// // Parsing arguments
