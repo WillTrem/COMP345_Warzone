@@ -58,12 +58,12 @@ Player::~Player()
 	cout << "Player destructor called" << endl;
 
 	// Delete name.
-	delete playerName;
-	playerName = NULL;
+	delete this->playerName;
+	this->playerName = NULL;
 
 	// Calling other destructors
-	hand->~Hand();
-	ordersList->~OrdersList();
+	this->hand->~Hand();
+	this->ordersList->~OrdersList();
 
 	// Memory deallocation
 	// delete hand;
