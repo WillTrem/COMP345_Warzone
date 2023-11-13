@@ -12,7 +12,8 @@
 
 
 // TO-DO: add logic so player gets a card at end of turn if capturedTerritoryThisTurn is true
-//      : make sure airlift can only be called by player with airlift card
+//      : make sure relevant orders can only be called by player with those cards
+//      : make Neutral Player?
 
 #include <iostream>
 #include <string>
@@ -462,6 +463,13 @@ Blockade::Blockade(const Blockade &existingBlockade)
     std::cout << "Blockade object created using copy constructor" << std::endl;
 }
 
+// parameterized constructor
+Blockade::Blockade(Player* p, Territory* t)
+{
+    this->whichPlayer = p;
+    this->target = t;
+}
+
 // destructor
 Blockade::~Blockade() {}
 
@@ -469,6 +477,10 @@ Blockade::~Blockade() {}
 bool Blockade::validate()
 {
     std::cout << "validate() called in a Blockade object" << std::endl;
+
+    // if target doesn't belong to issuer, not valid
+    if (this->target->occupierName != this->whichPlayer->getPlayerName()) { return false; }
+
     return true;
 }
 
@@ -477,9 +489,16 @@ void Blockade::execute()
 {
     if (this->validate())
     {
-        std::cout << "execute() called in a Blockade object" << std::endl;
-        this->executed = true;
+        this->target->setTerritoryNumberOfArmies(this->target->numOfArmies * 2);
+        this->target->setOccupierName("Neutral"); // make this a Player?
     }
+    else
+    {
+
+    }
+
+    std::cout << "execute() called in a Blockade object" << std::endl;
+    this->executed = true;
 }
 
 // assignment operator
