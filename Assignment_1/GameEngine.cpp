@@ -278,7 +278,7 @@ void GameEngine::issueOrdersPhase()
             }
             else
             {
-                std::cout << "Invalid number of units (1 to units left in pool) " << std::endl;
+                std::cout << "Invalid number of units (1 - units left in pool) " << std::endl;
             }
         }
 
@@ -286,9 +286,91 @@ void GameEngine::issueOrdersPhase()
             Advance orders
         */
 
+        // Advance to defend
+        for (auto territory1 : territoriesToDefend)
+        {
+            for (auto territory2 : territoriesToDefend)
+            {
+                if (territory1->territoryName.compare(territory2->territoryName) != 0)
+                {
+                    std::cout << "Advance units from " << territory1->territoryName << " to " << territory2->territoryName << "? (y/n)" << std::endl;
+                    string answer;
+                    std::cin >> answer;
+                    if (answer.compare("y") == 0)
+                    {
+                        std::cout << "How many units? " << std::endl;
+                        string units;
+                        std::cin >> units;
+
+                        Advance *advance = new Advance(player, std::stoi(units), territory1, territory2);
+                        player->issueOrder(advance);
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Advance to attack
+        for (auto territory1 : territoriesToDefend)
+        {
+            for (auto territory2 : territoriesToAttack)
+            {
+                if (territory1->territoryName.compare(territory2->territoryName) != 0)
+                {
+                    std::cout << "Advance units from " << territory1->territoryName << " to " << territory2->territoryName << "? (y/n)" << std::endl;
+                    string answer;
+                    std::cin >> answer;
+                    if (answer.compare("y") == 0)
+                    {
+                        std::cout << "How many units? " << std::endl;
+                        string units;
+                        std::cin >> units;
+
+                        Advance *advance = new Advance(player, std::stoi(units), territory1, territory2);
+                        player->issueOrder(advance);
+                        break;
+                    }
+                }
+            }
+        }
+
         /*
             Issue order from one card in hand
         */
+        for (auto card : player->getHand()->returnMyCards())
+        {
+            string cardType = "";
+
+            if (dynamic_cast<Card_Airlift *>(card) != nullptr)
+            {
+                cardType = "an Airlift";
+            }
+            else if (dynamic_cast<Card_Blockade *>(card) != nullptr)
+            {
+                cardType = "a Blockade";
+            }
+            else if (dynamic_cast<Card_Bomb *>(card) != nullptr)
+            {
+                cardType = "a Bomb";
+            }
+            else if (dynamic_cast<Card_Diplomacy *>(card) != nullptr)
+            {
+                cardType = "a Diplomacy";
+            }
+            else
+            {
+                cardType = "a Reinforcement";
+            }
+
+            std::cout << "Play " << cardType << "card? (y/n)" << std::endl;
+            string answer;
+            std::cin >> answer;
+            if (answer.compare("y") == 0)
+            {
+                card->play();
+                break;
+            }
+        }
     }
 }
 
@@ -296,13 +378,13 @@ void GameEngine::executeOrdersPhase()
 {
     for (auto player : *players)
     {
-        /*
-            Execute deploy orders
-        */
 
-        /*
-             Execute other orders
-        */
+        OrdersList *orderList = player->getOrdersList();
+        Order *nextOrder = orderList->getNextOrder();
+        while (nextOrder != nullptr)
+        {
+            nextOrder->execute();
+        }
     }
 }
 
@@ -317,8 +399,6 @@ std::ostream &operator<<(std::ostream &os, const GameEngine &gameEngine)
     return os;
 }
 
-
 void testMainGameLoop()
 {
-    
 }
