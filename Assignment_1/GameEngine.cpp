@@ -401,4 +401,6 @@ std::ostream &operator<<(std::ostream &os, const GameEngine &gameEngine)
 
 void testMainGameLoop()
 {
+    GameEngine engine;
+    engine.mainGameLoop();
 }
