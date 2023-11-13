@@ -154,7 +154,7 @@ void GameEngine::executeCommand(Command *command)
     if (!cmdSucessful)
     {
         std::cout << "Something went wrong executing the command.\n"
-                        << std::endl;
+                  << std::endl;
     }
 }
 
@@ -175,7 +175,7 @@ void GameEngine::startupPhase()
         }
         else
             cout << "Invalid command. Please re-enter.\n"
-                      << endl;
+                 << endl;
     }
 }
 
@@ -281,6 +281,14 @@ void GameEngine::issueOrdersPhase()
                 std::cout << "Invalid number of units (1 to units left in pool) " << std::endl;
             }
         }
+
+        /*
+            Advance orders
+        */
+
+        /*
+            Issue order from one card in hand
+        */
     }
 }
 
@@ -288,7 +296,13 @@ void GameEngine::executeOrdersPhase()
 {
     for (auto player : *players)
     {
-        
+        /*
+            Execute deploy orders
+        */
+
+        /*
+             Execute other orders
+        */
     }
 }
 
@@ -301,4 +315,10 @@ std::ostream &operator<<(std::ostream &os, const GameEngine &gameEngine)
 {
     os << "Current state = state " << gameEngine.currentState << std::endl;
     return os;
+}
+
+
+void testMainGameLoop()
+{
+    
 }
