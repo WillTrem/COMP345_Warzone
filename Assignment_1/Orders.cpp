@@ -10,10 +10,11 @@
 
 // written by Chris Anglin --- 40216346
 
-
 // TO-DO: add logic so player gets a card at end of turn if capturedTerritoryThisTurn is true
 //      : make sure relevant orders can only be called by player with those cards
 //      : make Neutral Player?
+//      : make other Player in Negotiate also blocked
+//      : finish testing
 
 #include <iostream>
 #include <string>
