@@ -384,6 +384,21 @@ bool Bomb::validate()
     // check target belongs to other player
     if (this->whichPlayer->getPlayerName() == this->target->occupierName) { return false; }
 
+    // check target is adjacent to one of source player's territories
+    bool adjacentCheck = false;
+
+    vector<Territory*> territories = this->whichPlayer->getOwnedTerritories();
+
+    for (Territory* t : territories)
+    {
+        if (t->isAdjacent(this->target)) 
+        {
+            adjacentCheck = true;
+        }
+    }
+
+    if (adjacentCheck == false) { return false; }
+
     return true;
 }
 
