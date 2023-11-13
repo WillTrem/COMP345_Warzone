@@ -32,6 +32,7 @@ private:
 	vector<Territory *> prioritizeTerritories(vector<Territory *> territories);
 
 	bool capturedTerritoryThisTurn = false;
+	bool negotiate = false;
 
 public:
 	// Default constructor
@@ -62,6 +63,10 @@ public:
 	void setReinforcementPool(int numUnits);
 
 	void setCapturedTerritoryThisTurn(bool update);
+
+	void setNegotiate(bool update);
+
+	bool getNegotiate();
 
 	// TODO
 	vector<Territory *> toDefend();

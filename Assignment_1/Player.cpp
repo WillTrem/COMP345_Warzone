@@ -103,6 +103,16 @@ void Player::setCapturedTerritoryThisTurn(bool update)
 	this->capturedTerritoryThisTurn = update;
 }
 
+void Player::setNegotiate(bool update)
+{
+	this->negotiate = update;
+}
+
+bool Player::getNegotiate()
+{
+	return this->negotiate;
+}
+
 // Returns the hand of the player
 Hand *Player::getHand()
 {

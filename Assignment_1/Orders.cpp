@@ -273,6 +273,14 @@ void Advance::execute()
         // otherwise attack
         else
         {
+            if (this->whichPlayer->getNegotiate() == true)
+            {
+                this->effect = this->whichPlayer->getPlayerName() + "'s Advance was not valid..";
+                this->executed = true; // should this only happen if valid? or both so it can be removed? (double check)
+                std::cout << "execute() called in an Advance object" << std::endl;
+                std::cout << this->effect << std::endl;
+                return;
+            }
             int attackerCount = this->howManyUnits;
             int defenderCount = this->target->numOfArmies;
 
@@ -491,14 +499,16 @@ void Blockade::execute()
     {
         this->target->setTerritoryNumberOfArmies(this->target->numOfArmies * 2);
         this->target->setOccupierName("Neutral"); // make this a Player?
+        this->effect = "Blockade succesful";
     }
     else
     {
-
+        this->effect = "Blockade not valid";
     }
 
     std::cout << "execute() called in a Blockade object" << std::endl;
     this->executed = true;
+    std::cout << this->effect << std::endl;
 }
 
 // assignment operator
@@ -630,6 +640,13 @@ Negotiate::Negotiate(const Negotiate &existingNegotiate)
     std::cout << "Negotiate object created using copy constructor" << std::endl;
 }
 
+// parameterized constructor
+Negotiate::Negotiate(Player* p, Territory* t)
+{
+    this->whichPlayer = p;
+    this->target = t;
+}
+
 // destructor
 Negotiate::~Negotiate() {}
 
@@ -637,6 +654,10 @@ Negotiate::~Negotiate() {}
 bool Negotiate::validate()
 {
     std::cout << "validate() called in a Negotiate object" << std::endl;
+
+    // check target is owned by oppostion
+    if (this->whichPlayer->getPlayerName() == this->target->occupierName) { return false; }
+
     return true;
 }
 
@@ -645,9 +666,17 @@ void Negotiate::execute()
 {
     if (this->validate())
     {
-        std::cout << "execute() called in a Negotiate object" << std::endl;
-        this->executed = true;
+        this->whichPlayer->setNegotiate(true);
+        // set it true for other player too !
+        this->effect = "Negotiate succesful";
     }
+    else
+    {
+        this->effect = "Negotiate not validl";       
+    }
+    std::cout << "execute() called in a Negotiate object" << std::endl;
+    this->executed = true;
+    std::cout << this->effect << std::endl;
 }
 
 // assignment operator

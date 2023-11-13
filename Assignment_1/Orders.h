@@ -308,12 +308,19 @@ private:
     // boolean set true if action object has been executed
     bool executed = false;
 
+    // attributes i need as parameters for Blockades's validate() and execute() methods:
+    Player* whichPlayer;
+    Territory* target;
+
 public:
     // default constructor
     Negotiate();
 
     // copy constructor
     Negotiate(const Negotiate &existingNegotiate);
+
+    // parameterized constructor
+    Negotiate(Player* p, Territory* t);
 
     // default destructor
     ~Negotiate();
