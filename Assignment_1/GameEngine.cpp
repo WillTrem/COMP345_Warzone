@@ -7,7 +7,18 @@ GameEngine::GameEngine()
     stateTransitions = nullptr;
 
     deck = new Deck();
-    players = new std::vector<Player *>;
+
+    Player *p1 = new Player("player1");
+    Player *p2 = new Player("player2");
+    Player *p3 = new Player("player3");
+    Player *p4 = new Player("player4");
+
+    players = new std::vector<Player *>();
+
+    players->push_back(p1);
+    players->push_back(p2);
+    players->push_back(p3);
+    players->push_back(p4);
 
     commandProcessor = new CommandProcessor();
 }
@@ -159,7 +170,7 @@ void GameEngine::executeCommand(Command *command)
     }
 }
 
-// Main start up phase method. 
+// Main start up phase method.
 // Executes the inputed commands as they are received or read.
 // Asks for the command to be re-entered if it is not valid.
 void GameEngine::startupPhase()
@@ -402,10 +413,4 @@ std::ostream &operator<<(std::ostream &os, const GameEngine &gameEngine)
 {
     os << "Current state = state " << gameEngine.currentState << std::endl;
     return os;
-}
-
-void testMainGameLoop()
-{
-    GameEngine engine;
-    engine.mainGameLoop();
 }

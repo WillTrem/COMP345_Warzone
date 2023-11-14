@@ -14,8 +14,8 @@ using namespace std;
 int main(int argc, char *argv[])
 {
 	// uncomment line below for PART 4 TESTING:
-	//testOrderExecution();
-	
+	// testOrderExecution();
+
 	// testCommandProcessor();
 
 	// // Parsing arguments
@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
 	// cout << "\nHello CMake.\n"
 	// 	 << endl;
 
-	testLoggingObserver();
+	// testLoggingObserver();
 
 	// Assignment 1.
 
