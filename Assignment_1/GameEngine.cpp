@@ -96,6 +96,7 @@ string GameEngine::gameStateToString(GameState state) const
     }
 }
 
+// Function called during state transitions; here for ease of notification.
 void GameEngine::transition(GameState *newState)
 {
     if (currentState != nullptr)
@@ -158,6 +159,9 @@ void GameEngine::executeCommand(Command *command)
     }
 }
 
+// Main start up phase method. 
+// Executes the inputed commands as they are received or read.
+// Asks for the command to be re-entered if it is not valid.
 void GameEngine::startupPhase()
 {
     Command *currentCommand = nullptr;
@@ -179,6 +183,7 @@ void GameEngine::startupPhase()
     }
 }
 
+// General method for the main game loop, assembling its sub-elements.
 void GameEngine::mainGameLoop()
 {
     reinforcementPhase();
