@@ -49,6 +49,7 @@ void Order::execute()
     this->executed = true;
 }
 
+// function to log to GameLog.txt
 string Order::stringToLog() const
 {
     const char *className = typeid(*this).name();
@@ -179,7 +180,7 @@ std::ostream &operator<<(std::ostream &output, const Deploy &deploy)
     return output;
 }
 
-// Getters
+// getters
 Player *Deploy::getWhichPlayer() const
 {
     return whichPlayer;
@@ -195,7 +196,7 @@ Territory *Deploy::getTarget() const
     return target;
 }
 
-// Setters
+// setters
 void Deploy::setWhichPlayer(Player *player)
 {
     whichPlayer = player;
@@ -310,7 +311,12 @@ void Advance::execute()
                 this->target->setTerritoryNumberOfArmies(attackerCount);
                 this->source->setTerritoryNumberOfArmies(this->source->numOfArmies - this->howManyUnits);
                 this->effect = this->whichPlayer->getPlayerName() + " captured " + this->target->territoryName;
+                this->whichPlayer->addOwnedTerritory(this->target);
+                // will pass in the other players pointer and remove the territory
+                std::cout << "territory captured - ownership transferred to " + this->whichPlayer->getPlayerName() << std::endl;
                 this->whichPlayer->setCapturedTerritoryThisTurn(true); // this Player has captured a territory now and gets a card
+                std::cout << "territory captured - flag set true - THIS PLAYER GETS A CARD THIS TURN" << std::endl;
+
             }
             // otherwise just update the unit counts on the territories
             else
@@ -500,6 +506,8 @@ void Blockade::execute()
     {
         this->target->setTerritoryNumberOfArmies(this->target->numOfArmies * 2);
         this->target->setOccupierName("Neutral"); // make this a Player?
+        // pass in Neutral player to assign the territory
+        std::cout << this->target->territoryName + " ownership transferred to: " + this->target->occupierName << std::endl;
         this->effect = "Blockade succesful";
     }
     else
@@ -785,6 +793,7 @@ void OrdersList::move(int a, int b)
               << std::endl;
 }
 
+// function to log to GameLog.txt
 string OrdersList::stringToLog() const
 {
     Order *latestOrder = ordersList.back();

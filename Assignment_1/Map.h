@@ -52,6 +52,7 @@ public:
     void setNeighboringTerritories(vector<Territory *> neighboringTerritoriesVal);
     // ****************************************************
 
+    // checks for adjacency
     bool isAdjacent(Territory* target);
 };
 

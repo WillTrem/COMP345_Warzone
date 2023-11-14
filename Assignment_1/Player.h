@@ -31,6 +31,7 @@ private:
 
 	vector<Territory *> prioritizeTerritories(vector<Territory *> territories);
 
+	// attributes added to help with A2 Part 4 (order implementation)
 	bool capturedTerritoryThisTurn = false;
 	bool negotiate = false;
 
@@ -59,13 +60,13 @@ public:
 
 	string getPlayerName();
 
+	
 	int getReinforcmentPool();
 	void setReinforcementPool(int numUnits);
 
+	// methods added for A2 Part 4 (order implementation)
 	void setCapturedTerritoryThisTurn(bool update);
-
 	void setNegotiate(bool update);
-
 	bool getNegotiate();
 
 	// TODO

@@ -136,6 +136,7 @@ void Territory::setNeighboringTerritories(vector<Territory *> neighboringTerrito
     neighboringTerritories = neighboringTerritoriesVal;
 }
 
+// checks for adjacency
 bool Territory::isAdjacent(Territory* target)
 {
     bool isItOrIsItNotAdjacent;

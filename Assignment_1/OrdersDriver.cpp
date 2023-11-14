@@ -22,6 +22,7 @@ class TestWorld{
     std::vector<Territory*> t1_neighbours;
     std::vector<Territory*> t2_neighbours;
 
+    // 'simulation' game state for testing the Order types
     TestWorld(Player& a, Player& b, Territory& c, Territory& d, Territory& e)
     {   
         // make test players and set them up
@@ -37,9 +38,9 @@ class TestWorld{
         t2->setTerritoryNumberOfArmies(2);
         t3->setTerritoryNumberOfArmies(2);
         // set territory names
-        t1->setTerritoryName("1");
-        t2->setTerritoryName("2");
-        t3->setTerritoryName("3");
+        t1->setTerritoryName("territory1");
+        t2->setTerritoryName("territory2");
+        t3->setTerritoryName("territory3");
         // set up neighbours (t1 and t2 are neighbours)
         t1_neighbours = {t2};
         t2_neighbours = {t1};
@@ -53,14 +54,17 @@ class TestWorld{
     }
 };
 
+// implementation of A2's testing function
 void testOrderExecution()
 {   
+    // create players and territories
     Player play1 = Player();
     Player play2 = Player();
     Territory territory1 = Territory();
     Territory territory2 = Territory();
     Territory territory3 = Territory();
 
+    // demo Deploy
     std::cout << " \n\n***** DEPLOY *****:\n";
     TestWorld world = TestWorld(play1, play2, territory1, territory2, territory3);
 
@@ -71,6 +75,7 @@ void testOrderExecution()
     deploy_invalid2.execute();
     deploy_valid.execute();
 
+    // demo Advance
     std::cout << " \n\n***** ADVANCE *****:\n";
     world = TestWorld(play1, play2, territory1, territory2, territory3);
     
@@ -81,6 +86,7 @@ void testOrderExecution()
     advance_invalid2.execute();
     advance_valid.execute();
 
+    // demo Bomb
     std::cout << " \n\n***** BOMB *****:\n";
     world = TestWorld(play1, play2, territory1, territory2, territory3);
 
@@ -89,6 +95,7 @@ void testOrderExecution()
     bomb_invalid1.execute();
     bomb_valid.execute();
 
+    // demo Blockade
     std::cout << " \n\n***** BLOCKADE *****:\n";
     world = TestWorld(play1, play2, territory1, territory2, territory3);
 
@@ -97,16 +104,18 @@ void testOrderExecution()
     blockade_invalid.execute();
     blockade_valid.execute();
 
+    // demo Airlift
     std::cout << " \n\n***** Airlift *****:\n";
     world = TestWorld(play1, play2, territory1, territory2, territory3);
 
     Airlift airlift_invalid = Airlift(world.p1, 3, world.t1, world.t2); // self doesn't own target
     airlift_invalid.execute();
-    Advance advance = Advance(world.p1, 6, world.t1, world.t2); // capture t2 and try again
+    Advance advance = Advance(world.p1, 5, world.t1, world.t2); // capture t2 and try again
     advance.execute();
-    Airlift airlift_valid = Airlift(world.p1, 2, world.t1, world.t2); 
+    Airlift airlift_valid = Airlift(world.p1, 1, world.t1, world.t2); 
     airlift_valid.execute();
 
+    // demo Negotiate
     std::cout << " \n\n***** Negotiate *****:\n";
     world = TestWorld(play1, play2, territory1, territory2, territory3);
 

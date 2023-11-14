@@ -47,7 +47,7 @@ public:
     // pure virtual method to validate order
     virtual bool validate() = 0;
 
-    // Function to log to GameLog.txt
+    // function to log to GameLog.txt
     std::string stringToLog() const override;
 
     // assignment operator
@@ -106,12 +106,12 @@ public:
     // stream insertion operator
     friend std::ostream &operator<<(std::ostream &output, const Deploy &deploy);
 
-    // Getters
+    // getters
     Player *getWhichPlayer() const;
     int getHowManyUnits() const;
     Territory *getTarget() const;
 
-    // Setters
+    // setters
     void setWhichPlayer(Player *player);
     void setHowManyUnits(int units);
     void setTarget(Territory *territory);

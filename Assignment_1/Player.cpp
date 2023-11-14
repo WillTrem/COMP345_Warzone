@@ -58,8 +58,11 @@ Player::~Player()
 	cout << "Player destructor called" << endl;
 
 	// Delete name.
-	delete this->playerName;
-	this->playerName = NULL;
+	if (this->playerName = nullptr)
+	{
+		delete this->playerName;
+		this->playerName = NULL;
+	}
 
 	// Calling other destructors
 	this->hand->~Hand();
@@ -98,16 +101,19 @@ void Player::setReinforcementPool(int numUnits)
 	reinforcementPool = numUnits;
 }
 
+// for issuing a card to players who have captured a territory
 void Player::setCapturedTerritoryThisTurn(bool update)
 {
 	this->capturedTerritoryThisTurn = update;
 }
 
+// setter flag to prevent attacks
 void Player::setNegotiate(bool update)
 {
 	this->negotiate = update;
 }
 
+// getter flag to prevent attacks
 bool Player::getNegotiate()
 {
 	return this->negotiate;
