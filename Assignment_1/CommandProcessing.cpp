@@ -57,6 +57,9 @@ string Command::stringToLog() const
 }
 
 // Executive functions used by commands.
+
+// Load the map with the name stored in the command's 'parameter' param.
+// The map is loaded in the passed gameEngine's "gameMap" param, given by reference.
 bool Command::loadMap(GameState *&gameState, Map *&gameMap, std::vector<Player *> *&gamePlayers, Deck *&gameDeck)
 {
 	gameMap = new Map();
@@ -72,6 +75,8 @@ bool Command::loadMap(GameState *&gameState, Map *&gameMap, std::vector<Player *
 	return true;
 }
 
+// Validate the currently loaded map.
+// The map is stored in the passed gameEngine's "gameMap" param, given by reference.
 bool Command::validateMap(GameState *&gameState, Map *&gameMap, std::vector<Player *> *&gamePlayers, Deck *&gameDeck)
 {
 	gameMap->validate();
@@ -86,6 +91,8 @@ bool Command::validateMap(GameState *&gameState, Map *&gameMap, std::vector<Play
 	return true;
 }
 
+// Add player to the current game set up.
+// Players are stored in the passed gameEngine's "players" param, given by reference.
 bool Command::addPlayer(GameState *&gameState, Map *&gameMap, std::vector<Player *> *&gamePlayers, Deck *&gameDeck)
 {
 	if (gamePlayers->size() < 6)
@@ -110,6 +117,8 @@ bool Command::addPlayer(GameState *&gameState, Map *&gameMap, std::vector<Player
 	}
 }
 
+// Divide the map's territories among players, determine play order, give players cards and starting units.
+// The various objects involved are passed as references from a GameEngine class.
 bool Command::gameStart(GameState *&gameState, Map *&gameMap, std::vector<Player *> *&gamePlayers, Deck *&gameDeck)
 {
 	if (gamePlayers->size() > 1)
