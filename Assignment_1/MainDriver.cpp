@@ -64,5 +64,7 @@ int main(int argc, char *argv[])
 	// Part 5 test
 	// testGameEngine();
 
+	testMainGameLoop();
+
 	return 0;
 };
