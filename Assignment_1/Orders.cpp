@@ -10,7 +10,6 @@
 
 // written by Chris Anglin --- 40216346
 
-
 // TO-DO: add logic so player gets a card at end of turn if capturedTerritoryThisTurn is true
 //      : make sure airlift can only be called by player with airlift card
 
@@ -242,8 +241,11 @@ bool Advance::validate()
 {
     std::cout << "validate() called in an Advance object" << std::endl;
 
-    // not valid if source doesn't belong to player 
-    if (this->source->occupierName != this->whichPlayer->getPlayerName()) { return false; }
+    // not valid if source doesn't belong to player
+    if (this->source->occupierName != this->whichPlayer->getPlayerName())
+    {
+        return false;
+    }
 
     // not valid if number of units is more than available at source
     if (this->howManyUnits > this->source->numOfArmies)
@@ -252,8 +254,11 @@ bool Advance::validate()
     }
 
     // not valid if target not adjacent to source
-    if (this->source->isAdjacent(this->target) == false) { return false; }
-    
+    if (this->source->isAdjacent(this->target) == false)
+    {
+        return false;
+    }
+
     return true;
 }
 
@@ -264,7 +269,7 @@ void Advance::execute()
     {
         // if target is friendly move units to defend
         if (this->source->occupierName == this->target->occupierName)
-        {   
+        {
             this->source->setTerritoryNumberOfArmies(this->source->numOfArmies - this->howManyUnits);
             this->target->setTerritoryNumberOfArmies(this->target->numOfArmies + this->howManyUnits);
             this->effect = this->whichPlayer->getPlayerName() + " advanced " + std::to_string(this->howManyUnits) + " units from " + this->source->territoryName + " to " + this->target->territoryName;
@@ -278,7 +283,7 @@ void Advance::execute()
             // attacker goes first
             for (int i = 0; i < attackerCount; i++)
             {
-            if ((rand() % 11) >= 4) // 60% success rate
+                if ((rand() % 11) >= 4) // 60% success rate
                 {
                     defenderCount--;
                 }
@@ -292,7 +297,7 @@ void Advance::execute()
                     attackerCount--;
                 }
             }
-            
+
             // if attacker wins, take the territory and move the remaining attackers over
             if (defenderCount <= 0 && attackerCount > 0)
             {
@@ -305,14 +310,20 @@ void Advance::execute()
             // otherwise just update the unit counts on the territories
             else
             {
-                if (defenderCount < 0) { defenderCount = 0; }
-                if (attackerCount < 0) { attackerCount = 0; }
+                if (defenderCount < 0)
+                {
+                    defenderCount = 0;
+                }
+                if (attackerCount < 0)
+                {
+                    attackerCount = 0;
+                }
 
                 this->target->setTerritoryNumberOfArmies(defenderCount);
                 this->source->setTerritoryNumberOfArmies(this->source->numOfArmies - (howManyUnits - attackerCount));
                 this->effect = this->whichPlayer->getPlayerName() + "'s attack on " + this->target->territoryName + " was unsuccesful";
             }
-        }    
+        }
     }
     else
     {
@@ -367,7 +378,7 @@ Bomb::Bomb(const Bomb &existingBomb)
 }
 
 // parameterized constructor
-Bomb::Bomb(Player* p, Territory* t)
+Bomb::Bomb(Player *p, Territory *t)
 {
     this->whichPlayer = p;
     this->target = t;
@@ -379,10 +390,14 @@ Bomb::~Bomb() {}
 // validate method override
 bool Bomb::validate()
 {
-    std::cout << "validate() called in a Bomb object\n" << std::endl;
+    std::cout << "validate() called in a Bomb object\n"
+              << std::endl;
 
     // check target belongs to other player
-    if (this->whichPlayer->getPlayerName() == this->target->occupierName) { return false; }
+    if (this->whichPlayer->getPlayerName() == this->target->occupierName)
+    {
+        return false;
+    }
 
     return true;
 }
@@ -510,7 +525,7 @@ Airlift::Airlift(const Airlift &existingAirlift)
 }
 
 // parameterized constructor
-Airlift::Airlift(Player* p, int n, Territory* s, Territory* t)
+Airlift::Airlift(Player *p, int n, Territory *s, Territory *t)
 {
     this->whichPlayer = p;
     this->howManyUnits = n;
@@ -527,10 +542,16 @@ bool Airlift::validate()
     std::cout << "validate() called in an Airlift object" << std::endl;
 
     // check source and target belong to the player
-    if (!(this->source->occupierName == this->target->occupierName && this->source->occupierName == this->whichPlayer->getPlayerName())) { return false; }
+    if (!(this->source->occupierName == this->target->occupierName && this->source->occupierName == this->whichPlayer->getPlayerName()))
+    {
+        return false;
+    }
 
     // check source has enough units available to move
-    if (this->howManyUnits > this->source->numOfArmies) { return false; }
+    if (this->howManyUnits > this->source->numOfArmies)
+    {
+        return false;
+    }
 
     return true;
 }
