@@ -7,7 +7,18 @@ GameEngine::GameEngine()
     stateTransitions = nullptr;
 
     deck = new Deck();
-    players = new std::vector<Player *>;
+
+    Player *p1 = new Player("player1");
+    Player *p2 = new Player("player2");
+    Player *p3 = new Player("player3");
+    Player *p4 = new Player("player4");
+
+    players = new std::vector<Player *>();
+
+    players->push_back(p1);
+    players->push_back(p2);
+    players->push_back(p3);
+    players->push_back(p4);
 
     commandProcessor = new CommandProcessor();
 }
@@ -96,6 +107,7 @@ string GameEngine::gameStateToString(GameState state) const
     }
 }
 
+// Function called during state transitions; here for ease of notification.
 void GameEngine::transition(GameState *newState)
 {
     if (currentState != nullptr)
@@ -154,10 +166,13 @@ void GameEngine::executeCommand(Command *command)
     if (!cmdSucessful)
     {
         std::cout << "Something went wrong executing the command.\n"
-                        << std::endl;
+                  << std::endl;
     }
 }
 
+// Main start up phase method.
+// Executes the inputed commands as they are received or read.
+// Asks for the command to be re-entered if it is not valid.
 void GameEngine::startupPhase()
 {
     Command *currentCommand = nullptr;
@@ -175,10 +190,11 @@ void GameEngine::startupPhase()
         }
         else
             cout << "Invalid command. Please re-enter.\n"
-                      << endl;
+                 << endl;
     }
 }
 
+// General method for the main game loop, assembling its sub-elements.
 void GameEngine::mainGameLoop()
 {
     reinforcementPhase();
@@ -278,7 +294,97 @@ void GameEngine::issueOrdersPhase()
             }
             else
             {
-                std::cout << "Invalid number of units (1 to units left in pool) " << std::endl;
+                std::cout << "Invalid number of units (1 - units left in pool) " << std::endl;
+            }
+        }
+
+        /*
+            Advance orders
+        */
+
+        // Advance to defend
+        for (auto territory1 : territoriesToDefend)
+        {
+            for (auto territory2 : territoriesToDefend)
+            {
+                if (territory1->territoryName.compare(territory2->territoryName) != 0)
+                {
+                    std::cout << "Advance units from " << territory1->territoryName << " to " << territory2->territoryName << "? (y/n)" << std::endl;
+                    string answer;
+                    std::cin >> answer;
+                    if (answer.compare("y") == 0)
+                    {
+                        std::cout << "How many units? " << std::endl;
+                        string units;
+                        std::cin >> units;
+
+                        Advance *advance = new Advance(player, std::stoi(units), territory1, territory2);
+                        player->issueOrder(advance);
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Advance to attack
+        for (auto territory1 : territoriesToDefend)
+        {
+            for (auto territory2 : territoriesToAttack)
+            {
+                if (territory1->territoryName.compare(territory2->territoryName) != 0)
+                {
+                    std::cout << "Advance units from " << territory1->territoryName << " to " << territory2->territoryName << "? (y/n)" << std::endl;
+                    string answer;
+                    std::cin >> answer;
+                    if (answer.compare("y") == 0)
+                    {
+                        std::cout << "How many units? " << std::endl;
+                        string units;
+                        std::cin >> units;
+
+                        Advance *advance = new Advance(player, std::stoi(units), territory1, territory2);
+                        player->issueOrder(advance);
+                        break;
+                    }
+                }
+            }
+        }
+
+        /*
+            Issue order from one card in hand
+        */
+        for (auto card : player->getHand()->returnMyCards())
+        {
+            string cardType = "";
+
+            if (dynamic_cast<Card_Airlift *>(card) != nullptr)
+            {
+                cardType = "an Airlift";
+            }
+            else if (dynamic_cast<Card_Blockade *>(card) != nullptr)
+            {
+                cardType = "a Blockade";
+            }
+            else if (dynamic_cast<Card_Bomb *>(card) != nullptr)
+            {
+                cardType = "a Bomb";
+            }
+            else if (dynamic_cast<Card_Diplomacy *>(card) != nullptr)
+            {
+                cardType = "a Diplomacy";
+            }
+            else
+            {
+                cardType = "a Reinforcement";
+            }
+
+            std::cout << "Play " << cardType << "card? (y/n)" << std::endl;
+            string answer;
+            std::cin >> answer;
+            if (answer.compare("y") == 0)
+            {
+                card->play();
+                break;
             }
         }
     }
@@ -288,7 +394,13 @@ void GameEngine::executeOrdersPhase()
 {
     for (auto player : *players)
     {
-        
+
+        OrdersList *orderList = player->getOrdersList();
+        Order *nextOrder = orderList->getNextOrder();
+        while (nextOrder != nullptr)
+        {
+            nextOrder->execute();
+        }
     }
 }
 

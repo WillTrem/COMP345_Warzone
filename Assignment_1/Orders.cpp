@@ -11,7 +11,10 @@
 // written by Chris Anglin --- 40216346
 
 // TO-DO: add logic so player gets a card at end of turn if capturedTerritoryThisTurn is true
-//      : make sure airlift can only be called by player with airlift card
+//      : make sure relevant orders can only be called by player with those cards
+//      : make Neutral Player?
+//      : make other Player in Negotiate also blocked
+//      : finish testing
 
 #include <iostream>
 #include <string>
@@ -277,6 +280,14 @@ void Advance::execute()
         // otherwise attack
         else
         {
+            if (this->whichPlayer->getNegotiate() == true)
+            {
+                this->effect = this->whichPlayer->getPlayerName() + "'s Advance was not valid..";
+                this->executed = true; // should this only happen if valid? or both so it can be removed? (double check)
+                std::cout << "execute() called in an Advance object" << std::endl;
+                std::cout << this->effect << std::endl;
+                return;
+            }
             int attackerCount = this->howManyUnits;
             int defenderCount = this->target->numOfArmies;
 
@@ -399,6 +410,21 @@ bool Bomb::validate()
         return false;
     }
 
+    // check target is adjacent to one of source player's territories
+    bool adjacentCheck = false;
+
+    vector<Territory*> territories = this->whichPlayer->getOwnedTerritories();
+
+    for (Territory* t : territories)
+    {
+        if (t->isAdjacent(this->target)) 
+        {
+            adjacentCheck = true;
+        }
+    }
+
+    if (adjacentCheck == false) { return false; }
+
     return true;
 }
 
@@ -462,6 +488,13 @@ Blockade::Blockade(const Blockade &existingBlockade)
     std::cout << "Blockade object created using copy constructor" << std::endl;
 }
 
+// parameterized constructor
+Blockade::Blockade(Player* p, Territory* t)
+{
+    this->whichPlayer = p;
+    this->target = t;
+}
+
 // destructor
 Blockade::~Blockade() {}
 
@@ -469,6 +502,10 @@ Blockade::~Blockade() {}
 bool Blockade::validate()
 {
     std::cout << "validate() called in a Blockade object" << std::endl;
+
+    // if target doesn't belong to issuer, not valid
+    if (this->target->occupierName != this->whichPlayer->getPlayerName()) { return false; }
+
     return true;
 }
 
@@ -477,9 +514,18 @@ void Blockade::execute()
 {
     if (this->validate())
     {
-        std::cout << "execute() called in a Blockade object" << std::endl;
-        this->executed = true;
+        this->target->setTerritoryNumberOfArmies(this->target->numOfArmies * 2);
+        this->target->setOccupierName("Neutral"); // make this a Player?
+        this->effect = "Blockade succesful";
     }
+    else
+    {
+        this->effect = "Blockade not valid";
+    }
+
+    std::cout << "execute() called in a Blockade object" << std::endl;
+    this->executed = true;
+    std::cout << this->effect << std::endl;
 }
 
 // assignment operator
@@ -617,6 +663,13 @@ Negotiate::Negotiate(const Negotiate &existingNegotiate)
     std::cout << "Negotiate object created using copy constructor" << std::endl;
 }
 
+// parameterized constructor
+Negotiate::Negotiate(Player* p, Territory* t)
+{
+    this->whichPlayer = p;
+    this->target = t;
+}
+
 // destructor
 Negotiate::~Negotiate() {}
 
@@ -624,6 +677,10 @@ Negotiate::~Negotiate() {}
 bool Negotiate::validate()
 {
     std::cout << "validate() called in a Negotiate object" << std::endl;
+
+    // check target is owned by oppostion
+    if (this->whichPlayer->getPlayerName() == this->target->occupierName) { return false; }
+
     return true;
 }
 
@@ -632,9 +689,17 @@ void Negotiate::execute()
 {
     if (this->validate())
     {
-        std::cout << "execute() called in a Negotiate object" << std::endl;
-        this->executed = true;
+        this->whichPlayer->setNegotiate(true);
+        // set it true for other player too !
+        this->effect = "Negotiate succesful";
     }
+    else
+    {
+        this->effect = "Negotiate not validl";       
+    }
+    std::cout << "execute() called in a Negotiate object" << std::endl;
+    this->executed = true;
+    std::cout << this->effect << std::endl;
 }
 
 // assignment operator

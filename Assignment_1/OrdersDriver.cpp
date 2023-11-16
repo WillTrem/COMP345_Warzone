@@ -11,10 +11,110 @@
 // written by Chris Anglin --- 40216346
 
 #include "OrdersDriver.h"
+class TestWorld{
+
+    public:
+    Player* p1;
+    Player* p2;
+    Territory* t1;
+    Territory* t2;
+    Territory* t3;
+    std::vector<Territory*> t1_neighbours;
+    std::vector<Territory*> t2_neighbours;
+
+    TestWorld(Player& a, Player& b, Territory& c, Territory& d, Territory& e)
+    {   
+        // make test players and set them up
+        p1 = &a;
+        p2 = &b;
+        p1->setReinforcementPool(2);
+        // make test territories
+        t1 = &c;
+        t2 = &d;
+        t3 = &e;
+        // give territories armies
+        t1->setTerritoryNumberOfArmies(6);
+        t2->setTerritoryNumberOfArmies(2);
+        t3->setTerritoryNumberOfArmies(2);
+        // set territory names
+        t1->setTerritoryName("1");
+        t2->setTerritoryName("2");
+        t3->setTerritoryName("3");
+        // set up neighbours (t1 and t2 are neighbours)
+        t1_neighbours = {t2};
+        t2_neighbours = {t1};
+        t1->setNeighboringTerritories(t1_neighbours);
+        t2->setNeighboringTerritories(t2_neighbours);
+        // set up territory ownership
+        t1->setOccupierName(p1->getPlayerName());
+        t2->setOccupierName(p2->getPlayerName());
+        p1->addOwnedTerritory(t1);
+        p2->addOwnedTerritory(t2);
+    }
+};
 
 void testOrderExecution()
-{
-    // i should put code here
+{   
+    Player play1 = Player();
+    Player play2 = Player();
+    Territory territory1 = Territory();
+    Territory territory2 = Territory();
+    Territory territory3 = Territory();
+
+    std::cout << " \n\n***** DEPLOY *****:\n";
+    TestWorld world = TestWorld(play1, play2, territory1, territory2, territory3);
+
+    Deploy deploy_invalid1 = Deploy(world.p1, 4, world.t1); // too many armies
+    Deploy deploy_invalid2 = Deploy(world.p1, 2, world.t2); // don't own territory
+    Deploy deploy_valid = Deploy(world.p1, 2, world.t1);
+    deploy_invalid1.execute();
+    deploy_invalid2.execute();
+    deploy_valid.execute();
+
+    std::cout << " \n\n***** ADVANCE *****:\n";
+    world = TestWorld(play1, play2, territory1, territory2, territory3);
+    
+    Advance advance_invalid1 = Advance(world.p1, 7, world.t1, world.t2); // too many armies
+    Advance advance_invalid2 = Advance(world.p1, 4, world.t1, world.t3); // target belongs to no one
+    Advance advance_valid = Advance(world.p1, 6, world.t1, world.t2);
+    advance_invalid1.execute();
+    advance_invalid2.execute();
+    advance_valid.execute();
+
+    std::cout << " \n\n***** BOMB *****:\n";
+    world = TestWorld(play1, play2, territory1, territory2, territory3);
+
+    Bomb bomb_invalid1 = Bomb(world.p1, world.t3); // enemy doesn't own territory
+    Bomb bomb_valid = Bomb(world.p1, world.t2);
+    bomb_invalid1.execute();
+    bomb_valid.execute();
+
+    std::cout << " \n\n***** BLOCKADE *****:\n";
+    world = TestWorld(play1, play2, territory1, territory2, territory3);
+
+    Blockade blockade_invalid = Blockade(world.p1, world.t2); // not owned by self
+    Blockade blockade_valid = Blockade(world.p1, world.t1);
+    blockade_invalid.execute();
+    blockade_valid.execute();
+
+    std::cout << " \n\n***** Airlift *****:\n";
+    world = TestWorld(play1, play2, territory1, territory2, territory3);
+
+    Airlift airlift_invalid = Airlift(world.p1, 3, world.t1, world.t2); // self doesn't own target
+    airlift_invalid.execute();
+    Advance advance = Advance(world.p1, 6, world.t1, world.t2); // capture t2 and try again
+    advance.execute();
+    Airlift airlift_valid = Airlift(world.p1, 2, world.t1, world.t2); 
+    airlift_valid.execute();
+
+    std::cout << " \n\n***** Negotiate *****:\n";
+    world = TestWorld(play1, play2, territory1, territory2, territory3);
+
+    Negotiate negotiate_valid = Negotiate(world.p1, world.t2);
+    Advance advance_ = Advance(world.p1, 4, world.t1, world.t2); // should be blocked from attacking now!
+    negotiate_valid.execute();
+    advance_.execute();
+
 }
 
 void testOrdersLists()

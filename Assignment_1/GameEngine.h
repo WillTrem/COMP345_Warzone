@@ -57,4 +57,5 @@ public:
     void operator=(GameState &newState);
     friend std::ostream &operator<<(std::ostream &os, const GameEngine &gameEngine);
 };
+
 #endif // GAMEENGINE_H

@@ -6,3 +6,5 @@
 void testGameEngine();
 
 void testStartupPhase();
+
+void testMainGameLoop();

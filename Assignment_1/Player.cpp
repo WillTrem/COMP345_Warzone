@@ -58,12 +58,12 @@ Player::~Player()
 	cout << "Player destructor called" << endl;
 
 	// Delete name.
-	delete playerName;
-	playerName = NULL;
+	delete this->playerName;
+	this->playerName = NULL;
 
 	// Calling other destructors
-	hand->~Hand();
-	ordersList->~OrdersList();
+	this->hand->~Hand();
+	this->ordersList->~OrdersList();
 
 	// Memory deallocation
 	// delete hand;
@@ -101,6 +101,16 @@ void Player::setReinforcementPool(int numUnits)
 void Player::setCapturedTerritoryThisTurn(bool update)
 {
 	this->capturedTerritoryThisTurn = update;
+}
+
+void Player::setNegotiate(bool update)
+{
+	this->negotiate = update;
+}
+
+bool Player::getNegotiate()
+{
+	return this->negotiate;
 }
 
 // Returns the hand of the player
