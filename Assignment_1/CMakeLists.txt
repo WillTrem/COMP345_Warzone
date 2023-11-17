@@ -27,6 +27,8 @@ add_executable (Assignment_1
     "Player.cpp"
     "PlayerDriver.h" 
     "PlayerDriver.cpp" 
+    "PlayerStrategy.h"
+    "PlayerStrategy.cpp"
     "Orders.h" 
     "Orders.cpp" 
     "OrdersDriver.h" 
