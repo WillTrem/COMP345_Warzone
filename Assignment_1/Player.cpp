@@ -6,7 +6,6 @@
 #include "Orders.h" // put this here to avoid circular dependency
 #include "Player.h"
 
-
 using namespace std;
 
 int Player::numPlayers = 0;
@@ -86,6 +85,10 @@ Player::~Player()
 string Player::getPlayerName()
 {
 	return *playerName;
+}
+
+void Player::setStrategy(PlayerStrategy *ps)
+{
 }
 
 int Player::getReinforcmentPool()

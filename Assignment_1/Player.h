@@ -53,6 +53,9 @@ public:
 	// Getters and setters.
 	Hand *getHand();
 
+	// Set strategy for the computer player
+	void setStrategy(PlayerStrategy *ps);
+
 	vector<Territory *> getOwnedTerritories();
 	void addOwnedTerritory(Territory *territory);
 	Territory *removeOwnedTerritory(Territory *territory);

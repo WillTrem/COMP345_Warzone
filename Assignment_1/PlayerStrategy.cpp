@@ -117,6 +117,7 @@ vector<Territory *> NeutralPlayerStrategy::toDefend()
 
 void NeutralPlayerStrategy::issueOrder(Order *o)
 {
+    // Check the total number of troops that the player has across all territories. If that number diminishes, meaning the player got attacked, the neutral player becomes aggressive
 }
 // Methods for the Cheater Player Strategy;
 vector<Territory *> CheaterPlayerStrategy::toAttack()
