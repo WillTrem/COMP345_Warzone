@@ -30,6 +30,35 @@ vector<Territory *> PlayerStrategy::getAdjacentTerritories()
 
 
 // Methods for the Human Player Strategy.
+vector<Territory*> HumanPlayerStrategy::toAttack()
+{
+    // We could use the method in PlayerStrategy for this, which ensures there are no repeats in the vector?
+    // Retrieve all enemy neighboring territories
+    vector<Territory*> enemyTerritories;
+    for (auto territory : p->getOwnedTerritories())
+    {
+        for (auto neighbor : territory->neighboringTerritories)
+        {
+            if (neighbor->occupierName.compare(*(p->playerName)) != 0)
+            {
+                enemyTerritories.push_back(neighbor);
+            }
+        }
+    }
+
+    // Prioritize territory to attack
+    return p->prioritizeTerritories(enemyTerritories);
+}
+
+vector<Territory*> HumanPlayerStrategy::toDefend()
+{
+    // Prioritize territory to defend
+    vector<Territory*> ownedTerritories = p->getOwnedTerritories();
+    return p->prioritizeTerritories(ownedTerritories);
+}
+
+// issueOrder
+
 
 // Methods for the Aggresive Player Strategy;
 vector<Territory *> AggressivePlayerStrategy::toAttack()
@@ -67,6 +96,9 @@ vector<Territory *> AggressivePlayerStrategy::toDefend()
 
 void AggressivePlayerStrategy::issueOrder(Order *o)
 {
+    // Deploy troops to territories adjacent to enemy ones.
+    // Attack these territories.
+    // Use aggressive cards.
 }
 
 
@@ -100,6 +132,9 @@ vector<Territory *> BenevolentPlayerStrategy::toDefend()
 
 void BenevolentPlayerStrategy::issueOrder(Order *o)
 {
+    // Deploy troops to own territories.
+    // Move troops to weaker territories when possible?
+    // Only play nonviolent cards.
 }
 
 
@@ -120,14 +155,8 @@ vector<Territory *> NeutralPlayerStrategy::toDefend()
 // issueOrder() that does nothing.
 void NeutralPlayerStrategy::issueOrder(Order *o)
 {
-    return;
-}
-// How to detect when it is attacked?
-
-
-void NeutralPlayerStrategy::issueOrder(Order *o)
-{
     // Check the total number of troops that the player has across all territories. If that number diminishes, meaning the player got attacked, the neutral player becomes aggressive
+    return;
 }
 
 
@@ -139,9 +168,19 @@ vector<Territory *> CheaterPlayerStrategy::toAttack()
     return toAttack;
 }
 
-// No issueOrder method since the cheater player does not use cards!!!
+vector<Territory*> CheaterPlayerStrategy::toDefend()
+{
+    // Returns an empty toDefend vector so that no territory will be defended.
+    vector<Territory*> toDefend;
+    return toDefend;
+}
+
 void CheaterPlayerStrategy::issueOrder(Order* o)
 {
+    // No issueOrder method since the cheater player does not use cards!!!
+
+    // Auto conquer the territories in toAttack?
+
     return;
 }
 
@@ -150,29 +189,29 @@ void CheaterPlayerStrategy::issueOrder(Order* o)
 // Utility methods and structs.
 
 // Used to sort a vector of territories by the number of troops present on them.
-inline bool LessThan_TroopsPresent::operator()(const Territory &A, const Territory &B)
+inline bool LessThan_TroopsPresent::operator()(const Territory *A, const Territory *B)
 {
     // The more units present on a territory, the higher it is sorted.
-    return (A.numOfArmies < B.numOfArmies);
+    return (A->numOfArmies < B->numOfArmies);
 }
 
 // Used to stort a vector of territories by the number of enemy territories surrounding them.
-inline bool LessTan_SurroundingEnemies::operator()(const Territory &A, const Territory &B)
+inline bool LessTan_SurroundingEnemies::operator()(const Territory *A, const Territory *B)
 {
     // Count the number of surrounding enemy territories.
     int surroundingEnemyTerritoriesA = 0;
     int surroundingEnemyTerritoriesB = 0;
 
-    for (const Territory *neighborA : A.neighboringTerritories)
+    for (const Territory *neighborA : A->neighboringTerritories)
     {
-        if (neighborA->occupierName != A.occupierName)
+        if (neighborA->occupierName != A->occupierName)
         {
             surroundingEnemyTerritoriesA++;
         }
     }
-    for (const Territory *neighborB : B.neighboringTerritories)
+    for (const Territory *neighborB : B->neighboringTerritories)
     {
-        if (neighborB->occupierName != B.occupierName)
+        if (neighborB->occupierName != B->occupierName)
         {
             surroundingEnemyTerritoriesB++;
         }
@@ -183,27 +222,27 @@ inline bool LessTan_SurroundingEnemies::operator()(const Territory &A, const Ter
 }
 
 // Used to sort a vector of territories by the number of enemy territories surrounding them, then the number of troops present on them.
-inline bool LessThan_TroopsPresent_SurroundingEnemies::operator()(const Territory &A, const Territory &B)
+inline bool LessThan_TroopsPresent_SurroundingEnemies::operator()(const Territory *A, const Territory *B)
 {
     // Priorize the number of troops present over the number of adjacent enemy territories.
-    if (A.numOfArmies != B.numOfArmies)
+    if (A->numOfArmies != B->numOfArmies)
         // The more units present on a territory, the higher it is sorted.
-        return (A.numOfArmies < B.numOfArmies);
+        return (A->numOfArmies < B->numOfArmies);
 
     // Count the number of surrounding enemy territories.
     int surroundingEnemyTerritoriesA = 0;
     int surroundingEnemyTerritoriesB = 0;
 
-    for (const Territory *neighborA : A.neighboringTerritories)
+    for (const Territory *neighborA : A->neighboringTerritories)
     {
-        if (neighborA->occupierName != A.occupierName)
+        if (neighborA->occupierName != A->occupierName)
         {
             surroundingEnemyTerritoriesA++;
         }
     }
-    for (const Territory *neighborB : B.neighboringTerritories)
+    for (const Territory *neighborB : B->neighboringTerritories)
     {
-        if (neighborB->occupierName != B.occupierName)
+        if (neighborB->occupierName != B->occupierName)
         {
             surroundingEnemyTerritoriesB++;
         }
@@ -214,22 +253,22 @@ inline bool LessThan_TroopsPresent_SurroundingEnemies::operator()(const Territor
 }
 
 // Used to sort a vector of territories by the number of adjacent enemy troops.
-inline bool LessThan_AdjacentEnemyTroops::operator()(const Territory &A, const Territory &B)
+inline bool LessThan_AdjacentEnemyTroops::operator()(const Territory *A, const Territory *B)
 {
     // Count the number of surrounding enemy troops.
     int surroundingEnemyTroopsA = 0;
     int surroundingEnemyTroopsB = 0;
 
-    for (const Territory *neighborA : A.neighboringTerritories)
+    for (const Territory *neighborA : A->neighboringTerritories)
     {
-        if (neighborA->occupierName != A.occupierName)
+        if (neighborA->occupierName != A->occupierName)
         {
             surroundingEnemyTroopsA += neighborA->numOfArmies;
         }
     }
-    for (const Territory *neighborB : B.neighboringTerritories)
+    for (const Territory *neighborB : B->neighboringTerritories)
     {
-        if (neighborB->occupierName != B.occupierName)
+        if (neighborB->occupierName != B->occupierName)
         {
             surroundingEnemyTroopsB += neighborB->numOfArmies;
         }
@@ -240,22 +279,22 @@ inline bool LessThan_AdjacentEnemyTroops::operator()(const Territory &A, const T
 }
 
 // Used to sort a vector of territories by the number of adjacent enemy troops, then the number of one's own units present on them.
-inline bool LessThan_AdjacentEnemyTroops_TroopsPresent::operator()(const Territory &A, const Territory &B)
+inline bool LessThan_AdjacentEnemyTroops_TroopsPresent::operator()(const Territory *A, const Territory *B)
 {
     // Count the number of surrounding enemy troops.
     int surroundingEnemyTroopsA = 0;
     int surroundingEnemyTroopsB = 0;
 
-    for (const Territory *neighborA : A.neighboringTerritories)
+    for (const Territory *neighborA : A->neighboringTerritories)
     {
-        if (neighborA->occupierName != A.occupierName)
+        if (neighborA->occupierName != A->occupierName)
         {
             surroundingEnemyTroopsA += neighborA->numOfArmies;
         }
     }
-    for (const Territory *neighborB : B.neighboringTerritories)
+    for (const Territory *neighborB : B->neighboringTerritories)
     {
-        if (neighborB->occupierName != B.occupierName)
+        if (neighborB->occupierName != B->occupierName)
         {
             surroundingEnemyTroopsB += neighborB->numOfArmies;
         }
@@ -268,5 +307,5 @@ inline bool LessThan_AdjacentEnemyTroops_TroopsPresent::operator()(const Territo
 
     // If both territories are surrounded by the same number of enemy troops, compare their own unit numbers.
     // The fewer units present, the higher a territory is sorted.
-    return (A.numOfArmies > B.numOfArmies);
+    return (A->numOfArmies > B->numOfArmies);
 }
