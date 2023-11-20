@@ -31,11 +31,11 @@ public:
     //...
 
     // Main methods.
-    virtual vector<Territory *> toAttack();
+    virtual vector<Territory *> toAttack() = 0;
 
-    virtual vector<Territory *> toDefend();
+    virtual vector<Territory *> toDefend() = 0;
 
-    virtual void issueOrder(Order *order);
+    virtual void issueOrder(Order *order) = 0;
 
 
     // Utility methods.

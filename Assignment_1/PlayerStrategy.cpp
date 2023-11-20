@@ -27,6 +27,8 @@ vector<Territory *> PlayerStrategy::getAdjacentTerritories()
     return adjacentEnemyTerritories; // Will need to make sure it does not get deleted.
 }
 
+
+
 // Methods for the Human Player Strategy.
 
 // Methods for the Aggresive Player Strategy;
@@ -67,6 +69,7 @@ void AggressivePlayerStrategy::issueOrder(Order *o)
 {
 }
 
+
 // Methods for the Benevolent Player Strategy;
 vector<Territory *> BenevolentPlayerStrategy::toAttack()
 {
@@ -99,6 +102,7 @@ void BenevolentPlayerStrategy::issueOrder(Order *o)
 {
 }
 
+
 // Methods for the Neutral Player Strategy;
 vector<Territory *> NeutralPlayerStrategy::toAttack()
 {
@@ -106,6 +110,7 @@ vector<Territory *> NeutralPlayerStrategy::toAttack()
     vector<Territory *> toAttack;
     return toAttack;
 }
+
 vector<Territory *> NeutralPlayerStrategy::toDefend()
 {
     // Returns an empty toDefend vector so that no territory will be defended.
@@ -113,12 +118,19 @@ vector<Territory *> NeutralPlayerStrategy::toDefend()
     return toDefend;
 }
 // issueOrder() that does nothing.
+void NeutralPlayerStrategy::issueOrder(Order *o)
+{
+    return;
+}
 // How to detect when it is attacked?
+
 
 void NeutralPlayerStrategy::issueOrder(Order *o)
 {
     // Check the total number of troops that the player has across all territories. If that number diminishes, meaning the player got attacked, the neutral player becomes aggressive
 }
+
+
 // Methods for the Cheater Player Strategy;
 vector<Territory *> CheaterPlayerStrategy::toAttack()
 {
@@ -128,6 +140,12 @@ vector<Territory *> CheaterPlayerStrategy::toAttack()
 }
 
 // No issueOrder method since the cheater player does not use cards!!!
+void CheaterPlayerStrategy::issueOrder(Order* o)
+{
+    return;
+}
+
+
 
 // Utility methods and structs.
 

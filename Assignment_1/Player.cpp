@@ -198,7 +198,7 @@ vector<Territory *> Player::toDefend()
 // Returns an arbitrary list of territories to attack
 vector<Territory *> Player::toAttack()
 {
-
+	// We could use the method in PlayerStrategy for this, which ensures there are no repeats in the vector?
 	// Retrieve all enemy neighboring territories
 	vector<Territory *> enemyTerritories;
 	for (auto territory : getOwnedTerritories())
