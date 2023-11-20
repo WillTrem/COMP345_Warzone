@@ -27,6 +27,10 @@ vector<Territory *> PlayerStrategy::getAdjacentTerritories()
     return adjacentEnemyTerritories; // Will need to make sure it does not get deleted.
 }
 
+bool PlayerStrategy::isPlayerAttacked()
+{
+    
+}
 
 
 // Methods for the Human Player Strategy.

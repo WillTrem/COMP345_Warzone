@@ -32,7 +32,7 @@ private:
 	string *playerName;
 
 	int reinforcementPool = 0;
-
+	int totalPlayerArmy = 0;
 	vector<Territory *> prioritizeTerritories(vector<Territory *> territories);
 
 	// attributes added to help with A2 Part 4 (order implementation)
@@ -67,7 +67,6 @@ public:
 
 	string getPlayerName();
 
-	
 	int getReinforcmentPool();
 	void setReinforcementPool(int numUnits);
 
@@ -82,6 +81,12 @@ public:
 	vector<Territory *> toAttack();
 
 	void issueOrder(Order *order);
+
+	// method for part 1 of assg 3: update total number of player army across all owned territories
+	void updateTotalPlayerArmyCount();
+
+	// method for part 1 of assg 3: get total number of player army across all owned territories
+	int getTotalPlayerArmy();
 
 	// Assignment operator overload
 	void operator=(Player &player);

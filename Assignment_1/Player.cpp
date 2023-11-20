@@ -243,6 +243,24 @@ void Player::operator=(Player &player)
 	ownedTerritories = player.ownedTerritories;
 }
 
+// Method to update player army count across their territories
+void Player::updateTotalPlayerArmyCount()
+{
+	int numOfTroops = 0;
+	for (Territory *territory : ownedTerritories)
+	{
+		numOfTroops = numOfTroops + territory->numOfArmies;
+	}
+	totalPlayerArmy = numOfTroops;
+}
+
+// Method to get player army count across their territories
+int Player::getTotalPlayerArmy()
+{
+	updateTotalPlayerArmyCount();
+	return totalPlayerArmy;
+}
+
 // Stream insertion operator overload for class Player
 ostream &operator<<(ostream &os, const Player &p)
 {

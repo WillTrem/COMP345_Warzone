@@ -1,4 +1,3 @@
-#include "Player.h"
 #include "Map.h"
-
+#include "PlayerStrategy.h"
 void testPlayerStrategies();
