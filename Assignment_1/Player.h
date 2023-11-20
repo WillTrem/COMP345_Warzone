@@ -39,6 +39,9 @@ private:
 	bool capturedTerritoryThisTurn = false;
 	bool negotiate = false;
 
+	// Do the other strategy types also need to be made friends?
+	friend class HumanPlayerStrategy;
+
 public:
 	// Default constructor
 	Player();
