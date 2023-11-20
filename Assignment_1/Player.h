@@ -9,9 +9,11 @@
 
 #include "Cards.h"
 #include "Map.h"
-#include "PlayerStrategy.h"
 
 using namespace std;
+
+// forward declaration to avoid circular hell
+class PlayerStrategy;
 
 // putting these forward declarations here to avoid circular dependency!
 class OrdersList;

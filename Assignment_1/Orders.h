@@ -382,4 +382,4 @@ public:
     // stream insertion operator
     friend std::ostream &operator<<(std::ostream &output, const OrdersList &ordersList);
 };
-#endif ORDERS_H
+#endif

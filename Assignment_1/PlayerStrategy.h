@@ -11,7 +11,6 @@
 
 using namespace std;
 
-
 // General constants / tuning params.
 int NUM_TO_ATTACK = 5; // The number of territories AI players will targer/priorize in their attacking phase.
 int NUM_TO_DEFEND = 5; // The number of territories AI players will targer/priorize in their defending phase.

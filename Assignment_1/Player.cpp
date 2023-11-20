@@ -57,7 +57,7 @@ Player::~Player()
 	cout << "Player destructor called" << endl;
 
 	// Delete name.
-	if (this->playerName = nullptr)
+	if (this->playerName == nullptr)
 	{
 		delete this->playerName;
 		this->playerName = NULL;
