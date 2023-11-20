@@ -58,5 +58,4 @@ public:
     friend std::ostream &operator<<(std::ostream &os, const GameEngine &gameEngine);
 };
 
-void testMainGameLoop();
 #endif // GAMEENGINE_H

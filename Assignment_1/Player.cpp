@@ -6,7 +6,6 @@
 #include "Orders.h" // put this here to avoid circular dependency
 #include "Player.h"
 
-
 using namespace std;
 
 int Player::numPlayers = 0;
@@ -89,6 +88,10 @@ Player::~Player()
 string Player::getPlayerName()
 {
 	return *playerName;
+}
+
+void Player::setStrategy(PlayerStrategy *ps)
+{
 }
 
 int Player::getReinforcmentPool()
@@ -201,7 +204,7 @@ vector<Territory *> Player::toDefend()
 // Returns an arbitrary list of territories to attack
 vector<Territory *> Player::toAttack()
 {
-
+	// We could use the method in PlayerStrategy for this, which ensures there are no repeats in the vector?
 	// Retrieve all enemy neighboring territories
 	vector<Territory *> enemyTerritories;
 	for (auto territory : getOwnedTerritories())

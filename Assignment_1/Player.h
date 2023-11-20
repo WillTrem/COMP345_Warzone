@@ -9,6 +9,7 @@
 
 #include "Cards.h"
 #include "Map.h"
+#include "PlayerStrategy.h"
 
 using namespace std;
 
@@ -22,6 +23,7 @@ class Player
 private:
 	static int numPlayers;
 
+	PlayerStrategy *ps; // player strategy
 	vector<Territory *> ownedTerritories;
 	OrdersList *ordersList = nullptr;
 	Hand *hand = nullptr;
@@ -51,6 +53,9 @@ public:
 
 	// Getters and setters.
 	Hand *getHand();
+
+	// Set strategy for the computer player
+	void setStrategy(PlayerStrategy *ps);
 
 	vector<Territory *> getOwnedTerritories();
 	void addOwnedTerritory(Territory *territory);
