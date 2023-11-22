@@ -12,6 +12,9 @@
 
 using namespace std;
 
+#ifndef PLAYER_H
+#define PLAYER_H
+
 // forward declaration to avoid circular hell
 class PlayerStrategy;
 
@@ -100,3 +103,4 @@ public:
 	// Stream insertion operator overload
 	friend std::ostream &operator<<(std::ostream &out, const Player &p);
 };
+#endif

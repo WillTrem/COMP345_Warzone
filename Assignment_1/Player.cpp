@@ -4,7 +4,7 @@
 // Written by William Tremblay, 40174212.
 
 #include "Orders.h" // put this here to avoid circular dependency
-#include "Player.h"
+#include "PlayerStrategy.h"
 
 using namespace std;
 
@@ -198,7 +198,7 @@ vector<Territory *> Player::prioritizeTerritories(vector<Territory *> territorie
 vector<Territory *> Player::toDefend()
 {
 	// Prioritize territory to defend
-	vector<Territory *> ownedTerritories = getOwnedTerritories();
+	vector<Territory *> ownedTerritories = ps->toDefend();
 	return prioritizeTerritories(ownedTerritories);
 }
 
@@ -207,17 +207,19 @@ vector<Territory *> Player::toAttack()
 {
 	// We could use the method in PlayerStrategy for this, which ensures there are no repeats in the vector?
 	// Retrieve all enemy neighboring territories
+
 	vector<Territory *> enemyTerritories;
-	for (auto territory : getOwnedTerritories())
-	{
-		for (auto neighbor : territory->neighboringTerritories)
-		{
-			if (neighbor->occupierName.compare(*playerName) != 0)
-			{
-				enemyTerritories.push_back(neighbor);
-			}
-		}
-	}
+	// for (auto territory : getOwnedTerritories())
+	// {
+	// 	for (auto neighbor : territory->neighboringTerritories)
+	// 	{
+	// 		if (neighbor->occupierName.compare(*playerName) != 0)
+	// 		{
+	// 			enemyTerritories.push_back(neighbor);
+	// 		}
+	// 	}
+	// }
+	enemyTerritories = ps->toAttack();
 
 	// Prioritize territory to attack
 	return prioritizeTerritories(enemyTerritories);
@@ -231,6 +233,7 @@ void Player::issueOrder(Order *order)
 	// ordersList->addOrder(newOrder);
 
 	// TEMPORARILY REMOVED THE ABOVE LINES -- this function will be implemented with Part 3
+	ps->issueOrder(order);
 
 	cout << "An order has been issued" << endl;
 }

@@ -2,6 +2,7 @@
 
 void testPlayerStrategies()
 {
+    
     // Player Creation
     Player HumanPlayer("Timmy");
     Player AngryBot("");
@@ -15,7 +16,12 @@ void testPlayerStrategies()
     NeutralBot.setStrategy(new NeutralPlayerStrategy());
     CheatBot.setStrategy(new CheaterPlayerStrategy());
 
-    std::cout << "reached" << endl;
-    // Testing toAttack() method with aggressive player
+    std::cout << "reached 1" << endl;
+    // Testing toAttack() method with all computer players
     AngryBot.toAttack();
+    NiceBot.toAttack();
+    NeutralBot.toAttack();
+    CheatBot.toAttack();
+
+    std::cout << "reached 2" << endl;
 }
