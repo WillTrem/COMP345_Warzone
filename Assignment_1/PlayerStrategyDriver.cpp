@@ -14,4 +14,8 @@ void testPlayerStrategies()
     NiceBot.setStrategy(new BenevolentPlayerStrategy());
     NeutralBot.setStrategy(new NeutralPlayerStrategy());
     CheatBot.setStrategy(new CheaterPlayerStrategy());
+
+    std::cout << "reached" << endl;
+    // Testing toAttack() method with aggressive player
+    AngryBot.toAttack();
 }

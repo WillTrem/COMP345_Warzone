@@ -15,4 +15,5 @@
 #include "CommandProcessingDriver.h"
 #include "LoggingObserverDriver.h"
 #include "GameEngineDriver.h"
+#include "PlayerStrategyDriver.h"
 // TODO: Reference additional headers your program requires here.

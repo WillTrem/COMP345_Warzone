@@ -42,6 +42,10 @@ add_executable (Assignment_1
     "LoggingObserverDriver.h"
     "LoggingObserverDriver.cpp"
     "GameLog.txt"
+    "PlayerStrategy.h"
+    "PlayerStrategy.cpp"
+    "PlayerStrategyDriver.h"
+    "PlayerStrategyDriver.cpp"
     )
 
 # TODO: Add tests and install targets if needed.

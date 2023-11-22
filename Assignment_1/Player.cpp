@@ -90,8 +90,9 @@ string Player::getPlayerName()
 	return *playerName;
 }
 
-void Player::setStrategy(PlayerStrategy *ps)
+void Player::setStrategy(PlayerStrategy *strategy)
 {
+	this->ps = strategy;
 }
 
 int Player::getReinforcmentPool()
@@ -259,6 +260,15 @@ int Player::getTotalPlayerArmy()
 {
 	updateTotalPlayerArmyCount();
 	return totalPlayerArmy;
+}
+
+bool Player::isPlayerAttacked()
+{
+	if (totalPlayerArmy > getTotalPlayerArmy()) // Compare army before and army after update
+	{
+		return false;
+	}
+	return true;
 }
 
 // Stream insertion operator overload for class Player

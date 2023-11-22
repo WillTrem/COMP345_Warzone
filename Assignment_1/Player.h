@@ -32,7 +32,6 @@ private:
 	string *playerName;
 
 	int reinforcementPool = 0;
-	int totalPlayerArmy = 0;
 	vector<Territory *> prioritizeTerritories(vector<Territory *> territories);
 
 	// attributes added to help with A2 Part 4 (order implementation)
@@ -43,6 +42,7 @@ private:
 	friend class HumanPlayerStrategy;
 
 public:
+	int totalPlayerArmy = 0;
 	// Default constructor
 	Player();
 
@@ -90,6 +90,9 @@ public:
 
 	// method for part 1 of assg 3: get total number of player army across all owned territories
 	int getTotalPlayerArmy();
+
+	// method for part 1 of assg 3: check if the player is attacked or not
+	bool isPlayerAttacked();
 
 	// Assignment operator overload
 	void operator=(Player &player);

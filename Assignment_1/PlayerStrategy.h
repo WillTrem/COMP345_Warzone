@@ -12,8 +12,8 @@
 using namespace std;
 
 // General constants / tuning params.
-int NUM_TO_ATTACK = 5; // The number of territories AI players will targer/priorize in their attacking phase.
-int NUM_TO_DEFEND = 5; // The number of territories AI players will targer/priorize in their defending phase.
+extern const int NUM_TO_ATTACK; // The number of territories AI players will targer/priorize in their attacking phase.
+extern const int NUM_TO_DEFEND; // The number of territories AI players will targer/priorize in their defending phase.
 
 class Player;
 // Abstract strategy class
@@ -38,8 +38,6 @@ public:
 
     // Utility methods.
     vector<Territory *> getAdjacentTerritories(); // Returns a vector of all enemy territories adjacent to the player's.
-
-    bool isPlayerAttacked();
 };
 
 // Human Player Strategy.
@@ -48,6 +46,7 @@ class HumanPlayerStrategy : public PlayerStrategy
 {
 public:
     // Constructor(s)
+    HumanPlayerStrategy();
 
     vector<Territory *> toAttack();
 
@@ -62,6 +61,7 @@ class AggressivePlayerStrategy : public PlayerStrategy
 {
 public:
     // Constructor(s)
+    AggressivePlayerStrategy();
 
     vector<Territory *> toAttack();
 
@@ -76,6 +76,7 @@ class BenevolentPlayerStrategy : public PlayerStrategy
 {
 public:
     // Constructor(s)
+    BenevolentPlayerStrategy();
 
     vector<Territory *> toAttack();
 
@@ -90,6 +91,7 @@ class NeutralPlayerStrategy : public PlayerStrategy
 {
 public:
     // Constructor(s)
+    NeutralPlayerStrategy();
 
     vector<Territory *> toAttack();
 
@@ -104,6 +106,7 @@ class CheaterPlayerStrategy : public PlayerStrategy
 {
 public:
     // Constructor(s)
+    CheaterPlayerStrategy();
 
     vector<Territory *> toAttack();
 
@@ -120,27 +123,27 @@ public:
 // Used by the Aggressive player's toAttack() method.
 struct LessThan_TroopsPresent
 {
-    inline bool operator() (const Territory* A, const Territory* B);
+    inline bool operator()(const Territory *A, const Territory *B);
 };
 
 // Used to stort a vector of territories by the number of enemy territories surrounding them.
 struct LessTan_SurroundingEnemies
 {
-    inline bool operator() (const Territory* A, const Territory* B);
+    inline bool operator()(const Territory *A, const Territory *B);
 };
 
 // Used to sort a vector of territories by the numberof troops present on them, then the number of enemy territories surrounding them.
 // More owned troops present, more surrounding enemies = 'stronger' territory for offense.
 struct LessThan_TroopsPresent_SurroundingEnemies
 {
-    inline bool operator() (const Territory* A, const Territory* B);
+    inline bool operator()(const Territory *A, const Territory *B);
 };
 
 // Used to sort a vector of territories by the number of adjacent enemy troops.
 // More adjacent enemy troops = weaker territory.
 struct LessThan_AdjacentEnemyTroops
 {
-    inline bool operator() (const Territory* A, const Territory* B);
+    inline bool operator()(const Territory *A, const Territory *B);
 };
 
 // Used to sort a vector of territories by the number of adjacent enemy troops, then the number of one's own units present on them.
@@ -148,5 +151,5 @@ struct LessThan_AdjacentEnemyTroops
 // Used by the Benevolent Player's toDefend() method.
 struct LessThan_AdjacentEnemyTroops_TroopsPresent
 {
-    inline bool operator() (const Territory* A, const Territory* B);
+    inline bool operator()(const Territory *A, const Territory *B);
 };
