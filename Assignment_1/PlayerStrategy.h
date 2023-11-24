@@ -41,6 +41,10 @@ public:
 
     // Utility methods.
     vector<Territory *> getAdjacentTerritories(); // Returns a vector of all enemy territories adjacent to the player's.
+
+    Territory *getStrongestTerritory();
+
+    Territory *getWeakestTerritory();
 };
 
 // Human Player Strategy.

@@ -63,6 +63,35 @@ vector<Territory *> PlayerStrategy::getAdjacentTerritories()
     return adjacentEnemyTerritories; // Will need to make sure it does not get deleted.
 }
 
+Territory *PlayerStrategy::getStrongestTerritory()
+{
+    Territory *strongestTerritory;
+    for (Territory *Territory : p->getOwnedTerritories())
+    {
+        if (Territory->numOfArmies > strongestTerritory->numOfArmies)
+        {
+            strongestTerritory = Territory;
+        }
+    }
+    return strongestTerritory;
+}
+
+Territory *PlayerStrategy::getWeakestTerritory()
+{
+    Territory *weakestTerritory;
+    // Set the weakestTerritory army to a high number and not 0
+    weakestTerritory->numOfArmies = 1000000;
+
+    for (Territory *Territory : p->getOwnedTerritories())
+    {
+        if (Territory->numOfArmies < weakestTerritory->numOfArmies)
+        {
+            weakestTerritory = Territory;
+        }
+    }
+    return weakestTerritory;
+}
+
 // Methods for the Human Player Strategy.
 vector<Territory *> HumanPlayerStrategy::toAttack()
 {
@@ -140,15 +169,8 @@ void AggressivePlayerStrategy::issueOrder(Order *o)
     if (Deploy *deployOrder = dynamic_cast<Deploy *>(o))
     {
         // Find the strongest country
-        Territory *strongestTerritory;
-        for (Territory *Territory : p->getOwnedTerritories())
-        {
-            if (Territory->numOfArmies > strongestTerritory->numOfArmies)
-            {
-                strongestTerritory = Territory;
-            }
-        }
-        Deploy(p, p->getReinforcmentPool(), strongestTerritory);
+        Territory *strongest = getStrongestTerritory();
+        Deploy(p, p->getReinforcmentPool(), strongest);
     }
 
     // Check if 'o' is a Advance object
@@ -207,36 +229,17 @@ void BenevolentPlayerStrategy::issueOrder(Order *o)
     // Check if 'o' is a Deploy object
     if (Deploy *deployOrder = dynamic_cast<Deploy *>(o))
     {
-        // Find the weakest country
-        Territory *weakestTerritory;
-        weakestTerritory->numOfArmies = 1000000;
-
-        for (Territory *Territory : p->getOwnedTerritories())
-        {
-            if (Territory->numOfArmies < weakestTerritory->numOfArmies)
-            {
-                weakestTerritory = Territory;
-            }
-        }
-        Deploy(p, p->getReinforcmentPool(), weakestTerritory);
+        // Find the weakest territory
+        Territory *weakest = getWeakestTerritory();
+        Deploy(p, p->getReinforcmentPool(), weakest);
     }
 
     // Check if 'o' is a Airlift object
     if (Airlift *airliftOrder = dynamic_cast<Airlift *>(o))
     {
-
-        // REMINDER TO SELF: MAKE FUNCTION TO FIND STRONGEST AND WEAKEST COUNTRIES!!!!
-        Territory *weakestTerritory;
-        weakestTerritory->numOfArmies = 1000000;
-
-        for (Territory *Territory : p->getOwnedTerritories())
-        {
-            if (Territory->numOfArmies < weakestTerritory->numOfArmies)
-            {
-                weakestTerritory = Territory;
-            }
-        }
-        // Airlift(p, p->getReinforcmentPool(), weakestTerritory);
+        // Find the weakest territory
+        Territory *weakest = getWeakestTerritory();
+        Airlift(p, p->getReinforcmentPool(), weakest);
     }
 
     // Check if 'o' is a Blockade object
