@@ -1,3 +1,13 @@
+// REMINDER TO SELF: MAKE FUNCTION TO FIND STRONGEST AND WEAKEST COUNTRIES!!!!
+// REMINDER TO SELF: MAKE FUNCTION TO FIND STRONGEST AND WEAKEST COUNTRIES!!!!
+// REMINDER TO SELF: MAKE FUNCTION TO FIND STRONGEST AND WEAKEST COUNTRIES!!!!
+// REMINDER TO SELF: MAKE FUNCTION TO FIND STRONGEST AND WEAKEST COUNTRIES!!!!
+// REMINDER TO SELF: MAKE FUNCTION TO FIND STRONGEST AND WEAKEST COUNTRIES!!!!
+// REMINDER TO SELF: MAKE FUNCTION TO FIND STRONGEST AND WEAKEST COUNTRIES!!!!
+// REMINDER TO SELF: MAKE FUNCTION TO FIND STRONGEST AND WEAKEST COUNTRIES!!!!
+// REMINDER TO SELF: MAKE FUNCTION TO FIND STRONGEST AND WEAKEST COUNTRIES!!!!
+// REMINDER TO SELF: MAKE FUNCTION TO FIND STRONGEST AND WEAKEST COUNTRIES!!!!
+
 #include "PlayerStrategy.h"
 const int NUM_TO_ATTACK = 5;
 const int NUM_TO_DEFEND = 5;
@@ -84,7 +94,7 @@ vector<Territory *> HumanPlayerStrategy::toDefend()
 // TODO
 void HumanPlayerStrategy::issueOrder(Order *o)
 {
-    return;
+    p->getOrdersList()->addOrder(o);
 }
 
 // Methods for the Aggresive Player Strategy;
@@ -126,9 +136,34 @@ vector<Territory *> AggressivePlayerStrategy::toDefend()
 
 void AggressivePlayerStrategy::issueOrder(Order *o)
 {
-    // Deploy troops to its STRONGEST territory
-    // Attack these territories.
-    // Use aggressive cards.
+    // Check if 'o' is a Deploy object
+    if (Deploy *deployOrder = dynamic_cast<Deploy *>(o))
+    {
+        // Find the strongest country
+        Territory *strongestTerritory;
+        for (Territory *Territory : p->getOwnedTerritories())
+        {
+            if (Territory->numOfArmies > strongestTerritory->numOfArmies)
+            {
+                strongestTerritory = Territory;
+            }
+        }
+        Deploy(p, p->getReinforcmentPool(), strongestTerritory);
+    }
+
+    // Check if 'o' is a Advance object
+    if (Advance *advanceOrder = dynamic_cast<Advance *>(o))
+    {
+        // Brainstorm about the advance recursively
+        // for ();
+    }
+
+    // Check if 'o' is a Bomb object
+    if (Bomb *bombOrder = dynamic_cast<Bomb *>(o))
+    {
+        Territory *aboutToGetBombed = getAdjacentTerritories()[0];
+        Bomb(p, aboutToGetBombed);
+    }
 }
 
 // Methods for the Benevolent Player Strategy;
@@ -168,6 +203,48 @@ void BenevolentPlayerStrategy::issueOrder(Order *o)
     // Deploy troops to own territories.
     // Move troops to weaker territories when possible?
     // Only play nonviolent cards.
+
+    // Check if 'o' is a Deploy object
+    if (Deploy *deployOrder = dynamic_cast<Deploy *>(o))
+    {
+        // Find the weakest country
+        Territory *weakestTerritory;
+        weakestTerritory->numOfArmies = 1000000;
+
+        for (Territory *Territory : p->getOwnedTerritories())
+        {
+            if (Territory->numOfArmies < weakestTerritory->numOfArmies)
+            {
+                weakestTerritory = Territory;
+            }
+        }
+        Deploy(p, p->getReinforcmentPool(), weakestTerritory);
+    }
+
+    // Check if 'o' is a Airlift object
+    if (Airlift *airliftOrder = dynamic_cast<Airlift *>(o))
+    {
+
+        // REMINDER TO SELF: MAKE FUNCTION TO FIND STRONGEST AND WEAKEST COUNTRIES!!!!
+        Territory *weakestTerritory;
+        weakestTerritory->numOfArmies = 1000000;
+
+        for (Territory *Territory : p->getOwnedTerritories())
+        {
+            if (Territory->numOfArmies < weakestTerritory->numOfArmies)
+            {
+                weakestTerritory = Territory;
+            }
+        }
+        // Airlift(p, p->getReinforcmentPool(), weakestTerritory);
+    }
+
+    // Check if 'o' is a Blockade object
+    if (Blockade *blockadeOrder = dynamic_cast<Blockade *>(o))
+    {
+        Territory *aboutToGetBombed = getAdjacentTerritories()[0];
+        Bomb(p, aboutToGetBombed);
+    }
 }
 
 // Methods for the Neutral Player Strategy;
@@ -214,6 +291,7 @@ vector<Territory *> CheaterPlayerStrategy::toDefend()
     return toDefend;
 }
 
+// The Cheater Player issueOrder does not do anything, since it conquers nearby territories no matter what
 void CheaterPlayerStrategy::issueOrder(Order *o)
 {
     // No issueOrder method since the cheater player does not use cards!!!

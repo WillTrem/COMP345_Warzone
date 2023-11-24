@@ -8,6 +8,7 @@
 #include "Cards.h"
 #include "Map.h"
 #include "Player.h"
+#include "Orders.h"
 
 using namespace std;
 
