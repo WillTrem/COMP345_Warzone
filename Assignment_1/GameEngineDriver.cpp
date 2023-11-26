@@ -1,74 +1,76 @@
+#pragma once
 
 #include "GameEngineDriver.h"
 
 #include <string>
+
 
 // Sample actions
 // TODO: Implement/replace the actual functions // Move these to the command processor?
 void start()
 {
     std::cout << "Started game\n"
-              << std::endl;
+        << std::endl;
     std::cout << "Available commands: 'loadMap'" << std::endl;
 }
 void loadMap()
 {
     std::cout << "Loaded map sucessfully\n"
-              << std::endl;
+        << std::endl;
     std::cout << "Available commands: 'loadMap' , 'validateMap'" << std::endl;
 }
 void validateMap()
 {
     std::cout << "Validated map sucessfully\n"
-              << std::endl;
+        << std::endl;
     std::cout << "Available commands: 'addPlayer'" << std::endl;
 }
 void addPlayer()
 {
     std::cout << "Added player\n"
-              << std::endl;
+        << std::endl;
     std::cout << "Available commands: 'addPlayer' , 'assignCountries'" << std::endl;
 }
 void assignCountries()
 {
     std::cout << "Assigned countries\n"
-              << std::endl;
+        << std::endl;
     std::cout << "Available commands: 'issueOrder'" << std::endl;
 }
 void issueOrder()
 {
     std::cout << "Order issued sucessfully\n"
-              << std::endl;
+        << std::endl;
     std::cout << "Available commands: 'issueOrder' , 'endIssueOrders'" << std::endl;
 }
 void endIssueOrders()
 {
     std::cout << "Done issuing orders\n"
-              << std::endl;
+        << std::endl;
     std::cout << "Available commands: 'executeOrder' , 'endExecuteOrders' , 'win'" << std::endl;
 }
 void executeOrder()
 {
     std::cout << "Order executed sucessfully\n"
-              << std::endl;
+        << std::endl;
     std::cout << "Available commands: 'executeOrder' , 'endExecuteOrders' , 'win'" << std::endl;
 }
 void endExecuteOrders()
 {
     std::cout << "Done executing orders\n"
-              << std::endl;
+        << std::endl;
     std::cout << "Available commands: 'issueOrder'" << std::endl;
 }
 void win()
 {
     std::cout << "You win!\n"
-              << std::endl;
+        << std::endl;
     std::cout << "Available commands: 'play' , 'end'" << std::endl;
 }
 void end()
 {
     std::cout << "Thank you for playing!\n"
-              << std::endl;
+        << std::endl;
 }
 
 void testGameEngine()

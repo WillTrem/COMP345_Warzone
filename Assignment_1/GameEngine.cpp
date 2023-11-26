@@ -253,17 +253,19 @@ void GameEngine::reinforcementPhase()
 void GameEngine::issueOrdersPhase()
 {
     for (auto player : *players)
-    {
-        vector<Territory *> territoriesToAttack = player->toAttack();
+    {   
+        //vector<Territory *> territoriesToAttack = player->toAttack();
+        //vector<Territory *> territoriesToDefend = player->toDefend();
+        player->toAttack();
+        player->toDefend();
 
-        vector<Territory *> territoriesToDefend = player->toDefend();
         /*
             Deploy units from reinforcement pool
         */
         string territoryList = "";
-        for (int i = 0; i < territoriesToDefend.size(); i++)
+        for (int i = 0; i < player->territoriesToDefend.size(); i++)
         {
-            territoryList += territoriesToDefend[i]->territoryName + "( " + std::to_string(i) + " ), ";
+            territoryList += player->territoriesToDefend[i]->territoryName + "( " + std::to_string(i) + " ), ";
         }
 
         int numUnits = player->getReinforcmentPool();
@@ -275,7 +277,7 @@ void GameEngine::issueOrdersPhase()
             std::cin >> territory;
             int tIndex = std::stoi(territory);
 
-            if (!(tIndex >= 0 && tIndex < territoriesToDefend.size()))
+            if (!(tIndex >= 0 && tIndex < player->territoriesToDefend.size()))
             {
                 std::cout << "Invalid territory number/index" << std::endl;
             }
@@ -303,9 +305,9 @@ void GameEngine::issueOrdersPhase()
         */
 
         // Advance to defend
-        for (auto territory1 : territoriesToDefend)
+        for (auto territory1 : player->territoriesToDefend)
         {
-            for (auto territory2 : territoriesToDefend)
+            for (auto territory2 : player->territoriesToDefend)
             {
                 if (territory1->territoryName.compare(territory2->territoryName) != 0)
                 {
@@ -327,9 +329,9 @@ void GameEngine::issueOrdersPhase()
         }
 
         // Advance to attack
-        for (auto territory1 : territoriesToDefend)
+        for (auto territory1 : player->territoriesToDefend)
         {
-            for (auto territory2 : territoriesToAttack)
+            for (auto territory2 : player->territoriesToAttack)
             {
                 if (territory1->territoryName.compare(territory2->territoryName) != 0)
                 {
