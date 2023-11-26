@@ -194,36 +194,50 @@ vector<Territory *> Player::prioritizeTerritories(vector<Territory *> territorie
 	return territoriesPrioritized;
 }
 
-// Returns an arbitrary list of territories to Defend
-vector<Territory *> Player::toDefend()
+//// Returns an arbitrary list of territories to Defend
+//vector<Territory *> Player::toDefend()
+//{
+//	// Prioritize territory to defend
+//	vector<Territory *> ownedTerritories = ps->toDefend();
+//	return prioritizeTerritories(ownedTerritories);
+//}
+//
+//// Returns an arbitrary list of territories to attack
+//vector<Territory *> Player::toAttack()
+//{
+//	// We could use the method in PlayerStrategy for this, which ensures there are no repeats in the vector?
+//	// Retrieve all enemy neighboring territories
+//
+//	vector<Territory *> enemyTerritories;
+//	// for (auto territory : getOwnedTerritories())
+//	// {
+//	// 	for (auto neighbor : territory->neighboringTerritories)
+//	// 	{
+//	// 		if (neighbor->occupierName.compare(*playerName) != 0)
+//	// 		{
+//	// 			enemyTerritories.push_back(neighbor);
+//	// 		}
+//	// 	}
+//	// }
+//	enemyTerritories = ps->toAttack();
+//
+//	// Prioritize territory to attack
+//	return prioritizeTerritories(enemyTerritories);
+//}
+
+// Call toAttack() from within the player's strategy.
+void Player::toAttack()
 {
-	// Prioritize territory to defend
-	vector<Territory *> ownedTerritories = ps->toDefend();
-	return prioritizeTerritories(ownedTerritories);
+	territoriesToAttack = ps->toAttack();
 }
 
-// Returns an arbitrary list of territories to attack
-vector<Territory *> Player::toAttack()
+// Call toDefend() from within the player's strategy.
+void Player::toDefend()
 {
-	// We could use the method in PlayerStrategy for this, which ensures there are no repeats in the vector?
-	// Retrieve all enemy neighboring territories
-
-	vector<Territory *> enemyTerritories;
-	// for (auto territory : getOwnedTerritories())
-	// {
-	// 	for (auto neighbor : territory->neighboringTerritories)
-	// 	{
-	// 		if (neighbor->occupierName.compare(*playerName) != 0)
-	// 		{
-	// 			enemyTerritories.push_back(neighbor);
-	// 		}
-	// 	}
-	// }
-	enemyTerritories = ps->toAttack();
-
-	// Prioritize territory to attack
-	return prioritizeTerritories(enemyTerritories);
+	territoriesToDefend = ps->toDefend();
 }
+
+
 
 // Creates a new order and adds it to the player's list of current orders
 void Player::issueOrder(Order *order)

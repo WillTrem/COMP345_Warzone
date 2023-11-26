@@ -42,6 +42,8 @@ public:
     // Utility methods.
     vector<Territory *> getAdjacentTerritories(); // Returns a vector of all enemy territories adjacent to the player's.
 
+    vector<Territory*> getAdjacentTerritoriesBelongingTo(vector<Territory*> territories, string desiredOwner); // Returns a vector of all territories adjacent to those in the given vector belonging to the named player.
+
     Territory *getStrongestTerritory();
 
     Territory *getWeakestTerritory();

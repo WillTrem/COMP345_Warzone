@@ -81,12 +81,15 @@ public:
 	void setNegotiate(bool update);
 	bool getNegotiate();
 
-	// TODO
-	vector<Territory *> toDefend();
-	// TODO
-	vector<Territory *> toAttack();
+	// Wrapper methods for toAttack and toDefend.
+	void toDefend();
+	void toAttack();
 
 	void issueOrder(Order *order);
+
+	// Storage for the player's attack and defence targets.
+	vector<Territory*> territoriesToDefend;
+	vector<Territory*> territoriesToAttack;
 
 	// method for part 1 of assg 3: update total number of player army across all owned territories
 	void updateTotalPlayerArmyCount();

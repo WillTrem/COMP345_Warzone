@@ -1,17 +1,15 @@
-// REMINDER TO SELF: MAKE FUNCTION TO FIND STRONGEST AND WEAKEST COUNTRIES!!!!
-// REMINDER TO SELF: MAKE FUNCTION TO FIND STRONGEST AND WEAKEST COUNTRIES!!!!
-// REMINDER TO SELF: MAKE FUNCTION TO FIND STRONGEST AND WEAKEST COUNTRIES!!!!
-// REMINDER TO SELF: MAKE FUNCTION TO FIND STRONGEST AND WEAKEST COUNTRIES!!!!
-// REMINDER TO SELF: MAKE FUNCTION TO FIND STRONGEST AND WEAKEST COUNTRIES!!!!
-// REMINDER TO SELF: MAKE FUNCTION TO FIND STRONGEST AND WEAKEST COUNTRIES!!!!
-// REMINDER TO SELF: MAKE FUNCTION TO FIND STRONGEST AND WEAKEST COUNTRIES!!!!
-// REMINDER TO SELF: MAKE FUNCTION TO FIND STRONGEST AND WEAKEST COUNTRIES!!!!
-// REMINDER TO SELF: MAKE FUNCTION TO FIND STRONGEST AND WEAKEST COUNTRIES!!!!
-
 #include "PlayerStrategy.h"
+
+
+// Constants.
 const int NUM_TO_ATTACK = 5;
 const int NUM_TO_DEFEND = 5;
 
+const int NUM_TO_ATTACK_AGGRESSIVE = 3;
+const int NUM_TO_DEFEND_AGGRESIVE = 1;
+
+
+// Constructors.
 PlayerStrategy::PlayerStrategy()
 {
     // Implementation if needed
@@ -36,6 +34,8 @@ CheaterPlayerStrategy::CheaterPlayerStrategy()
 {
     // Implementation if needed
 }
+
+
 // Abstract strategy class
 
 // Returns a vector of all enemy territories adjacent to the player's. For use by AI players.
@@ -63,6 +63,30 @@ vector<Territory *> PlayerStrategy::getAdjacentTerritories()
     return adjacentEnemyTerritories; // Will need to make sure it does not get deleted.
 }
 
+// Returns a vector of all territories adjacent to those in the given vector belonging to the named player
+vector<Territory*> PlayerStrategy::getAdjacentTerritoriesBelongingTo(vector<Territory*> territories, string desiredOwner)
+{
+    // Using a set in order to avoid duplicates.
+    set<Territory*> temp;
+
+    for (Territory* currentTerritory : territories) // for each territory in the provided vector
+    {
+        for (Territory* neighborTerritory : currentTerritory->neighboringTerritories) // Look through all adjacent territories. 
+            if (neighborTerritory->occupierName == desiredOwner)
+            {
+                // If an adjacent territory is owned by an enemy, add it to the set.
+                temp.insert(neighborTerritory);
+            }
+    }
+
+    // Transfer the data to a set, and return it.
+    vector<Territory*> adjacentOwnerTerritories;
+    adjacentOwnerTerritories.assign(temp.begin(), temp.end());
+
+    return adjacentOwnerTerritories; // Will need to make sure it does not get deleted.
+}
+
+// Returns a reference to the player's most well reinforced territory.
 Territory *PlayerStrategy::getStrongestTerritory()
 {
     Territory *strongestTerritory;
@@ -76,6 +100,7 @@ Territory *PlayerStrategy::getStrongestTerritory()
     return strongestTerritory;
 }
 
+// Returns a reference to the player's weakest/least defended territory.
 Territory *PlayerStrategy::getWeakestTerritory()
 {
     Territory *weakestTerritory;
@@ -92,12 +117,12 @@ Territory *PlayerStrategy::getWeakestTerritory()
     return weakestTerritory;
 }
 
+
 // Methods for the Human Player Strategy.
 vector<Territory *> HumanPlayerStrategy::toAttack()
 {
-    // We could use the method in PlayerStrategy for this, which ensures there are no repeats in the vector?
     // Retrieve all enemy neighboring territories
-    vector<Territory *> enemyTerritories;
+    /*vector<Territory *> enemyTerritories;
     for (auto territory : p->getOwnedTerritories())
     {
         for (auto neighbor : territory->neighboringTerritories)
@@ -107,10 +132,11 @@ vector<Territory *> HumanPlayerStrategy::toAttack()
                 enemyTerritories.push_back(neighbor);
             }
         }
-    }
+    }*/
 
     // Prioritize territory to attack
-    return p->prioritizeTerritories(enemyTerritories);
+    return p->prioritizeTerritories(getAdjacentTerritories()); // Edited to use the getAdjacentTerritories method, which ensures the vector will not contain repeats.
+    // Will need to check that it's properly created and returned as a reference.
 }
 
 vector<Territory *> HumanPlayerStrategy::toDefend()
@@ -124,25 +150,27 @@ vector<Territory *> HumanPlayerStrategy::toDefend()
 void HumanPlayerStrategy::issueOrder(Order *o)
 {
     p->getOrdersList()->addOrder(o);
+    // Insert what Chris and Evan did.
 }
+
 
 // Methods for the Aggresive Player Strategy;
 vector<Territory *> AggressivePlayerStrategy::toAttack()
 {
-    std::cout << "Aggressive player is attacking" << endl;
+    std::cout << "Aggressive player is determining what territories to attack." << endl;
 
     vector<Territory *> enemyTerritories = getAdjacentTerritories();
 
     // Sort these territories by the number of troops present there.
     sort(enemyTerritories.begin(), enemyTerritories.end(), LessThan_TroopsPresent());
 
-    // Get the first NUM_TO_DEFEND territories in the sorted list.
+    // Get the first NUM_TO_ATTACK_AGGRESSIVE territories in the sorted list.
     vector<Territory *> toAttack;
 
-    if (enemyTerritories.size() > NUM_TO_ATTACK) // Only do this fancy copy/splicing stuff if the list of adjacent enemy territories is longer than NUM_TO_DEFEND.
+    if (enemyTerritories.size() > NUM_TO_ATTACK_AGGRESSIVE) // Only do this fancy copy/splicing stuff if the list of adjacent enemy territories is longer than NUM_TO_ATTACK_AGGRESSIVE.
     {
         // The most vulnerable territories should be at the start of the list.
-        toAttack.assign(enemyTerritories.begin(), enemyTerritories.begin() + NUM_TO_ATTACK);
+        toAttack.assign(enemyTerritories.begin(), enemyTerritories.begin() + NUM_TO_ATTACK_AGGRESSIVE);
     }
     // Else, just return a copy of it.
     else
@@ -153,24 +181,42 @@ vector<Territory *> AggressivePlayerStrategy::toAttack()
 
 vector<Territory *> AggressivePlayerStrategy::toDefend()
 {
-    std::cout << "Aggressive player is defending" << endl;
+    std::cout << "Aggressive player is determining what territories to reinforce." << endl;
 
-    // Returns an empty toDefend vector so that no territory will be defended?
+    // Collect the potential territories to reinforce.
+    vector<Territory*> candidateTerritories = getAdjacentTerritoriesBelongingTo(p->territoriesToAttack, p->getPlayerName());
+
+    // Sort these territories by the number of troops present there.
+    sort(candidateTerritories.begin(), candidateTerritories.end(), LessThan_TroopsPresent_SurroundingEnemies());
+
+
+    // Get the last NUM_TO_DEFEND_AGGRESIVE territories in the sorted list.
     vector<Territory *> toDefend;
-    return toDefend;
 
-    // Use LessThan_TroopsPresent_SurroundingEnemies sorting instead?
-    // Go on to defend territories that are already strong, but likely to be attacked?
+    if (candidateTerritories.size() > NUM_TO_DEFEND_AGGRESIVE) // Only do this fancy copy/splicing stuff if the list of adjacent enemy territories is longer than NUM_TO_DEFEND_AGGRESIVE.
+    {
+        // The most vulnerable territories should be at the start of the list.
+        toDefend.assign(candidateTerritories.end() - NUM_TO_DEFEND_AGGRESIVE, candidateTerritories.end());
+    }
+    // Else, just return a copy of it.
+    else
+        toDefend = candidateTerritories;
+
+    return toDefend;
 }
 
 void AggressivePlayerStrategy::issueOrder(Order *o)
 {
+    // Do we call toAttack and toDefend here?
+
     // Check if 'o' is a Deploy object
     if (Deploy *deployOrder = dynamic_cast<Deploy *>(o))
     {
         // Find the strongest country
         Territory *strongest = getStrongestTerritory();
         Deploy(p, p->getReinforcmentPool(), strongest);
+
+        // Replace with the content of toDefend()?
     }
 
     // Check if 'o' is a Advance object
@@ -191,7 +237,7 @@ void AggressivePlayerStrategy::issueOrder(Order *o)
 // Methods for the Benevolent Player Strategy;
 vector<Territory *> BenevolentPlayerStrategy::toAttack()
 {
-    std::cout << "Benelovent player is attacking" << endl;
+    std::cout << "Benelovent player is determining what territories to attack." << endl;
 
     // Returns an empty toAttack vector so that no one will be attacked.
     vector<Territory *> toAttack;
@@ -200,7 +246,7 @@ vector<Territory *> BenevolentPlayerStrategy::toAttack()
 
 vector<Territory *> BenevolentPlayerStrategy::toDefend()
 {
-    std::cout << "Benelovent player is defending" << endl;
+    std::cout << "Benelovent player is determining what territories to reinforce." << endl;
 
     // Sort the player's territories by the number of adjacent enemy troops, then the number of their own units present on them.
     sort(p->getOwnedTerritories().begin(), p->getOwnedTerritories().end(), LessThan_AdjacentEnemyTroops_TroopsPresent());
@@ -239,7 +285,7 @@ void BenevolentPlayerStrategy::issueOrder(Order *o)
     {
         // Find the weakest territory
         Territory *weakest = getWeakestTerritory();
-        Airlift(p, p->getReinforcmentPool(), weakest);
+        //Airlift(p, p->getReinforcmentPool(), weakest); FIX THIS
     }
 
     // Check if 'o' is a Blockade object
@@ -253,7 +299,7 @@ void BenevolentPlayerStrategy::issueOrder(Order *o)
 // Methods for the Neutral Player Strategy;
 vector<Territory *> NeutralPlayerStrategy::toAttack()
 {
-    std::cout << "Neutral player is attacking" << endl;
+    std::cout << "Neutral player is determining what territories to attack." << endl;
 
     // Returns an empty toAttack vector so that no one will be attacked.
     vector<Territory *> toAttack;
@@ -262,7 +308,7 @@ vector<Territory *> NeutralPlayerStrategy::toAttack()
 
 vector<Territory *> NeutralPlayerStrategy::toDefend()
 {
-    std::cout << "Neutral player is defending" << endl;
+    std::cout << "Neutral player is determining what territories to reinforce." << endl;
 
     // Returns an empty toDefend vector so that no territory will be defended.
     vector<Territory *> toDefend;
@@ -275,10 +321,11 @@ void NeutralPlayerStrategy::issueOrder(Order *o)
     return;
 }
 
+
 // Methods for the Cheater Player Strategy;
 vector<Territory *> CheaterPlayerStrategy::toAttack()
 {
-    std::cout << "Cheater player is attacking" << endl;
+    std::cout << "Cheater player is determining what territories to attack." << endl;
 
     // Collect the list of adjacent enemy territories. They will all be attacked!
     vector<Territory *> toAttack = getAdjacentTerritories();
@@ -287,7 +334,7 @@ vector<Territory *> CheaterPlayerStrategy::toAttack()
 
 vector<Territory *> CheaterPlayerStrategy::toDefend()
 {
-    std::cout << "Cheater player is defending" << endl;
+    std::cout << "Cheater player is determining what territories to reinforce." << endl;
 
     // Returns an empty toDefend vector so that no territory will be defended.
     vector<Territory *> toDefend;
@@ -300,9 +347,15 @@ void CheaterPlayerStrategy::issueOrder(Order *o)
     // No issueOrder method since the cheater player does not use cards!!!
 
     // Auto conquer the territories in toAttack?
+    for (Territory* territory : p->territoriesToAttack)
+    {
+        cout << "The cheater player has captured " << territory->territoryName << endl;
+        // Actually do the capture.
+    }
 
     return;
 }
+
 
 // Utility methods and structs.
 
