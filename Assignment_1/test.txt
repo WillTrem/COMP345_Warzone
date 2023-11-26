@@ -1,8 +1,8 @@
 loadmap Aden.map
 validatemap
-addplayer Human
-addplayer AngryBot
-addplayer NiceBot
-addplayer NeutralBot
-addplayer CheaterBot
+addplayer Alice
+addplayer Bob
+addplayer Carla
+addplayer Dell
+addplayer Eric
 gamestart
