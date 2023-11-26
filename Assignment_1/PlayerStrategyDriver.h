@@ -9,3 +9,5 @@
 #include <string>
 
 void testPlayerStrategies();
+
+void printTerritoriesInVector(vector<Territory*> targetVector, string caption);

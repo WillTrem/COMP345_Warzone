@@ -72,34 +72,42 @@ void testPlayerStrategies()
     Player* cheaterBot = gameEngine->players->at(4);
 
     // Assign each player their strategy.
-    humanPlayer->setStrategy(new HumanPlayerStrategy());
-    angryBot->setStrategy(new AggressivePlayerStrategy());
-    niceBot->setStrategy(new BenevolentPlayerStrategy());
-    neutralBot->setStrategy(new NeutralPlayerStrategy());
-    cheaterBot->setStrategy(new CheaterPlayerStrategy());
+    humanPlayer->setStrategy(new HumanPlayerStrategy(humanPlayer));
+    angryBot->setStrategy(new AggressivePlayerStrategy(angryBot));
+    niceBot->setStrategy(new BenevolentPlayerStrategy(niceBot));
+    neutralBot->setStrategy(new NeutralPlayerStrategy(neutralBot));
+    cheaterBot->setStrategy(new CheaterPlayerStrategy(cheaterBot));
 
     cout << "\n\nAll players have been assigned their respective strategies.\n" << endl;
 
+    // Test the toAttack() method for all computer players.
+    angryBot->toAttack();
+    printTerritoriesInVector(angryBot->territoriesToAttack, string("The Aggresive Player wants to attack "));
+    cout << endl;
+    niceBot->toAttack();
+    printTerritoriesInVector(niceBot->territoriesToAttack, string("The Benevolent Player wants to attack "));
+    cout << endl;
+    neutralBot->toAttack();
+    printTerritoriesInVector(neutralBot->territoriesToAttack, string("The Neutral Player wants to attack "));
+    cout << endl;
+    cheaterBot->toAttack();
+    printTerritoriesInVector(cheaterBot->territoriesToAttack, string("The Cheater Player wants to attack "));
+    cout << endl;
 
-    //std::cout << "reached toAttack()" << endl;
-    //// Testing toAttack() method with all computer players
-    //AngryBot.toAttack();
-    //NiceBot.toAttack();
-    //NeutralBot.toAttack();
-    //CheatBot.toAttack();
+    // Test the toDefend() method for all computer players.
+    angryBot->toDefend();
+    printTerritoriesInVector(angryBot->territoriesToDefend, string("The Aggresive Player wants to defend "));
+    cout << endl;
+    niceBot->toDefend();
+    printTerritoriesInVector(niceBot->territoriesToDefend, string("The Benevolent Player wants to defend "));
+    cout << endl;
+    neutralBot->toDefend();
+    printTerritoriesInVector(neutralBot->territoriesToDefend, string("The Neutral Player wants to defend "));
+    cout << endl;
+    cheaterBot->toDefend();
+    printTerritoriesInVector(cheaterBot->territoriesToDefend, string("The Cheater Player wants to defend "));
+    cout << endl;
 
-    //// Print the contents of AngryBot's territoriesToAttack vector.
-    //for (auto territory : AngryBot.territoriesToAttack)
-    //{
-    //    cout << "AngryBot wants to attack " << territory->territoryName << endl;
-    //}
-
-    //std::cout << "reached toDefend()" << endl;
-    //// // Testing toDefend() method will all computer players
-    //// AngryBot.toDefend();
-    //// NiceBot.toDefend();
-    //// NeutralBot.toDefend();
-    //// CheatBot.toDefend();
 
     //std::cout << "reached issueOrder(order)" << endl;
     //// // Testing toDefend() method will all computer players
@@ -107,4 +115,12 @@ void testPlayerStrategies()
     //// NiceBot.issueOrder();
     //// NeutralBot.issueOrder();
     //// CheatBot.issueOrder();
+}
+
+void printTerritoriesInVector(vector<Territory*> targetVector, string caption)
+{
+    for (auto target : targetVector)
+    {
+        cout << caption << target->territoryName << ", belonging to " << target->occupierName << "." << endl;
+    }
 }

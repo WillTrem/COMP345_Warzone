@@ -10,34 +10,40 @@ const int NUM_TO_DEFEND_AGGRESIVE = 1;
 
 
 // Constructors.
-PlayerStrategy::PlayerStrategy()
+PlayerStrategy::PlayerStrategy(Player* player)
 {
-    // Implementation if needed
+    p = player;
+    cout << "\nAssigned a player strategy to " << p->getPlayerName() << endl;
 }
 
-HumanPlayerStrategy::HumanPlayerStrategy()
+HumanPlayerStrategy::HumanPlayerStrategy(Player* player) : PlayerStrategy(player)
 {
     // Implementation if needed
+    cout << "It is the Human player strategy." << endl;
 }
 
-AggressivePlayerStrategy::AggressivePlayerStrategy()
+AggressivePlayerStrategy::AggressivePlayerStrategy(Player* player) : PlayerStrategy(player)
 {
     // Implementation if needed
+    cout << "It is the Aggresive player strategy." << endl;
 }
 
-BenevolentPlayerStrategy::BenevolentPlayerStrategy()
+BenevolentPlayerStrategy::BenevolentPlayerStrategy(Player* player) : PlayerStrategy(player)
 {
     // Implementation if needed
+    cout << "It is the Benevolent player strategy." << endl;
 }
 
-NeutralPlayerStrategy::NeutralPlayerStrategy()
+NeutralPlayerStrategy::NeutralPlayerStrategy(Player* player) : PlayerStrategy(player)
 {
     // Implementation if needed
+    cout << "It is the Neutral player strategy." << endl;
 }
 
-CheaterPlayerStrategy::CheaterPlayerStrategy()
+CheaterPlayerStrategy::CheaterPlayerStrategy(Player* player) : PlayerStrategy(player)
 {
     // Implementation if needed
+    cout << "It is the Cheater player strategy." << endl;
 }
 
 
@@ -162,7 +168,7 @@ void HumanPlayerStrategy::issueOrder(Order *o)
 // Methods for the Aggresive Player Strategy;
 vector<Territory *> AggressivePlayerStrategy::toAttack()
 {
-    std::cout << "Aggressive player is determining what territories to attack." << endl;
+    std::cout << "Aggressive player (" << p->getPlayerName() << ") is determining what territories to attack." << endl;
 
     vector<Territory *> enemyTerritories = getAdjacentTerritories();
 
@@ -186,7 +192,7 @@ vector<Territory *> AggressivePlayerStrategy::toAttack()
 
 vector<Territory *> AggressivePlayerStrategy::toDefend()
 {
-    std::cout << "Aggressive player is determining what territories to reinforce." << endl;
+    std::cout << "Aggressive player (" << p->getPlayerName() << ") is determining what territories to defend." << endl;
 
     // Collect the potential territories to reinforce.
     vector<Territory*> candidateTerritories = getAdjacentTerritoriesBelongingTo(p->territoriesToAttack, p->getPlayerName());
@@ -242,7 +248,7 @@ void AggressivePlayerStrategy::issueOrder(Order *o)
 // Methods for the Benevolent Player Strategy;
 vector<Territory *> BenevolentPlayerStrategy::toAttack()
 {
-    std::cout << "Benelovent player is determining what territories to attack." << endl;
+    std::cout << "Benevolent player (" << p->getPlayerName() << ") is determining what territories to attack." << endl;
 
     // Returns an empty toAttack vector so that no one will be attacked.
     vector<Territory *> toAttack;
@@ -251,22 +257,24 @@ vector<Territory *> BenevolentPlayerStrategy::toAttack()
 
 vector<Territory *> BenevolentPlayerStrategy::toDefend()
 {
-    std::cout << "Benelovent player is determining what territories to reinforce." << endl;
+    std::cout << "Benevolent player (" << p->getPlayerName() << ") is determining what territories to defend." << endl;
+
+    vector<Territory*> ownedTerritories = p->getOwnedTerritories();
 
     // Sort the player's territories by the number of adjacent enemy troops, then the number of their own units present on them.
-    sort(p->getOwnedTerritories().begin(), p->getOwnedTerritories().end(), LessThan_AdjacentEnemyTroops_TroopsPresent());
+    sort(ownedTerritories.begin(), ownedTerritories.end(), LessThan_AdjacentEnemyTroops_TroopsPresent());
 
     // Get the last NUM_TO_DEFEND territories in the sorted list.
     vector<Territory *> toDefend;
 
-    if (p->getOwnedTerritories().size() > NUM_TO_DEFEND) // Only do this fancy copy/splicing stuff if the list of owned territories is longer than NUM_TO_DEFEND.
+    if (ownedTerritories.size() > NUM_TO_DEFEND) // Only do this fancy copy/splicing stuff if the list of owned territories is longer than NUM_TO_DEFEND.
     {
         // The most vulnerable territories should be at the end of the list.
-        toDefend.assign(p->getOwnedTerritories().end() - NUM_TO_DEFEND, p->getOwnedTerritories().end());
+        toDefend.assign(ownedTerritories.end() - NUM_TO_DEFEND, ownedTerritories.end());
     }
     // Else, just return a copy of it.
     else
-        toDefend = p->getOwnedTerritories();
+        toDefend = ownedTerritories;
 
     return toDefend;
 }
@@ -304,7 +312,7 @@ void BenevolentPlayerStrategy::issueOrder(Order *o)
 // Methods for the Neutral Player Strategy;
 vector<Territory *> NeutralPlayerStrategy::toAttack()
 {
-    std::cout << "Neutral player is determining what territories to attack." << endl;
+    std::cout << "Neutral player (" << p->getPlayerName() << ") is determining what territories to attack." << endl;
 
     // Returns an empty toAttack vector so that no one will be attacked.
     vector<Territory *> toAttack;
@@ -313,7 +321,7 @@ vector<Territory *> NeutralPlayerStrategy::toAttack()
 
 vector<Territory *> NeutralPlayerStrategy::toDefend()
 {
-    std::cout << "Neutral player is determining what territories to reinforce." << endl;
+    std::cout << "Neutral player (" << p->getPlayerName() << ") is determining what territories to defend." << endl;
 
     // Returns an empty toDefend vector so that no territory will be defended.
     vector<Territory *> toDefend;
@@ -330,7 +338,7 @@ void NeutralPlayerStrategy::issueOrder(Order *o)
 // Methods for the Cheater Player Strategy;
 vector<Territory *> CheaterPlayerStrategy::toAttack()
 {
-    std::cout << "Cheater player is determining what territories to attack." << endl;
+    std::cout << "Cheater player (" << p->getPlayerName() << ") is determining what territories to attack." << endl;
 
     // Collect the list of adjacent enemy territories. They will all be attacked!
     vector<Territory *> toAttack = getAdjacentTerritories();
@@ -339,7 +347,7 @@ vector<Territory *> CheaterPlayerStrategy::toAttack()
 
 vector<Territory *> CheaterPlayerStrategy::toDefend()
 {
-    std::cout << "Cheater player is determining what territories to reinforce." << endl;
+    std::cout << "Cheater player (" << p->getPlayerName() << ") is determining what territories to defend." << endl;
 
     // Returns an empty toDefend vector so that no territory will be defended.
     vector<Territory *> toDefend;

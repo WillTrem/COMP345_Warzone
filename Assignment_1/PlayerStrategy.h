@@ -27,7 +27,7 @@ protected: // So that it remain accessible by child classes.
 
 public:
     // Default constructor
-    PlayerStrategy();
+    PlayerStrategy(Player* player); // is this needed?
 
     // Parametrized constructors
     //...
@@ -55,7 +55,7 @@ class HumanPlayerStrategy : public PlayerStrategy
 {
 public:
     // Constructor(s)
-    HumanPlayerStrategy();
+    HumanPlayerStrategy(Player* player);
 
     vector<Territory *> toAttack();
 
@@ -70,7 +70,7 @@ class AggressivePlayerStrategy : public PlayerStrategy
 {
 public:
     // Constructor(s)
-    AggressivePlayerStrategy();
+    AggressivePlayerStrategy(Player* player);
 
     vector<Territory *> toAttack();
 
@@ -85,7 +85,7 @@ class BenevolentPlayerStrategy : public PlayerStrategy
 {
 public:
     // Constructor(s)
-    BenevolentPlayerStrategy();
+    BenevolentPlayerStrategy(Player* player);
 
     vector<Territory *> toAttack();
 
@@ -100,7 +100,7 @@ class NeutralPlayerStrategy : public PlayerStrategy
 {
 public:
     // Constructor(s)
-    NeutralPlayerStrategy();
+    NeutralPlayerStrategy(Player* player);
 
     vector<Territory *> toAttack();
 
@@ -115,7 +115,7 @@ class CheaterPlayerStrategy : public PlayerStrategy
 {
 public:
     // Constructor(s)
-    CheaterPlayerStrategy();
+    CheaterPlayerStrategy(Player* player);
 
     vector<Territory *> toAttack();
 
@@ -123,6 +123,7 @@ public:
 
     void issueOrder(Order *order);
 };
+
 
 // Utility structs.
 
