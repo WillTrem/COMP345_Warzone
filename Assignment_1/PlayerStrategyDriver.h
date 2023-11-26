@@ -8,9 +8,4 @@
 
 #include <string>
 
-#ifndef PLAYER_STRATEGY_DRIVER_H
-#define PLAYER_STRATEGY_DRIVER_H
-
 void testPlayerStrategies();
-
-#endif // PLAYER_STRATEGY_DRIVER_H

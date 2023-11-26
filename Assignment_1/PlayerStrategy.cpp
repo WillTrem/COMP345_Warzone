@@ -15,6 +15,11 @@ PlayerStrategy::PlayerStrategy()
     // Implementation if needed
 }
 
+HumanPlayerStrategy::HumanPlayerStrategy()
+{
+    // Implementation if needed
+}
+
 AggressivePlayerStrategy::AggressivePlayerStrategy()
 {
     // Implementation if needed

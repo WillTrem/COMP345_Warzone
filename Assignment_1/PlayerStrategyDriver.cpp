@@ -47,84 +47,64 @@ void testPlayerStrategies()
     GameEngine* gameEngine = new GameEngine(&currentState, &stateTransitions, true, "test.txt");
 
     // Create cards to be drawn from.
-    cout << "\nGenerating some generic cards for testing...\n"
+    cout << "\nGenerating some cards for testing...\n"
         << endl;
     Card_Bomb cardBombTest = Card_Bomb(gameEngine->deck);
+    Card_Bomb cardBombTest2 = Card_Bomb(gameEngine->deck);
     Card_Reinforcement cardReinforcementTest = Card_Reinforcement(gameEngine->deck);
+    Card_Reinforcement cardReinforcementTest2 = Card_Reinforcement(gameEngine->deck);
     Card_Blockade cardBlockadeTest = Card_Blockade(gameEngine->deck);
+    Card_Blockade cardBlockadeTest2 = Card_Blockade(gameEngine->deck);
     Card_Airlift carAirliftTest = Card_Airlift(gameEngine->deck);
+    Card_Airlift carAirliftTest2 = Card_Airlift(gameEngine->deck);
     Card_Diplomacy carDiplomacyTest = Card_Diplomacy(gameEngine->deck);
+    Card_Diplomacy carDiplomacyTest2 = Card_Diplomacy(gameEngine->deck);
 
-    cout << "\nTesting the game engine's startup phase.\n"
-        << endl;
+    cout << "\nGame start up phase.\n" << endl;
     gameEngine->startupPhase();
     
-    
-    
-    
-    
-    // string mapFile = "Aden.map";
-    // Map *newMap = new Map(mapFile);
-    // newMap->loadMap(mapFile);
-    // try
-    // {
-    //     // to make sure that newMap has territories
-    //     if (newMap->mapTerritories.empty())
-    //     {
-    //     }
-    //     else
-    //     {
-    //         newMap->validate();
-    //         delete newMap;
-    //     }
-    // }
-    // catch (...)
-    // {
-    //     // Handle any other unknown exception.
-    //     std::cerr << "File/Map is Invalid" << std::endl;
-    // }
-    // GameEngine gm;
-    // gm.startupPhase();
 
-    // Player Creation
-    Player HumanPlayer("Timmy");
-    Player AngryBot("AngryBot");
-    Player NiceBot("NiceBot");
-    Player NeutralBot("NeutralBot");
-    Player CheatBot("CheaterBot");
+    // Tag the players generated from the text file.
+    Player* humanPlayer = gameEngine->players->at(0);
+    Player* angryBot = gameEngine->players->at(1);
+    Player* niceBot = gameEngine->players->at(2);
+    Player* neutralBot = gameEngine->players->at(3);
+    Player* cheaterBot = gameEngine->players->at(4);
 
-    // Order Creation
+    // Assign each player their strategy.
+    humanPlayer->setStrategy(new HumanPlayerStrategy());
+    angryBot->setStrategy(new AggressivePlayerStrategy());
+    niceBot->setStrategy(new BenevolentPlayerStrategy());
+    neutralBot->setStrategy(new NeutralPlayerStrategy());
+    cheaterBot->setStrategy(new CheaterPlayerStrategy());
 
-    // Setting the strategy for each player
-    AngryBot.setStrategy(new AggressivePlayerStrategy());
-    NiceBot.setStrategy(new BenevolentPlayerStrategy());
-    NeutralBot.setStrategy(new NeutralPlayerStrategy());
-    CheatBot.setStrategy(new CheaterPlayerStrategy());
+    cout << "\n\nAll players have been assigned their respective strategies.\n" << endl;
 
-    std::cout << "reached toAttack()" << endl;
-    // Testing toAttack() method with all computer players
-    AngryBot.toAttack();
-    NiceBot.toAttack();
-    NeutralBot.toAttack();
-    CheatBot.toAttack();
 
-    // Print the contents of AngryBot's territoriesToAttack vector.
-    for (auto territory : AngryBot.territoriesToAttack)
-    {
-        cout << "AngryBot wants to attack " << territory->territoryName << endl;
-    }
+    //std::cout << "reached toAttack()" << endl;
+    //// Testing toAttack() method with all computer players
+    //AngryBot.toAttack();
+    //NiceBot.toAttack();
+    //NeutralBot.toAttack();
+    //CheatBot.toAttack();
 
-    std::cout << "reached toDefend()" << endl;
-    // // Testing toDefend() method will all computer players
-    // AngryBot.toDefend();
-    // NiceBot.toDefend();
-    // NeutralBot.toDefend();
-    // CheatBot.toDefend();
+    //// Print the contents of AngryBot's territoriesToAttack vector.
+    //for (auto territory : AngryBot.territoriesToAttack)
+    //{
+    //    cout << "AngryBot wants to attack " << territory->territoryName << endl;
+    //}
 
-    std::cout << "reached issueOrder(order)" << endl;
-    // // Testing toDefend() method will all computer players
-    // AngryBot.issueOrder();
-    // NiceBot.issueOrder();
-    // NeutralBot.issueOrder();
-    // CheatBot.issueOrder();
+    //std::cout << "reached toDefend()" << endl;
+    //// // Testing toDefend() method will all computer players
+    //// AngryBot.toDefend();
+    //// NiceBot.toDefend();
+    //// NeutralBot.toDefend();
+    //// CheatBot.toDefend();
+
+    //std::cout << "reached issueOrder(order)" << endl;
+    //// // Testing toDefend() method will all computer players
+    //// AngryBot.issueOrder();
+    //// NiceBot.issueOrder();
+    //// NeutralBot.issueOrder();
+    //// CheatBot.issueOrder();
 }
