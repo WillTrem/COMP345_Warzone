@@ -244,22 +244,29 @@ void Player::issueOrder(Order *order)
 	this->toAttack();
 	this->toDefend();
 
+	string territoryStringDefend = "";
+	for (int i = 0; i < territoriesToDefend.size(); i++)
+	{
+		territoryStringDefend += territoriesToDefend[i]->territoryName + "( " + std::to_string(i) + " ), ";
+	}
+
+	string territoryStringAttack = "";
+	for (int i = 0; i < territoriesToDefend.size(); i++)
+	{
+		territoryStringAttack += territoriesToDefend[i]->territoryName + "( " + std::to_string(i) + " ), ";
+	}
+
 	// if player has reinforcement units, they must make a Deploy order!
 	if (this->reinforcementPool > 0)
 	{
-		// logic needed to create a Deploy order:
-		string territoryList = "";
-		for (int i = 0; i < territoriesToDefend.size(); i++)
-		{
-			territoryList += territoriesToDefend[i]->territoryName + "( " + std::to_string(i) + " ), ";
-		}
-
+		// logic to create a Deploy order:
 		int unitsDeployed = 0;
 		
-		std::cout << "Deploy units to which territory? " << territoryList << std::endl;
-		string territory;
-		std::cin >> territory;
-		int tIndex = std::stoi(territory);
+		// user enters which territory and how many units
+		std::cout << "Deploy units to which territory? " << territoryStringDefend << std::endl;
+		string territoryDestination;
+		std::cin >> territoryDestination;
+		int tIndex = std::stoi(territoryDestination);
 
 		if (!(tIndex >= 0 && tIndex < territoriesToDefend.size()))
 		{
@@ -271,11 +278,11 @@ void Player::issueOrder(Order *order)
 		std::cin >> units;
 		int unitsI = std::stoi(units);
 
-		// must add function to get POINTER to the territory for Deploy constructor
-
+		// if the info from user checks out, make the Deploy order
 		if (unitsI > 0 && unitsI + unitsDeployed <= this->getReinforcmentPool())
 		{
-			//this->ordersList->addOrder(Deploy(this, unitsI, territoryPtr));
+			Order* newDeploy = new Deploy(this, unitsI, this->territoriesToDefend[tIndex]);
+			this->ordersList->addOrder(newDeploy);
 			unitsDeployed += unitsI;
 		}
 		else
@@ -287,9 +294,43 @@ void Player::issueOrder(Order *order)
 	// if no more reinforcements, player can now do advance and attack orders
 	else
 	{
+			// user enters which territories and how many units
+			std::cout << "Advance units FROM which territory? " << territoryStringAttack << std::endl;
+			string territorySource;
+			std::cin >> territorySource;
+			int tIndexS = std::stoi(territorySource);
 
+			if (!(tIndexS >= 0 && tIndexS < territoriesToDefend.size()))
+			{
+				std::cout << "Invalid territory number/index" << std::endl;
+			}
+
+			std::cout << "Advance units TO which territory? " << territoryStringDefend << std::endl;
+			string territoryDestination;
+			std::cin >> territoryDestination;
+			int tIndexD = std::stoi(territoryDestination);
+
+			if (!(tIndexD >= 0 && tIndexD < territoriesToAttack.size()))
+			{
+				std::cout << "Invalid territory number/index" << std::endl;
+			}
+
+			std::cout << "How many units? " << std::endl;
+			string units;
+			std::cin >> units;
+			int unitsI = std::stoi(units);
+
+			// if the info from user checks out, make the Advance order
+			if (unitsI > 0 && unitsI <= this->territoriesToDefend[tIndexS]->numOfArmies)
+			{
+				Order* newAdvance = new Advance(this, unitsI, this->territoriesToDefend[tIndexS], this->territoriesToDefend[tIndexD]);
+				this->ordersList->addOrder(newAdvance);
+			}
+			else
+			{
+				std::cout << "Invalid number of units (1 - units left in pool) " << std::endl;
+			}
 		// if done the rest, player can play a card order
-
 	}
 
 	// /*
