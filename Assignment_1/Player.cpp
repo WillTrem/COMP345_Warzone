@@ -295,7 +295,7 @@ void Player::issueOrder(Order *order)
 	else
 	{
 			// user enters which territories and how many units
-			std::cout << "Advance units FROM which territory? " << territoryStringAttack << std::endl;
+			std::cout << "Advance units FROM which territory? " << territoryStringDefend << std::endl;
 			string territorySource;
 			std::cin >> territorySource;
 			int tIndexS = std::stoi(territorySource);
@@ -305,16 +305,34 @@ void Player::issueOrder(Order *order)
 				std::cout << "Invalid territory number/index" << std::endl;
 			}
 
-			std::cout << "Advance units TO which territory? " << territoryStringDefend << std::endl;
+			std::cout << "Advance units TO which territory to DEFEND? (enter 'none' to see ATTACK list) " << territoryStringDefend << std::endl;
 			string territoryDestination;
 			std::cin >> territoryDestination;
-			int tIndexD = std::stoi(territoryDestination);
-
-			if (!(tIndexD >= 0 && tIndexD < territoriesToAttack.size()))
+			bool defend = true;
+			int tIndexD;
+			if (territoryDestination == "none")
 			{
-				std::cout << "Invalid territory number/index" << std::endl;
-			}
+				defend = false;
+				std::cout << "Advance units TO which territory to attack?" << territoryStringAttack << std::endl;
+				string territoryDestination;
+				std::cin >> territoryDestination;
+				int tIndexD = std::stoi(territoryDestination);
 
+				if (!(tIndexD >= 0 && tIndexD < territoriesToAttack.size()))
+				{
+					std::cout << "Invalid territory number/index" << std::endl;
+				}
+			}
+			else
+			{
+				int tIndexD = std::stoi(territoryDestination);
+
+				if (!(tIndexD >= 0 && tIndexD < territoriesToDefend.size()))
+				{
+					std::cout << "Invalid territory number/index" << std::endl;
+				}
+			}
+			
 			std::cout << "How many units? " << std::endl;
 			string units;
 			std::cin >> units;
@@ -323,8 +341,17 @@ void Player::issueOrder(Order *order)
 			// if the info from user checks out, make the Advance order
 			if (unitsI > 0 && unitsI <= this->territoriesToDefend[tIndexS]->numOfArmies)
 			{
-				Order* newAdvance = new Advance(this, unitsI, this->territoriesToDefend[tIndexS], this->territoriesToDefend[tIndexD]);
-				this->ordersList->addOrder(newAdvance);
+				if (defend)
+				{
+					Order* newAdvance = new Advance(this, unitsI, this->territoriesToDefend[tIndexS], this->territoriesToDefend[tIndexD]);
+					this->ordersList->addOrder(newAdvance);
+				}
+				else
+				{
+					Order* newAdvance = new Advance(this, unitsI, this->territoriesToDefend[tIndexS], this->territoriesToAttack[tIndexD]);
+					this->ordersList->addOrder(newAdvance);
+				}
+				
 			}
 			else
 			{
@@ -332,58 +359,6 @@ void Player::issueOrder(Order *order)
 			}
 		// if done the rest, player can play a card order
 	}
-
-	// /*
-	// 	Advance orders
-	// */
-
-	// // Advance to defend
-	// for (auto territory1 : territoriesToDefend)
-	// {
-	// 	for (auto territory2 : territoriesToDefend)
-	// 	{
-	// 		if (territory1->territoryName.compare(territory2->territoryName) != 0)
-	// 		{
-	// 			std::cout << "Advance units from " << territory1->territoryName << " to " << territory2->territoryName << "? (y/n)" << std::endl;
-	// 			string answer;
-	// 			std::cin >> answer;
-	// 			if (answer.compare("y") == 0)
-	// 			{
-	// 				std::cout << "How many units? " << std::endl;
-	// 				string units;
-	// 				std::cin >> units;
-
-	// 				Advance *advance = new Advance(this, std::stoi(units), territory1, territory2);
-	// 				this->issueOrder(advance);
-	// 				break;
-	// 			}
-	// 		}
-	// 	}
-	// }
-
-	// // Advance to attack
-	// for (auto territory1 : territoriesToDefend)
-	// {
-	// 	for (auto territory2 : territoriesToAttack)
-	// 	{
-	// 		if (territory1->territoryName.compare(territory2->territoryName) != 0)
-	// 		{
-	// 			std::cout << "Advance units from " << territory1->territoryName << " to " << territory2->territoryName << "? (y/n)" << std::endl;
-	// 			string answer;
-	// 			std::cin >> answer;
-	// 			if (answer.compare("y") == 0)
-	// 			{
-	// 				std::cout << "How many units? " << std::endl;
-	// 				string units;
-	// 				std::cin >> units;
-
-	// 				Advance *advance = new Advance(this, std::stoi(units), territory1, territory2);
-	// 				this->issueOrder(advance);
-	// 				break;
-	// 			}
-	// 		}
-	// 	}
-	// }
 
 	// /*
 	// 	Issue order from one card in hand
