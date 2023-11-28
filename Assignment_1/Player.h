@@ -82,8 +82,8 @@ public:
 	bool getNegotiate();
 
 	// Wrapper methods for toAttack and toDefend.
-	void toDefend();
-	void toAttack();
+	vector<Territory*> toDefend();
+	vector<Territory*> toAttack();
 
 	void issueOrder(Order *order);
 
