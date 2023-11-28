@@ -179,6 +179,149 @@ bool Command::gameStart(GameState *&gameState, Map *&gameMap, std::vector<Player
 	}
 }
 
+bool Command::toggleTournamentMode(GameState *&gameState, Map *&gameMap, std::vector<Player *> *&gamePlayers, Deck *&gameDeck)
+{
+	if (*gameState != GameState::START)
+	{
+		std::cout << "You can only toggle tournament mode at the start of the game.\n"
+				  << std::endl;
+		return false;
+	}
+
+	string token;
+
+	istringstream iss(parameter);
+	string option = "";
+	vector<string> values;
+	int numMaps = -1;
+	while (getline(iss, token, ' '))
+	{
+		bool isOption = token.compare("-M") == 0 ||
+						token.compare("-P") == 0 ||
+						token.compare("-G") == 0 ||
+						token.compare("-D") == 0;
+		if (option.empty() && isOption)
+		{
+			option = token;
+		}
+		else if (!option.empty() && !isOption)
+		{
+			values.push_back(token + " ");
+		}
+		else if (!option.empty() && isOption)
+		{
+			/*
+				Maps per game option
+			*/
+			if (option.compare("-M") == 0)
+			{
+				numMaps = values.size() if (numMaps >= 1 && numMaps <= 5)
+				{
+
+					// TODO: load maps into
+				}
+				else
+				{
+					std::cout << "Invalid number of maps (1-5 inclusive)\n"
+							  << std::endl;
+					return false;
+				}
+			}
+			/*
+				Player strategies option
+			*/
+			else if (option.compare("-P") == 0)
+			{
+				if (values.size() >= 2 && values.size() <= 4)
+				{
+					// TODO: Add player (& strategies) to games
+				}
+				else
+				{
+					std::cout << "Invalid number of player strategies (2-4 inclusive)\n"
+							  << std::endl;
+					return false;
+				}
+			}
+			/*
+				Number of games option
+			*/
+			else if (option.compare("-G") == 0)
+			{
+				if (values.size() == 1)
+				{
+					try
+					{
+						int numGames = std::stoi(values[0]);
+						if (numGames != numMaps)
+						{
+							// TODO: Set number of games somewhere
+						}
+						else
+						{
+							std::cout << "The number of games must correspond to the number of maps\n"
+									  << std::endl;
+							return false;
+						}
+					}
+					catch (const std::exception &e)
+					{
+						std::cout << e.what() << std::endl
+								  << std::endl;
+						return false;
+					}
+				}
+				else
+				{
+					std::cout << "Games option only takes 1 number\n"
+							  << std::endl;
+					return false;
+				}
+			}
+			/*
+				Number of turns for each game option
+			*/
+			else
+			{
+				if (values.size() == 1)
+				{
+					try
+					{
+						int numTurns = std::stoi(values[0]);
+						if (numTurns >= 10 && numTurns <= 50)
+						{
+							// TODO: Set number of turns per game somewhere
+						}
+						else
+						{
+							std::cout << "Invalid number of turns (between 10-50 inclusive)\n"
+									  << std::endl;
+							return false;
+						}
+					}
+					catch (const std::exception &e)
+					{
+						std::cout << e.what() << std::endl
+								  << std::endl;
+						return false;
+					}
+				}
+				else
+				{
+					std::cout << "Turns option only takes 1 number (same amount of turns for each game)\n"
+							  << std::endl;
+					return false;
+				}
+			}
+
+			option = token;
+			values{};
+		}
+	}
+
+	return true;
+}
+
 //-------------------- COMMAND PROCESSOR --------------------
 
 // Default Constructor
@@ -212,10 +355,21 @@ Command *CommandProcessor::readCommand()
 	string token;
 
 	istringstream iss(input);
+	bool commandNameRetrived = false;
+	string options = "";
 	while (getline(iss, token, ' '))
 	{
-		inputCommand.push_back(token);
+		if (!commandNameRetrived)
+		{
+			inputCommand.push_back(token);
+			commandNameRetrived = true;
+		}
+		else
+		{
+			options.append(token + " ");
+		}
 	}
+	inputCommand.push_back(options);
 
 	// Calling the corresponding constructor based on the number of parameters
 	Command *newCommand = (inputCommand.size() == 1) ? new Command(inputCommand[0]) : new Command(inputCommand[0], inputCommand[1]);
