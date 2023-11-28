@@ -85,7 +85,7 @@ public:
 	void toDefend();
 	void toAttack();
 
-	void issueOrder(Order *order);
+	bool issueOrder(Order *order);
 
 	// Storage for the player's attack and defence targets.
 	vector<Territory*> territoriesToDefend;
