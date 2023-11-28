@@ -226,38 +226,36 @@ vector<Territory *> Player::prioritizeTerritories(vector<Territory *> territorie
 //}
 
 // Call toAttack() from within the player's strategy.
-vector<Territory*> Player::toAttack()
+void Player::toAttack()
 {
-	territoriesToAttack = ps->toAttack();
-	return territoriesToAttack;
+	this->territoriesToAttack = ps->toAttack();
 }
 
 // Call toDefend() from within the player's strategy.
-vector<Territory*> Player::toDefend()
+void Player::toDefend()
 {
-	territoriesToDefend = ps->toDefend();
-	return territoriesToDefend;
+	this->territoriesToDefend = ps->toDefend();
 }
-
-
 
 // Creates a new order and adds it to the player's list of current orders
 void Player::issueOrder(Order *order)
 {	
-	
-	vector<Territory *> territoriesToAttack = this->toAttack();
-	vector<Territory *> territoriesToDefend = this->toDefend();
+	// update the lists of territories to attack and defend
+	this->toAttack();
+	this->toDefend();
 
-	// deploy
-	string territoryList = "";
-	for (int i = 0; i < territoriesToDefend.size(); i++)
+	// if player has reinforcement units, they must make a Deploy order!
+	if (this->reinforcementPool > 0)
 	{
-		territoryList += territoriesToDefend[i]->territoryName + "( " + std::to_string(i) + " ), ";
-	}
+		// logic needed to create a Deploy order:
+		string territoryList = "";
+		for (int i = 0; i < territoriesToDefend.size(); i++)
+		{
+			territoryList += territoriesToDefend[i]->territoryName + "( " + std::to_string(i) + " ), ";
+		}
 
-	int unitsDeployed = 0;
-	while (unitsDeployed < this->getReinforcmentPool())
-	{
+		int unitsDeployed = 0;
+		
 		std::cout << "Deploy units to which territory? " << territoryList << std::endl;
 		string territory;
 		std::cin >> territory;
@@ -273,108 +271,116 @@ void Player::issueOrder(Order *order)
 		std::cin >> units;
 		int unitsI = std::stoi(units);
 
+		// must add function to get POINTER to the territory for Deploy constructor
+
 		if (unitsI > 0 && unitsI + unitsDeployed <= this->getReinforcmentPool())
 		{
-			// TODO: implement Deploy constructor and issueOrder method in Player.cpp
-			// Deploy order([tIndex], unitsI);
-			// player->issueOrder(order);
+			//this->ordersList->addOrder(Deploy(this, unitsI, territoryPtr));
 			unitsDeployed += unitsI;
 		}
 		else
 		{
 			std::cout << "Invalid number of units (1 - units left in pool) " << std::endl;
 		}
+		
 	}
-
-	/*
-		Advance orders
-	*/
-
-	// Advance to defend
-	for (auto territory1 : territoriesToDefend)
+	// if no more reinforcements, player can now do advance and attack orders
+	else
 	{
-		for (auto territory2 : territoriesToDefend)
-		{
-			if (territory1->territoryName.compare(territory2->territoryName) != 0)
-			{
-				std::cout << "Advance units from " << territory1->territoryName << " to " << territory2->territoryName << "? (y/n)" << std::endl;
-				string answer;
-				std::cin >> answer;
-				if (answer.compare("y") == 0)
-				{
-					std::cout << "How many units? " << std::endl;
-					string units;
-					std::cin >> units;
 
-					Advance *advance = new Advance(this, std::stoi(units), territory1, territory2);
-					this->issueOrder(advance);
-					break;
-				}
-			}
-		}
+		// if done the rest, player can play a card order
+
 	}
 
-	// Advance to attack
-	for (auto territory1 : territoriesToDefend)
-	{
-		for (auto territory2 : territoriesToAttack)
-		{
-			if (territory1->territoryName.compare(territory2->territoryName) != 0)
-			{
-				std::cout << "Advance units from " << territory1->territoryName << " to " << territory2->territoryName << "? (y/n)" << std::endl;
-				string answer;
-				std::cin >> answer;
-				if (answer.compare("y") == 0)
-				{
-					std::cout << "How many units? " << std::endl;
-					string units;
-					std::cin >> units;
+	// /*
+	// 	Advance orders
+	// */
 
-					Advance *advance = new Advance(this, std::stoi(units), territory1, territory2);
-					this->issueOrder(advance);
-					break;
-				}
-			}
-		}
-	}
+	// // Advance to defend
+	// for (auto territory1 : territoriesToDefend)
+	// {
+	// 	for (auto territory2 : territoriesToDefend)
+	// 	{
+	// 		if (territory1->territoryName.compare(territory2->territoryName) != 0)
+	// 		{
+	// 			std::cout << "Advance units from " << territory1->territoryName << " to " << territory2->territoryName << "? (y/n)" << std::endl;
+	// 			string answer;
+	// 			std::cin >> answer;
+	// 			if (answer.compare("y") == 0)
+	// 			{
+	// 				std::cout << "How many units? " << std::endl;
+	// 				string units;
+	// 				std::cin >> units;
 
-	/*
-		Issue order from one card in hand
-	*/
-	for (auto card : this->getHand()->returnMyCards())
-	{
-		string cardType = "";
+	// 				Advance *advance = new Advance(this, std::stoi(units), territory1, territory2);
+	// 				this->issueOrder(advance);
+	// 				break;
+	// 			}
+	// 		}
+	// 	}
+	// }
 
-		if (dynamic_cast<Card_Airlift *>(card) != nullptr)
-		{
-			cardType = "an Airlift";
-		}
-		else if (dynamic_cast<Card_Blockade *>(card) != nullptr)
-		{
-			cardType = "a Blockade";
-		}
-		else if (dynamic_cast<Card_Bomb *>(card) != nullptr)
-		{
-			cardType = "a Bomb";
-		}
-		else if (dynamic_cast<Card_Diplomacy *>(card) != nullptr)
-		{
-			cardType = "a Diplomacy";
-		}
-		else
-		{
-			cardType = "a Reinforcement";
-		}
+	// // Advance to attack
+	// for (auto territory1 : territoriesToDefend)
+	// {
+	// 	for (auto territory2 : territoriesToAttack)
+	// 	{
+	// 		if (territory1->territoryName.compare(territory2->territoryName) != 0)
+	// 		{
+	// 			std::cout << "Advance units from " << territory1->territoryName << " to " << territory2->territoryName << "? (y/n)" << std::endl;
+	// 			string answer;
+	// 			std::cin >> answer;
+	// 			if (answer.compare("y") == 0)
+	// 			{
+	// 				std::cout << "How many units? " << std::endl;
+	// 				string units;
+	// 				std::cin >> units;
 
-		std::cout << "Play " << cardType << "card? (y/n)" << std::endl;
-		string answer;
-		std::cin >> answer;
-		if (answer.compare("y") == 0)
-		{
-			card->play();
-			break;
-		}
-	}
+	// 				Advance *advance = new Advance(this, std::stoi(units), territory1, territory2);
+	// 				this->issueOrder(advance);
+	// 				break;
+	// 			}
+	// 		}
+	// 	}
+	// }
+
+	// /*
+	// 	Issue order from one card in hand
+	// */
+	// for (auto card : this->getHand()->returnMyCards())
+	// {
+	// 	string cardType = "";
+
+	// 	if (dynamic_cast<Card_Airlift *>(card) != nullptr)
+	// 	{
+	// 		cardType = "an Airlift";
+	// 	}
+	// 	else if (dynamic_cast<Card_Blockade *>(card) != nullptr)
+	// 	{
+	// 		cardType = "a Blockade";
+	// 	}
+	// 	else if (dynamic_cast<Card_Bomb *>(card) != nullptr)
+	// 	{
+	// 		cardType = "a Bomb";
+	// 	}
+	// 	else if (dynamic_cast<Card_Diplomacy *>(card) != nullptr)
+	// 	{
+	// 		cardType = "a Diplomacy";
+	// 	}
+	// 	else
+	// 	{
+	// 		cardType = "a Reinforcement";
+	// 	}
+
+	// 	std::cout << "Play " << cardType << "card? (y/n)" << std::endl;
+	// 	string answer;
+	// 	std::cin >> answer;
+	// 	if (answer.compare("y") == 0)
+	// 	{
+	// 		card->play();
+	// 		break;
+	// 	}
+	// }
 }
 
 // Assignment operator overload
