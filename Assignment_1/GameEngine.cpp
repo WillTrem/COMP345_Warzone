@@ -253,6 +253,10 @@ void GameEngine::reinforcementPhase()
 void GameEngine::issueOrdersPhase()
 {
     // !! Chris note -- this has to be written to call Player::IssueOrder() in round robin across players, in progress
+    for (size_t pIndex = 0; pIndex < players->size(); pIndex++)
+    {
+        /* code */
+    }
 }
 
 void GameEngine::executeOrdersPhase()
