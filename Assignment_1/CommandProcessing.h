@@ -38,7 +38,7 @@ enum GameState
 };
 
 // Maps which state(s) a command is valid in.
-extern std::map<std::string, std::vector<GameState> > stateTransitions;
+extern std::map<std::string, std::vector<GameState>> stateTransitions;
 
 // Maps which state(s) a command is valid in.
 extern std::map<std::string, GameState> commandTransitions;
@@ -76,6 +76,7 @@ public:
 	bool validateMap(GameState *&gameState, Map *&gameMap, std::vector<Player *> *&gamePlayers, Deck *&gameDeck);
 	bool addPlayer(GameState *&gameState, Map *&gameMap, std::vector<Player *> *&gamePlayers, Deck *&gameDeck);
 	bool gameStart(GameState *&gameState, Map *&gameMap, std::vector<Player *> *&gamePlayers, Deck *&gameDeck);
+	bool toggleTournamentMode(GameState *&gameState, Map *&gameMap, std::vector<Player *> *&gamePlayers, Deck *&gameDeck);
 };
 
 // Command processors.
