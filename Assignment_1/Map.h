@@ -7,6 +7,8 @@
 
 using namespace std;
 
+class Player;
+
 class Territory
 {
 public:
@@ -17,6 +19,7 @@ public:
     string coordY;
     int numOfArmies;
     std::vector<Territory *> neighboringTerritories;
+    Player* occupier;
 
     // default constructor
     Territory();

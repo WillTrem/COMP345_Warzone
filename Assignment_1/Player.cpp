@@ -241,15 +241,15 @@ void Player::toDefend()
 
 // Creates a new order and adds it to the player's list of current orders
 void Player::issueOrder(Order *order)
-{
-	// Order *newOrder = new Order();
+{	
+	// logic for Deploy orders at start of turn will go here
+	while (reinforcementPool > 0) {	
+	
+	}
 
-	// ordersList->addOrder(newOrder);
+	// advance and defend orders next
 
-	// TEMPORARILY REMOVED THE ABOVE LINES -- this function will be implemented with Part 3
-	ps->issueOrder(order);
-
-	cout << "An order has been issued" << endl;
+	// one card order next
 }
 
 // Assignment operator overload
