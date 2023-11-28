@@ -252,7 +252,28 @@ void GameEngine::reinforcementPhase()
 
 void GameEngine::issueOrdersPhase()
 {
-    // !! Chris note -- this has to be written to call Player::IssueOrder() in round robin across players, in progress
+    vector<int> playersStillIssuingOrders;
+    for (size_t pIndex = 0; pIndex < players->size(); pIndex++)
+    {
+        playersStillIssuingOrders.push_back(pIndex);
+    }
+
+    while (playersStillIssuingOrders.size() > 0)
+    {
+        for (size_t pIndex = 0; pIndex < players->size(); pIndex++)
+        {
+            if ((*players)[pIndex]->issueOrder())
+            {
+                playersStillIssuingOrders.erase(
+                    std::remove(
+                        playersStillIssuingOrders.begin(),
+                         playersStillIssuingOrders.end(),
+                          pIndex),
+                    playersStillIssuingOrders.end());
+
+            }
+        }
+    }
 }
 
 void GameEngine::executeOrdersPhase()

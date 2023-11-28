@@ -215,7 +215,8 @@ bool Command::toggleTournamentMode(GameState *&gameState, Map *&gameMap, std::ve
 			*/
 			if (option.compare("-M") == 0)
 			{
-				numMaps = values.size() if (numMaps >= 1 && numMaps <= 5)
+				numMaps = values.size();
+				if (numMaps >= 1 && numMaps <= 5)
 				{
 
 					// TODO: load maps into
@@ -315,7 +316,7 @@ bool Command::toggleTournamentMode(GameState *&gameState, Map *&gameMap, std::ve
 			}
 
 			option = token;
-			values{};
+			values = {};
 		}
 	}
 
