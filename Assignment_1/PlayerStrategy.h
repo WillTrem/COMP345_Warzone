@@ -76,7 +76,7 @@ public:
 
     vector<Territory *> toDefend();
 
-    void issueOrder(Order *order);
+    bool issueOrder();
 };
 
 // Benevolent Player Strategy.
@@ -91,7 +91,7 @@ public:
 
     vector<Territory *> toDefend();
 
-    void issueOrder(Order *order);
+    bool issueOrder();
 };
 
 // Neutral Player Strategy.
@@ -106,7 +106,7 @@ public:
 
     vector<Territory *> toDefend();
 
-    void issueOrder(Order *order);
+    bool issueOrder();
 };
 
 // Cheater Player Strategy.
@@ -121,7 +121,7 @@ public:
 
     vector<Territory *> toDefend();
 
-    void issueOrder(Order *order);
+    bool issueOrder();
 };
 
 

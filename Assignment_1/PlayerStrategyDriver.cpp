@@ -108,13 +108,16 @@ void testPlayerStrategies()
     printTerritoriesInVector(cheaterBot->territoriesToDefend, string("The Cheater Player wants to defend "));
     cout << endl;
 
-
+    // Test issueOrder() for all computer players.
     //std::cout << "reached issueOrder(order)" << endl;
     //// // Testing toDefend() method will all computer players
     //// AngryBot.issueOrder();
     //// NiceBot.issueOrder();
     //// NeutralBot.issueOrder();
     //// CheatBot.issueOrder();
+
+
+    // Test the human player's methods.
 }
 
 void printTerritoriesInVector(vector<Territory*> targetVector, string caption)

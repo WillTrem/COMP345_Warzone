@@ -448,33 +448,35 @@ vector<Territory *> AggressivePlayerStrategy::toDefend()
     return toDefend;
 }
 
-void AggressivePlayerStrategy::issueOrder(Order *o)
+bool AggressivePlayerStrategy::issueOrder()
 {
     // Do we call toAttack and toDefend here?
 
-    // Check if 'o' is a Deploy object
-    if (Deploy *deployOrder = dynamic_cast<Deploy *>(o))
-    {
-        // Find the strongest country
-        Territory *strongest = getStrongestTerritory();
-        Deploy(p, p->getReinforcmentPool(), strongest);
+    //// Check if 'o' is a Deploy object
+    //if (Deploy *deployOrder = dynamic_cast<Deploy *>(o))
+    //{
+    //    // Find the strongest country
+    //    Territory *strongest = getStrongestTerritory();
+    //    Deploy(p, p->getReinforcmentPool(), strongest);
 
-        // Replace with the content of toDefend()?
-    }
+    //    // Replace with the content of toDefend()?
+    //}
 
-    // Check if 'o' is a Advance object
-    if (Advance *advanceOrder = dynamic_cast<Advance *>(o))
-    {
-        // Brainstorm about the advance recursively
-        // for ();
-    }
+    //// Check if 'o' is a Advance object
+    //if (Advance *advanceOrder = dynamic_cast<Advance *>(o))
+    //{
+    //    // Brainstorm about the advance recursively
+    //    // for ();
+    //}
 
-    // Check if 'o' is a Bomb object
-    if (Bomb *bombOrder = dynamic_cast<Bomb *>(o))
-    {
-        Territory *aboutToGetBombed = getAdjacentTerritories()[0];
-        Bomb(p, aboutToGetBombed);
-    }
+    //// Check if 'o' is a Bomb object
+    //if (Bomb *bombOrder = dynamic_cast<Bomb *>(o))
+    //{
+    //    Territory *aboutToGetBombed = getAdjacentTerritories()[0];
+    //    Bomb(p, aboutToGetBombed);
+    //}
+
+    return true;
 }
 
 // Methods for the Benevolent Player Strategy;
@@ -511,34 +513,36 @@ vector<Territory *> BenevolentPlayerStrategy::toDefend()
     return toDefend;
 }
 
-void BenevolentPlayerStrategy::issueOrder(Order *o)
+bool BenevolentPlayerStrategy::issueOrder()
 {
     // Deploy troops to own territories.
     // Move troops to weaker territories when possible?
     // Only play nonviolent cards.
 
-    // Check if 'o' is a Deploy object
-    if (Deploy *deployOrder = dynamic_cast<Deploy *>(o))
-    {
-        // Find the weakest territory
-        Territory *weakest = getWeakestTerritory();
-        Deploy(p, p->getReinforcmentPool(), weakest);
-    }
+    //// Check if 'o' is a Deploy object
+    //if (Deploy *deployOrder = dynamic_cast<Deploy *>(o))
+    //{
+    //    // Find the weakest territory
+    //    Territory *weakest = getWeakestTerritory();
+    //    Deploy(p, p->getReinforcmentPool(), weakest);
+    //}
 
-    // Check if 'o' is a Airlift object
-    if (Airlift *airliftOrder = dynamic_cast<Airlift *>(o))
-    {
-        // Find the weakest territory
-        Territory *weakest = getWeakestTerritory();
-        //Airlift(p, p->getReinforcmentPool(), weakest); FIX THIS
-    }
+    //// Check if 'o' is a Airlift object
+    //if (Airlift *airliftOrder = dynamic_cast<Airlift *>(o))
+    //{
+    //    // Find the weakest territory
+    //    Territory *weakest = getWeakestTerritory();
+    //    //Airlift(p, p->getReinforcmentPool(), weakest); FIX THIS
+    //}
 
-    // Check if 'o' is a Blockade object
-    if (Blockade *blockadeOrder = dynamic_cast<Blockade *>(o))
-    {
-        Territory *aboutToGetBombed = getAdjacentTerritories()[0];
-        Bomb(p, aboutToGetBombed);
-    }
+    //// Check if 'o' is a Blockade object
+    //if (Blockade *blockadeOrder = dynamic_cast<Blockade *>(o))
+    //{
+    //    Territory *aboutToGetBombed = getAdjacentTerritories()[0];
+    //    Bomb(p, aboutToGetBombed);
+    //}
+
+    return true;
 }
 
 
@@ -561,10 +565,10 @@ vector<Territory *> NeutralPlayerStrategy::toDefend()
     return toDefend;
 }
 // issueOrder() that does nothing.
-void NeutralPlayerStrategy::issueOrder(Order *o)
+bool NeutralPlayerStrategy::issueOrder()
 {
     // Check the total number of troops that the player has across all territories. If that number diminishes, meaning the player got attacked, the neutral player becomes aggressive
-    return;
+    return true;
 }
 
 
@@ -588,7 +592,7 @@ vector<Territory *> CheaterPlayerStrategy::toDefend()
 }
 
 // The Cheater Player issueOrder does not do anything, since it conquers nearby territories no matter what
-void CheaterPlayerStrategy::issueOrder(Order *o)
+bool CheaterPlayerStrategy::issueOrder()
 {
     // No issueOrder method since the cheater player does not use cards!!!
 
@@ -599,7 +603,7 @@ void CheaterPlayerStrategy::issueOrder(Order *o)
         // Actually do the capture.
     }
 
-    return;
+    return true;
 }
 
 
