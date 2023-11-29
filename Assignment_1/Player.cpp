@@ -21,7 +21,7 @@ Player::Player()
 	playerName = new string("Player " + std::to_string(numPlayers)); // Make sure no player has the same name.
 }
 
-// Parametrized constructorw
+// Parametrized constructor
 Player::Player(string name)
 {
 	hand = new Hand();

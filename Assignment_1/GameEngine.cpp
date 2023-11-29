@@ -21,6 +21,8 @@ GameEngine::GameEngine()
     players->push_back(p4);
 
     commandProcessor = new CommandProcessor();
+    commandProcessor->gameEngine = this;
+    
 }
 
 /**
@@ -39,6 +41,19 @@ GameEngine::GameEngine(GameState *currentState, std::map<GameState, std::list<Co
     }
     else
         commandProcessor = new CommandProcessor();
+
+    commandProcessor->gameEngine = this;
+}
+
+/*
+* Parametrized constructor (for tournament)
+*/
+GameEngine::GameEngine(GameState *currentState, std::vector<Player*>* players, Map* gameMap) : currentState(currentState), gameMap(gameMap), players(players)
+{
+    stateTransitions = nullptr;
+    deck = new Deck();
+    commandProcessor = new CommandProcessor();
+    commandProcessor->gameEngine = this;
 }
 
 /**
@@ -59,6 +74,7 @@ GameEngine::GameEngine(const GameEngine &gameEngine) : currentState(gameEngine.c
         FileCommandProcessorAdapter *adapter = new FileCommandProcessorAdapter(*temp);
         commandProcessor = adapter;
     }
+    commandProcessor->gameEngine = this;
 }
 
 // Destructor

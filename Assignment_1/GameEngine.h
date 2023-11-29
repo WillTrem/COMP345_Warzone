@@ -17,10 +17,12 @@
 // Moved GameStates and Command to the CommandProcessing file.
 #ifndef GAMEENGINE_H
 #define GAMEENGINE_H
+
+
 class GameEngine : public Subject, public ILoggable
 {
 private:
-    std::map<GameState, std::list<Command>> *stateTransitions;
+    std::map<GameState, std::list<Command>> *stateTransitions = nullptr;
 
 public:
     GameState *currentState;
@@ -34,6 +36,7 @@ public:
     // Constructors
     GameEngine();
     GameEngine(GameState *currentState, std::map<GameState, std::list<Command>> *stateTransitions, bool fromFile = false, string fileName = "test");
+    GameEngine(GameState *currentState, std::vector<Player*>* players, Map* gameMap);
     GameEngine(const GameEngine &gameEngine);
 
     ~GameEngine();
@@ -57,5 +60,7 @@ public:
     void operator=(GameState &newState);
     friend std::ostream &operator<<(std::ostream &os, const GameEngine &gameEngine);
 };
+
+
 
 #endif // GAMEENGINE_H

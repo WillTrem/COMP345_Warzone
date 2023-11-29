@@ -5,6 +5,7 @@
 #include "Map.h"
 #include "Cards.h"
 #include "LogObserver.h"
+#include "Tournament.h"
 
 #include <sstream>
 #include <fstream>
@@ -22,6 +23,8 @@ using namespace std;
 /**
  * Represents the various states a game can be in at any point in time
  */
+class GameEngine; // Forward declaration to avoid circular dependencies for the tournament implementation
+
 enum GameState
 {
 	// Start states
@@ -58,6 +61,7 @@ public:
 	bool (Command::*execution)(GameState *&gameState, Map *&gameMap, std::vector<Player *> *&gamePlayers, Deck *&gameDeck);
 	GameState *nextState;
 	string *effect;
+	GameEngine* gameEngine = nullptr;
 
 	// Constructor
 	Command(std::string cmdName);
@@ -95,6 +99,7 @@ private:
 	void setUpCommand(Command *command);
 
 public:
+	GameEngine* gameEngine = nullptr;
 	// Default Constructor
 	CommandProcessor();
 

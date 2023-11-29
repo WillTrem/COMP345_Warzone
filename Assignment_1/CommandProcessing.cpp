@@ -1,4 +1,5 @@
 #include "CommandProcessing.h"
+#include "GameEngine.h"
 
 #include <sstream>
 #include <fstream>
@@ -14,7 +15,8 @@ std::map<std::string, std::vector<GameState>> stateTransitions = {
 	{"addplayer", {MAP_VALIDATED, PLAYERS_ADDED}},
 	{"gamestart", {PLAYERS_ADDED}},
 	{"replay", {WIN}},
-	{"quit", {WIN}}};
+	{"quit", {WIN}},
+	{"tournament", {START}}};
 
 // Definition of commandTransitions
 std::map<std::string, GameState> commandTransitions = {
@@ -23,7 +25,8 @@ std::map<std::string, GameState> commandTransitions = {
 	{"addplayer", PLAYERS_ADDED},
 	{"gamestart", ASSIGN_REINFORCEMENTS},
 	{"replay", START},
-	{"quit", END}};
+	{"quit", END},
+	{"tournament", ASSIGN_REINFORCEMENTS}};
 
 // Constructor with only command name
 Command::Command(std::string cmdName) : cmdName(cmdName) {}
@@ -179,14 +182,15 @@ bool Command::gameStart(GameState *&gameState, Map *&gameMap, std::vector<Player
 	}
 }
 
+// Starts a tournament based on the command parameters given 
 bool Command::toggleTournamentMode(GameState *&gameState, Map *&gameMap, std::vector<Player *> *&gamePlayers, Deck *&gameDeck)
 {
-	if (*gameState != GameState::START)
-	{
-		std::cout << "You can only toggle tournament mode at the start of the game.\n"
-				  << std::endl;
-		return false;
-	}
+	// if (*gameState != GameState::START)
+	// {
+	// 	std::cout << "You can only toggle tournament mode at the start of the game.\n"
+	// 			  << std::endl;
+	// 	return false;
+	// }
 
 	string token;
 
@@ -194,6 +198,9 @@ bool Command::toggleTournamentMode(GameState *&gameState, Map *&gameMap, std::ve
 	string option = "";
 	vector<string> values;
 	int numMaps = -1;
+	Tournament* tournament = new Tournament();
+	tournament->gameEngine = this->gameEngine;
+	
 	while (getline(iss, token, ' '))
 	{
 		bool isOption = token.compare("-M") == 0 ||
@@ -206,7 +213,7 @@ bool Command::toggleTournamentMode(GameState *&gameState, Map *&gameMap, std::ve
 		}
 		else if (!option.empty() && !isOption)
 		{
-			values.push_back(token + " ");
+			values.push_back(token);
 		}
 		else if (!option.empty() && isOption)
 		{
@@ -218,8 +225,13 @@ bool Command::toggleTournamentMode(GameState *&gameState, Map *&gameMap, std::ve
 				numMaps = values.size();
 				if (numMaps >= 1 && numMaps <= 5)
 				{
-
 					// TODO: load maps into
+					for(auto map : values)
+					{
+						Map* newMap = new Map();
+						newMap->loadMap(map);
+						tournament->addMap(newMap);
+					}
 				}
 				else
 				{
@@ -235,7 +247,10 @@ bool Command::toggleTournamentMode(GameState *&gameState, Map *&gameMap, std::ve
 			{
 				if (values.size() >= 2 && values.size() <= 4)
 				{
-					// TODO: Add player (& strategies) to games
+					for(auto strategy : values)
+					{
+						//TODO: Create the new strategy objects based on the values given
+					}
 				}
 				else
 				{
@@ -254,13 +269,14 @@ bool Command::toggleTournamentMode(GameState *&gameState, Map *&gameMap, std::ve
 					try
 					{
 						int numGames = std::stoi(values[0]);
-						if (numGames != numMaps)
+						if (numGames >= 1 && numGames <= 5)
 						{
 							// TODO: Set number of games somewhere
+							tournament->setNumberOfGames(numGames);
 						}
 						else
 						{
-							std::cout << "The number of games must correspond to the number of maps\n"
+							std::cout << "Invalid number of turns (between 1-5 inclusive)\n"
 									  << std::endl;
 							return false;
 						}
@@ -291,7 +307,7 @@ bool Command::toggleTournamentMode(GameState *&gameState, Map *&gameMap, std::ve
 						int numTurns = std::stoi(values[0]);
 						if (numTurns >= 10 && numTurns <= 50)
 						{
-							// TODO: Set number of turns per game somewhere
+							tournament->setMaxTurns(numTurns);
 						}
 						else
 						{
@@ -320,6 +336,8 @@ bool Command::toggleTournamentMode(GameState *&gameState, Map *&gameMap, std::ve
 		}
 	}
 
+	// Start the tournament
+	tournament->play();
 	return true;
 }
 
@@ -374,6 +392,10 @@ Command *CommandProcessor::readCommand()
 
 	// Calling the corresponding constructor based on the number of parameters
 	Command *newCommand = (inputCommand.size() == 1) ? new Command(inputCommand[0]) : new Command(inputCommand[0], inputCommand[1]);
+	
+	// Passing down the reference of the gameEngine to the command
+	newCommand->gameEngine = this->gameEngine;
+	
 	return newCommand;
 };
 
@@ -444,6 +466,9 @@ void CommandProcessor::setUpCommand(Command *command)
 		command->execution = &Command::addPlayer;
 	if (command->cmdName == "gamestart")
 		command->execution = &Command::gameStart;
+	if (command->cmdName == "tournament")
+		command->execution = &Command::toggleTournamentMode;
+	
 
 	// cout << "\nDone setting up the command \"" << command->cmdName << "\".\n" << endl;
 };
@@ -503,6 +528,10 @@ Command *FileCommandProcessorAdapter::readCommand()
 
 	// Calling the corresponding constructor based on the number of parameters
 	Command *newCommand = (inputCommand.size() == 1) ? new Command(inputCommand[0]) : new Command(inputCommand[0], inputCommand[1]);
+	
+	// Passing down the reference of the gameEngine to the command
+	newCommand->gameEngine = this->gameEngine;
+
 	return newCommand;
 };
 
