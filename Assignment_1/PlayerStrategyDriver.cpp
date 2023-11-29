@@ -72,6 +72,7 @@ void testPlayerStrategies()
     Player* cheaterBot = gameEngine->players->at(4);
 
     // Assign each player their strategy.
+    cout << "\n\n\nNow assigning strategies to the computer players.\n" << endl;
     humanPlayer->setStrategy(new HumanPlayerStrategy(humanPlayer));
     angryBot->setStrategy(new AggressivePlayerStrategy(angryBot));
     niceBot->setStrategy(new BenevolentPlayerStrategy(niceBot));
@@ -81,6 +82,7 @@ void testPlayerStrategies()
     cout << "\n\nAll players have been assigned their respective strategies.\n" << endl;
 
     // Test the toAttack() method for all computer players.
+    cout << "\n\nNow testing all computer players' toAttack() method.\n" << endl;
     angryBot->toAttack();
     printTerritoriesInVector(angryBot->territoriesToAttack, string("The Aggresive Player wants to attack "));
     cout << endl;
@@ -95,6 +97,7 @@ void testPlayerStrategies()
     cout << endl;
 
     // Test the toDefend() method for all computer players.
+    cout << "\n\nNow testing all computer players' toDefend() method.\n" << endl;
     angryBot->toDefend();
     printTerritoriesInVector(angryBot->territoriesToDefend, string("The Aggresive Player wants to defend "));
     cout << endl;
@@ -109,12 +112,13 @@ void testPlayerStrategies()
     cout << endl;
 
     // Test issueOrder() for all computer players.
-    //std::cout << "reached issueOrder(order)" << endl;
-    //// // Testing toDefend() method will all computer players
+    cout << "\n\nNow testing all computer players' issueOrder() method.\n" << endl;
     //// AngryBot.issueOrder();
     //// NiceBot.issueOrder();
     //// NeutralBot.issueOrder();
-    //// CheatBot.issueOrder();
+
+    cout << "The Cheater Player (" << cheaterBot->getPlayerName() << ") is issuing orders (and cheating!!)" << endl;
+    cheaterBot->issueOrder();
 
 
     // Test the human player's methods.

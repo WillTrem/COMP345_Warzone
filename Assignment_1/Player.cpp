@@ -144,9 +144,10 @@ vector<Territory *> Player::getOwnedTerritories()
 // Pushes a new territory onto the player's list of owned territories.
 void Player::addOwnedTerritory(Territory *territory)
 {
-
-	// Should we check whether the territory is already present there?
+	territory->occupier = this;
+	territory->occupierName = this->getPlayerName();
 	ownedTerritories.push_back(territory);
+	// Should we check whether the territory is already present there?
 }
 
 // Pops an existing territory from the player's list of owned territories. Returns its reference.
@@ -159,6 +160,9 @@ Territory *Player::removeOwnedTerritory(Territory *territory)
 	if (it != ownedTerritories.end())
 	{
 		Territory *popppedTerritory = *it;
+
+		territory->occupier = nullptr;
+		territory->occupierName = "none";
 		ownedTerritories.erase(it);
 
 		return popppedTerritory;

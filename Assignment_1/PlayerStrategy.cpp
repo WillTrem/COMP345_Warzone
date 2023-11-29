@@ -599,8 +599,10 @@ bool CheaterPlayerStrategy::issueOrder()
     // Auto conquer the territories in toAttack?
     for (Territory* territory : p->territoriesToAttack)
     {
-        cout << "The cheater player has captured " << territory->territoryName << endl;
-        // Actually do the capture.
+        cout << "The cheater player has captured " << territory->territoryName << " from " << territory->occupier->getPlayerName() << "." << endl;
+
+        territory->occupier->removeOwnedTerritory(territory);
+        p->addOwnedTerritory(territory);
     }
 
     return true;
