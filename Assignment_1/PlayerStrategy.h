@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <vector>
 #include <set>
+#include <cstdlib>
+#include <ctime>
 
 #include "Cards.h"
 #include "Map.h"

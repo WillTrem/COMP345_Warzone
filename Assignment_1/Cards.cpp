@@ -115,16 +115,21 @@ ostream& operator<<(ostream& os, const Card& c) {
 
 Card_Bomb::Card_Bomb(Deck *deck) : Card::Card(deck)
 {
+	myType = new string("bomb");
+	cout << *myType << endl;
+
 	cout << "It is a Bomb card.\n"
 		 << endl;
 };
 Card_Bomb::Card_Bomb(Hand *owner, Deck *deck) : Card::Card(owner, deck)
 {
+	myType = new string("bomb");
 	cout << "It is a Bomb card.\n"
 		 << endl;
 };
 Card_Bomb::Card_Bomb(Card_Bomb *sourceCard) : Card::Card(sourceCard)
 {
+	myType = new string("bomb");
 	cout << "It is a Bomb card.\n"
 		 << endl;
 };
@@ -140,16 +145,19 @@ void Card_Bomb::play()
 
 Card_Reinforcement::Card_Reinforcement(Deck *deck) : Card::Card(deck)
 {
+	myType = new string("reinforcement");
 	cout << "It is a Reinforcement card.\n"
 		 << endl;
 };
 Card_Reinforcement::Card_Reinforcement(Hand *owner, Deck *deck) : Card::Card(owner, deck)
 {
+	myType = new string("reinforcement");
 	cout << "It is a Reinforcement card.\n"
 		 << endl;
 };
 Card_Reinforcement::Card_Reinforcement(Card_Reinforcement *sourceCard) : Card::Card(sourceCard)
 {
+	myType = new string("reinforcement");
 	cout << "It is a Reinforcement card.\n"
 		 << endl;
 };
@@ -163,16 +171,19 @@ void Card_Reinforcement::play()
 
 Card_Blockade::Card_Blockade(Deck *deck) : Card::Card(deck)
 {
+	myType = new string("blockade");
 	cout << "It is a Blockade card.\n"
 		 << endl;
 };
 Card_Blockade::Card_Blockade(Hand *owner, Deck *deck) : Card::Card(owner, deck)
 {
+	myType = new string("blockade");
 	cout << "It is a Blockade card.\n"
 		 << endl;
 };
 Card_Blockade::Card_Blockade(Card_Blockade *sourceCard) : Card::Card(sourceCard)
 {
+	myType = new string("blockade");
 	cout << "It is a Blockade card.\n"
 		 << endl;
 };
@@ -186,16 +197,19 @@ void Card_Blockade::play()
 
 Card_Airlift::Card_Airlift(Deck *deck) : Card::Card(deck)
 {
+	myType = new string("airlift");
 	cout << "It is an Airlift card.\n"
 		 << endl;
 };
 Card_Airlift::Card_Airlift(Hand *owner, Deck *deck) : Card::Card(owner, deck)
 {
+	myType = new string("airlift");
 	cout << "It is an Airlift card.\n"
 		 << endl;
 };
 Card_Airlift::Card_Airlift(Card_Airlift *sourceCard) : Card::Card(sourceCard)
 {
+	myType = new string("airlift");
 	cout << "It is an Airlift card.\n"
 		 << endl;
 };
@@ -209,16 +223,19 @@ void Card_Airlift::play()
 
 Card_Diplomacy::Card_Diplomacy(Deck *deck) : Card::Card(deck)
 {
+	myType = new string("diplomacy");
 	cout << "It is a Diplomacy card.\n"
 		 << endl;
 };
 Card_Diplomacy::Card_Diplomacy(Hand *owner, Deck *deck) : Card::Card(owner, deck)
 {
+	myType = new string("diplomacy");
 	cout << "It is a Diplomacy card.\n"
 		 << endl;
 };
 Card_Diplomacy::Card_Diplomacy(Card_Diplomacy *sourceCard) : Card::Card(sourceCard)
 {
+	myType = new string("diplomacy");
 	cout << "It is a Diplomacy card.\n"
 		 << endl;
 };
@@ -396,7 +413,7 @@ void Deck::draw(Hand *drawingHand)
 	{
 		// Get a random card's index.
 		int index = rand() % deckCards.size();
-		cout << "\nDrew the card at index: " << index << endl;
+		cout << "\nDrew the card at index: " << index << ", of type " << deckCards.at(index)->myType << "." <<  endl;
 
 		drawingHand->addCard(deckCards.at(index));
 	}

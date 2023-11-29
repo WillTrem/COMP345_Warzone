@@ -371,7 +371,7 @@ bool HumanPlayerStrategy::issueOrder(bool populateVectors)
 			Card* actualCard;
 			for (Card *card : playerCards)
 			{	
-				if ((*card).myType == cardChoice)
+				if (*(*card).myType == cardChoice)
 				{	
 					(*card).play();
 					p->getHand()->removeCard(card);
@@ -554,11 +554,19 @@ bool AggressivePlayerStrategy::issueOrder(bool populateVectors)
     for (Card* card : p->getHand()->returnMyCards())
     {
         // Look for a card of an accepted type, 
-        if (card->myType == "Bomb") // and others
+        if (*(card->myType) == "bomb") // Is any other card type valid?
         {
-            // Use the card
+            // Use the card on a random territoryToAttack();
 
-            break;
+            std::srand(static_cast<unsigned int>(std::time(nullptr))); // init the random number generator
+            int i = std::rand() % (p->territoriesToAttack.size() + 1); // Generate a random index.
+
+            cout << p->getPlayerName() << " wants to bomb " << p->territoriesToAttack[i]->territoryName << ", belonging to " << p->territoriesToAttack[i]->occupierName << "." << endl;
+
+            Order* newBomb = new Bomb(p, p->territoriesToAttack[i]);
+            p->ordersList->addOrder(newBomb);
+
+            break; // Should break us out of the loop.
         }
     }
 
@@ -623,7 +631,7 @@ bool BenevolentPlayerStrategy::issueOrder(bool populateVectors)
     for (Card* card : p->getHand()->returnMyCards())
     {
         // Look for a card of an accepted type, 
-        if (card->myType == "Airlift") // and others
+        if (*(card->myType) == "Airlift") // and others
         {
             // Use the card
 

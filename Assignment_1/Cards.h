@@ -33,7 +33,7 @@ class Card
 	Hand* currentOwner = nullptr; // When the card is in the main deck, set to null.
 
 	public:
-	string myType = "dummy"; // The card's type, such as Bomb, Diplomacy, etc.
+	string* myType; // The card's type, such as Bomb, Diplomacy, etc.
 
 	Deck* getMyDeck();
 	// Get and set the card's current owner, if any.
@@ -64,7 +64,7 @@ class Card
 class Card_Bomb : public Card
 {	
 	public:
-	string myType = "bomb";
+	string* myType;
 
 	Card_Bomb(Deck* deck);
 	Card_Bomb(Hand* owner, Deck* deck);
@@ -76,7 +76,7 @@ class Card_Bomb : public Card
 class Card_Reinforcement : public Card
 {
 	public:
-	string myType = "reinforcement";
+	string* myType;
 
 	Card_Reinforcement(Deck* deck);
 	Card_Reinforcement(Hand* owner, Deck* deck);
@@ -88,7 +88,7 @@ class Card_Reinforcement : public Card
 class Card_Blockade : public Card
 {
 	public:
-	string myType = "blockade";
+	string* myType;
 
 	Card_Blockade(Deck* deck);
 	Card_Blockade(Hand* owner, Deck* deck);
@@ -100,7 +100,7 @@ class Card_Blockade : public Card
 class Card_Airlift : public Card
 {
 	public:
-	string myType = "airlift";
+	string* myType;
 
 	Card_Airlift(Deck* deck);
 	Card_Airlift(Hand* owner, Deck* deck);
@@ -112,7 +112,7 @@ class Card_Airlift : public Card
 class Card_Diplomacy : public Card
 {
 	public:
-	string myType = "diplomacy";
+	string* myType;
 
 	Card_Diplomacy(Deck* deck);
 	Card_Diplomacy(Hand* owner, Deck* deck);
