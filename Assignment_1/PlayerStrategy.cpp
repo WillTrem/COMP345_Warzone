@@ -645,13 +645,14 @@ bool BenevolentPlayerStrategy::issueOrder(bool populateVectors)
                 {
                     if (territory->occupier != neighbor->occupier)
                     {
+                        // Any neighborhing enemy is a valid target.
                         target = neighbor;
                         break;
                     }
                 }
             }
 
-            if (target != nullptr) // Safety measures.
+            if (target != nullptr) // Safety measures. Don't try to use the card if no target was found.
             {
                 cout << p->getPlayerName() << " wants to negotiate with " << target->occupierName << "." << endl;
 
