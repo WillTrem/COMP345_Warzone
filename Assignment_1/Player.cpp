@@ -363,7 +363,6 @@ bool Player::issueOrder()
 					Order* newAdvance = new Advance(this, unitsI, this->territoriesToDefend[tIndexS], this->territoriesToAttack[tIndexD]);
 					this->ordersList->addOrder(newAdvance);
 				}
-				
 			}
 			else
 			{
@@ -399,23 +398,73 @@ bool Player::issueOrder()
 			// play the darn card
 			if (cardChoice == "bomb")
 			{
+				std::cout << "Bomb which territory?" << territoryStringAttack << std::endl;
+				string territoryDestination;
+				std::cin >> territoryDestination;
+				int tIndexD = std::stoi(territoryDestination);
 
+				if (!(tIndexD >= 0 && tIndexD < territoriesToAttack.size()))
+				{
+					std::cout << "Invalid territory number/index" << std::endl;
+				}
+
+				Order* newBomb = new Bomb(this, this->territoriesToAttack[tIndexD]);
+				this->ordersList->addOrder(newBomb);
 			}
-			else if (cardChoice == "bomb")
+			else if (cardChoice == "airlift")
 			{
+				std::cout << "Airlift how many units?" << std::endl;
+				string units;
+				std::cin >> units;
+				int howMany = std::stoi(units);
 
+				std::cout << "From which territory?" << territoryStringDefend << std::endl;
+				string territorySource;
+				std::cin >> territorySource;
+				int tIndexS = std::stoi(territorySource);
+
+				if (!(tIndexS >= 0 && tIndexS < territoriesToDefend.size()))
+				{
+					std::cout << "Invalid territory number/index" << std::endl;
+				}
+
+				std::cout << "To which territory?" << territoryStringDefend << std::endl;
+				string territoryDestination;
+				std::cin >> territoryDestination;
+				int tIndexD = std::stoi(territoryDestination);
+
+				if (!(tIndexD >= 0 && tIndexD < territoriesToDefend.size()))
+				{
+					std::cout << "Invalid territory number/index" << std::endl;
+				}
+
+				Order* newAirlift = new Airlift(this, howMany, this->territoriesToDefend[tIndexS], this->territoriesToDefend[tIndexD]);
+				this->ordersList->addOrder(newAirlift);
 			}
-			else if (cardChoice == "bomb")
-			{
-
+			else if (cardChoice == "reinforcement")
+			{	
+				// i made this up but let's say reinforcement means you get 3 more of them..
+				this->setReinforcementPool(this->getReinforcmentPool() + 3);
 			}
-			else if (cardChoice == "bomb")
-			{
+			else if (cardChoice == "blockade")
+			{	
+				std::cout << "Blockade which territory" << territoryStringDefend << std::endl;
+				string territoryDestination;
+				std::cin >> territoryDestination;
+				int tIndexD = std::stoi(territoryDestination);
 
+				Order* newBlockade = new Blockade(this, this->territoriesToDefend[tIndexD]);
+				this->ordersList->addOrder(newBlockade);
 			}
-			else if (cardChoice == "bomb")
+			else if (cardChoice == "diplomacy")
 			{
+				std::cout << "Pick one of opponents territories" << territoryStringAttack << std::endl;
+				string territoryDestination;
+				std::cin >> territoryDestination;
+				int tIndexD = std::stoi(territoryDestination);
 
+				Order* newNegotiate = new Negotiate(this, this->territoriesToAttack[tIndexD]);
+				this->ordersList->addOrder(newNegotiate);
 			}
 			else
 			{
