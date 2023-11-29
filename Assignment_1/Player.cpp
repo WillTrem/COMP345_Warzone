@@ -294,6 +294,7 @@ bool Player::issueOrder()
 	// if no more reinforcements, player can now do advance orders or card orders
 	else
 	{	
+		// see which type of order they want to do (advance, card, or done)
 		std::cout << "issue Advance order or play a card or end your turn ('advance' or 'card' or 'done')" << std::endl;
 		string choice;
 		std::cin >> choice;
@@ -302,6 +303,7 @@ bool Player::issueOrder()
 		{
 			return true;
 		}
+		// player wants to play an advance order (attack or defend)
 		else if (choice == "advance")
 		{
 			// user enters which territories and how many units
@@ -369,19 +371,56 @@ bool Player::issueOrder()
 			}
 			return false;
 		}
+		// player wants to play a card order
 		else if (choice == "card")
 		{
 			vector<Card*> playerCards = this->getHand()->returnMyCards();
 			std::cout << "Okay, which card?\n" << std::endl;
 			for (Card *card : playerCards)
 			{
-				cout << &card << endl;
+				cout << (*card).type << endl;
 			}
+			
+			// string of card type
 			string cardChoice;
 			std::cin >> cardChoice;
 
-			
-			
+			// remove the card from the hand
+			Card* actualCard;
+			for (Card *card : playerCards)
+			{	
+				if ((*card).type == cardChoice)
+				{	
+					(*card).play();
+					this->getHand()->removeCard(card);
+					break;
+				}
+			}
+			// play the darn card
+			if (cardChoice == "bomb")
+			{
+
+			}
+			else if (cardChoice == "bomb")
+			{
+
+			}
+			else if (cardChoice == "bomb")
+			{
+
+			}
+			else if (cardChoice == "bomb")
+			{
+
+			}
+			else if (cardChoice == "bomb")
+			{
+
+			}
+			else
+			{
+				std::cout << "Hmm that is not a real card" << std::endl;
+			}	
 		}
 		else
 		{
@@ -389,44 +428,6 @@ bool Player::issueOrder()
 		}
 		return false;
 	}
-
-	// /*
-	// 	Issue order from one card in hand
-	// */
-	// for (auto card : this->getHand()->returnMyCards())
-	// {
-	// 	string cardType = "";
-
-	// 	if (dynamic_cast<Card_Airlift *>(card) != nullptr)
-	// 	{
-	// 		cardType = "an Airlift";
-	// 	}
-	// 	else if (dynamic_cast<Card_Blockade *>(card) != nullptr)
-	// 	{
-	// 		cardType = "a Blockade";
-	// 	}
-	// 	else if (dynamic_cast<Card_Bomb *>(card) != nullptr)
-	// 	{
-	// 		cardType = "a Bomb";
-	// 	}
-	// 	else if (dynamic_cast<Card_Diplomacy *>(card) != nullptr)
-	// 	{
-	// 		cardType = "a Diplomacy";
-	// 	}
-	// 	else
-	// 	{
-	// 		cardType = "a Reinforcement";
-	// 	}
-
-	// 	std::cout << "Play " << cardType << "card? (y/n)" << std::endl;
-	// 	string answer;
-	// 	std::cin >> answer;
-	// 	if (answer.compare("y") == 0)
-	// 	{
-	// 		card->play();
-	// 		break;
-	// 	}
-	// }
 }
 
 // Assignment operator overload

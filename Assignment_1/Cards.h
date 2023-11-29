@@ -38,6 +38,7 @@ class Card
 		
 	// Returns whether the card is currently in a player's hand. 
 	bool isOwned();
+	string type = "";
 
 	// Constructors.
 	Card(Deck* deck);
@@ -59,12 +60,13 @@ class Card
 // Each card has a type from: bomb, reinforcement, blockade, airlift and diplomacy.
 // Making these into different child classes as I imagine they'll have different purposes.
 class Card_Bomb : public Card
-{
+{	
 	public:
 	Card_Bomb(Deck* deck);
 	Card_Bomb(Hand* owner, Deck* deck);
 	Card_Bomb(Card_Bomb* sourceCard);
 	void play();
+	string type = "bomb";
 };
 
 class Card_Reinforcement : public Card
@@ -74,6 +76,7 @@ class Card_Reinforcement : public Card
 	Card_Reinforcement(Hand* owner, Deck* deck);
 	Card_Reinforcement(Card_Reinforcement* sourceCard);
 	void play();
+	string type = "reinforcement";
 };
 
 class Card_Blockade : public Card
@@ -83,6 +86,7 @@ class Card_Blockade : public Card
 	Card_Blockade(Hand* owner, Deck* deck);
 	Card_Blockade(Card_Blockade* sourceCard);
 	void play();
+	string type = "blockade";
 };
 
 class Card_Airlift : public Card
@@ -92,6 +96,7 @@ class Card_Airlift : public Card
 	Card_Airlift(Hand* owner, Deck* deck);
 	Card_Airlift(Card_Airlift* sourceCard);
 	void play();
+	string type = "airlift";
 };
 
 class Card_Diplomacy : public Card
@@ -101,6 +106,7 @@ class Card_Diplomacy : public Card
 	Card_Diplomacy(Hand* owner, Deck* deck);
 	Card_Diplomacy(Card_Diplomacy* sourceCard);
 	void play();
+	string type = "diplomacy";
 };
 
 
