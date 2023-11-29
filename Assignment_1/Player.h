@@ -42,7 +42,10 @@ private:
 	bool negotiate = false;
 
 	// Do the other strategy types also need to be made friends?
+	friend class PlayerStrategy;
 	friend class HumanPlayerStrategy;
+	friend class AggressivePlayerStrategy;
+	friend class BenevolentPlayerStrategy;
 
 public:
 	int totalPlayerArmy = 0;

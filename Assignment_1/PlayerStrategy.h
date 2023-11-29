@@ -37,7 +37,7 @@ public:
 
     virtual vector<Territory *> toDefend() = 0;
 
-    virtual bool issueOrder() = 0;
+    virtual bool issueOrder(bool populateVectors = false) = 0;
 
     // Utility methods.
     vector<Territory *> getAdjacentTerritories(); // Returns a vector of all enemy territories adjacent to the player's.
@@ -47,6 +47,8 @@ public:
     Territory *getStrongestTerritory();
 
     Territory *getWeakestTerritory();
+
+    void reinforceTerritories(vector<Territory*> targetTerritories);
 };
 
 // Human Player Strategy.
@@ -61,7 +63,7 @@ public:
 
     vector<Territory *> toDefend();
 
-    bool issueOrder();
+    bool issueOrder(bool populateVectors = true);
 };
 
 // Aggressive Player Strategy.
@@ -76,7 +78,7 @@ public:
 
     vector<Territory *> toDefend();
 
-    bool issueOrder();
+    bool issueOrder(bool populateVectors = false);
 };
 
 // Benevolent Player Strategy.
@@ -91,7 +93,7 @@ public:
 
     vector<Territory *> toDefend();
 
-    bool issueOrder();
+    bool issueOrder(bool populateVectors = false);
 };
 
 // Neutral Player Strategy.
@@ -106,7 +108,7 @@ public:
 
     vector<Territory *> toDefend();
 
-    bool issueOrder();
+    bool issueOrder(bool populateVectors = false);
 };
 
 // Cheater Player Strategy.
@@ -121,7 +123,7 @@ public:
 
     vector<Territory *> toDefend();
 
-    bool issueOrder();
+    bool issueOrder(bool populateVectors = false);
 };
 
 

@@ -128,6 +128,32 @@ Territory *PlayerStrategy::getWeakestTerritory()
     return weakestTerritory;
 }
 
+void PlayerStrategy::reinforceTerritories(vector<Territory*> targetTerritories)
+{
+    int numTargetTerritories = targetTerritories.size();
+    int i = 0;
+
+    if (numTargetTerritories == 1) // If there is only one territory to reinforce, just dump the whole unit pool there.
+    {
+        targetTerritories.at(0)->numOfArmies += p->reinforcementPool;
+        cout << p->getPlayerName() << " has deployed " << p->reinforcementPool << " units on their territory " << targetTerritories.at(0)->territoryName << "." << endl;
+
+        p->reinforcementPool = 0;
+    }
+    else // Else, loop through the territories listed and assign armies until the pool is empty.
+    {
+        while (p->reinforcementPool > 0)
+        {
+            targetTerritories.at(i)->numOfArmies++;
+            cout << p->getPlayerName() << " has deployed a unit on their territory " << targetTerritories.at(i)->territoryName << "." << endl;
+
+            p->reinforcementPool--;
+            i = (i + 1) % numTargetTerritories;
+        }
+    }
+    return;
+}
+
 
 // Methods for the Human Player Strategy.
 vector<Territory *> HumanPlayerStrategy::toAttack()
@@ -157,11 +183,14 @@ vector<Territory *> HumanPlayerStrategy::toDefend()
     return p->prioritizeTerritories(ownedTerritories);
 }
 
-bool HumanPlayerStrategy::issueOrder()
+bool HumanPlayerStrategy::issueOrder(bool populateVectors)
 {
     // update the lists of territories to attack and defend
-	p->toAttack();
-	p->toDefend();
+    if (populateVectors == true)
+    {
+        p->toAttack();
+        p->toDefend();
+    }
 
     // create string of players territories to defend
 	string territoryStringDefend = "";
@@ -448,9 +477,19 @@ vector<Territory *> AggressivePlayerStrategy::toDefend()
     return toDefend;
 }
 
-bool AggressivePlayerStrategy::issueOrder()
+bool AggressivePlayerStrategy::issueOrder(bool populateVectors)
 {
     // Do we call toAttack and toDefend here?
+    if (populateVectors == true)
+    {
+        p->toAttack();
+        p->toDefend();
+    }
+
+    // Reinforce the territories in toDefend();
+    reinforceTerritories(p->territoriesToDefend);
+
+
 
     //// Check if 'o' is a Deploy object
     //if (Deploy *deployOrder = dynamic_cast<Deploy *>(o))
@@ -513,8 +552,14 @@ vector<Territory *> BenevolentPlayerStrategy::toDefend()
     return toDefend;
 }
 
-bool BenevolentPlayerStrategy::issueOrder()
+bool BenevolentPlayerStrategy::issueOrder(bool populateVectors)
 {
+    if (populateVectors == true)
+    {
+        p->toAttack();
+        p->toDefend();
+    }
+    
     // Deploy troops to own territories.
     // Move troops to weaker territories when possible?
     // Only play nonviolent cards.
@@ -565,8 +610,14 @@ vector<Territory *> NeutralPlayerStrategy::toDefend()
     return toDefend;
 }
 // issueOrder() that does nothing.
-bool NeutralPlayerStrategy::issueOrder()
+bool NeutralPlayerStrategy::issueOrder(bool populateVectors)
 {
+    if (populateVectors == true)
+    {
+        p->toAttack();
+        p->toDefend();
+    }
+    
     // Check the total number of troops that the player has across all territories. If that number diminishes, meaning the player got attacked, the neutral player becomes aggressive
     return true;
 }
@@ -592,8 +643,14 @@ vector<Territory *> CheaterPlayerStrategy::toDefend()
 }
 
 // The Cheater Player issueOrder does not do anything, since it conquers nearby territories no matter what
-bool CheaterPlayerStrategy::issueOrder()
+bool CheaterPlayerStrategy::issueOrder(bool populateVectors)
 {
+    if (populateVectors == true)
+    {
+        p->toAttack();
+        p->toDefend();
+    }
+    
     // No issueOrder method since the cheater player does not use cards!!!
 
     // Auto conquer the territories in toAttack?
