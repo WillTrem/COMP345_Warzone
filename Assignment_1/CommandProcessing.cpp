@@ -156,7 +156,7 @@ bool Command::gameStart(GameState *&gameState, Map *&gameMap, std::vector<Player
 		{
 			// Give 50 initial army units to the players, which are placed in their respective reinforcement pool.
 			gamePlayers->at(i)->setReinforcementPool(gamePlayers->at(i)->getReinforcmentPool() + 50);
-			cout << "Awarded 50 reinforcement units to player " << gamePlayers->at(i)->getPlayerName() << ".\n"
+			cout << "\n\nAwarded 50 reinforcement units to player " << gamePlayers->at(i)->getPlayerName() << ".\nThey will now draw cards."
 				 << endl;
 
 			// Let each player draw 2 initial cards from the deck using the deck's draw() method.
@@ -166,7 +166,7 @@ bool Command::gameStart(GameState *&gameState, Map *&gameMap, std::vector<Player
 		}
 
 		// switch the game to the play phase
-		cout << "\nStartUp phase completed. The game will now begin.\n"
+		cout << "\n\nStartUp phase completed. The game will now begin.\n"
 			 << endl;
 
 		saveEffect("The start up phase has been completed; territories and cards have been distributed.\nThe game will now begin.");

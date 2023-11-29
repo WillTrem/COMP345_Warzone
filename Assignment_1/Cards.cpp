@@ -71,6 +71,9 @@ Card::Card(Card *sourceCard)
 // Destructor.
 Card::~Card()
 {
+	delete myType;
+	myType = nullptr;
+
 	// Not sure these are needed, adding just to be safe.
 	myDeck = nullptr;
 	currentOwner = nullptr;
@@ -413,7 +416,7 @@ void Deck::draw(Hand *drawingHand)
 	{
 		// Get a random card's index.
 		int index = rand() % deckCards.size();
-		cout << "\nDrew the card at index: " << index << ", of type " << deckCards.at(index)->myType << "." <<  endl;
+		cout << "\nDrew the card at index: " << index << ", of type \"" << *(deckCards.at(index)->myType) << "\"." <<  endl;
 
 		drawingHand->addCard(deckCards.at(index));
 	}

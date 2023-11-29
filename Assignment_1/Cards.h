@@ -64,8 +64,6 @@ class Card
 class Card_Bomb : public Card
 {	
 	public:
-	string* myType;
-
 	Card_Bomb(Deck* deck);
 	Card_Bomb(Hand* owner, Deck* deck);
 	Card_Bomb(Card_Bomb* sourceCard);
@@ -76,8 +74,6 @@ class Card_Bomb : public Card
 class Card_Reinforcement : public Card
 {
 	public:
-	string* myType;
-
 	Card_Reinforcement(Deck* deck);
 	Card_Reinforcement(Hand* owner, Deck* deck);
 	Card_Reinforcement(Card_Reinforcement* sourceCard);
@@ -88,8 +84,6 @@ class Card_Reinforcement : public Card
 class Card_Blockade : public Card
 {
 	public:
-	string* myType;
-
 	Card_Blockade(Deck* deck);
 	Card_Blockade(Hand* owner, Deck* deck);
 	Card_Blockade(Card_Blockade* sourceCard);
@@ -100,8 +94,6 @@ class Card_Blockade : public Card
 class Card_Airlift : public Card
 {
 	public:
-	string* myType;
-
 	Card_Airlift(Deck* deck);
 	Card_Airlift(Hand* owner, Deck* deck);
 	Card_Airlift(Card_Airlift* sourceCard);
@@ -112,8 +104,6 @@ class Card_Airlift : public Card
 class Card_Diplomacy : public Card
 {
 	public:
-	string* myType;
-
 	Card_Diplomacy(Deck* deck);
 	Card_Diplomacy(Hand* owner, Deck* deck);
 	Card_Diplomacy(Card_Diplomacy* sourceCard);
