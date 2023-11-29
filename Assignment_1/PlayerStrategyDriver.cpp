@@ -111,8 +111,8 @@ void testPlayerStrategies()
     angryBot->issueOrder();
     cout << "\nThe Benevolent Player (" << niceBot->getPlayerName() << ") is issuing orders." << endl;
     niceBot->issueOrder();
-
-    //// NeutralBot.issueOrder();
+    cout << "\nThe Neutral Player (" << neutralBot->getPlayerName() << ") is issuing orders (but won't do much)." << endl;
+    neutralBot->issueOrder();
 
 
     // Test the cheater bot's methods.
@@ -127,7 +127,12 @@ void testPlayerStrategies()
     cheaterBot->issueOrder();
 
 
-    // Test the human player's methods.
+    // Test the human player's methods. 
+    // Might need to go before the cheater player's methods, else they will have stolen all of the human's territories.
+    cout << "\n\n\nNow testing the human player's methods.\n" << endl;
+    humanPlayer->toAttack();
+    humanPlayer->toDefend();
+    humanPlayer->issueOrder();
 }
 
 void printTerritoriesInVector(vector<Territory*> targetVector, string caption)
