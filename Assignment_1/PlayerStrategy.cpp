@@ -5,8 +5,8 @@
 const int NUM_TO_ATTACK_DEFENSIVE = 0;
 const int NUM_TO_DEFEND_DEFENSIVE = 4;
 
-const int NUM_TO_ATTACK_AGGRESSIVE = 3;
-const int NUM_TO_DEFEND_AGGRESIVE = 1;
+const int NUM_TO_ATTACK_AGGRESSIVE = 2;
+const int NUM_TO_DEFEND_AGGRESIVE = 2;
 
 
 // Constructors.
