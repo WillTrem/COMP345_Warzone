@@ -295,7 +295,7 @@ bool HumanPlayerStrategy::issueOrder()
 			std::cout << "Okay, which card?\n" << std::endl;
 			for (Card *card : playerCards)
 			{
-				cout << (*card).type << endl;
+				cout << (*card).myType << endl;
 			}
 			
 			// string of card type
@@ -306,7 +306,7 @@ bool HumanPlayerStrategy::issueOrder()
 			Card* actualCard;
 			for (Card *card : playerCards)
 			{	
-				if ((*card).type == cardChoice)
+				if ((*card).myType == cardChoice)
 				{	
 					(*card).play();
 					p->getHand()->removeCard(card);
@@ -540,6 +540,7 @@ void BenevolentPlayerStrategy::issueOrder(Order *o)
         Bomb(p, aboutToGetBombed);
     }
 }
+
 
 // Methods for the Neutral Player Strategy;
 vector<Territory *> NeutralPlayerStrategy::toAttack()

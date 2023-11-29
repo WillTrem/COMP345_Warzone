@@ -21,6 +21,8 @@ class Hand;
 class Deck;
 
 
+using namespace std;
+
 // CARDS
 class Card
 {
@@ -31,14 +33,14 @@ class Card
 	Hand* currentOwner = nullptr; // When the card is in the main deck, set to null.
 
 	public:
+	string myType = "dummy"; // The card's type, such as Bomb, Diplomacy, etc.
+
 	Deck* getMyDeck();
 	// Get and set the card's current owner, if any.
 	Hand* getOwningHand();
 	void setOwningHand(Hand* owner);
-		
 	// Returns whether the card is currently in a player's hand. 
 	bool isOwned();
-	string type = "";
 
 	// Constructors.
 	Card(Deck* deck);
@@ -62,51 +64,61 @@ class Card
 class Card_Bomb : public Card
 {	
 	public:
+	string myType = "bomb";
+
 	Card_Bomb(Deck* deck);
 	Card_Bomb(Hand* owner, Deck* deck);
 	Card_Bomb(Card_Bomb* sourceCard);
+
 	void play();
-	string type = "bomb";
 };
 
 class Card_Reinforcement : public Card
 {
 	public:
+	string myType = "reinforcement";
+
 	Card_Reinforcement(Deck* deck);
 	Card_Reinforcement(Hand* owner, Deck* deck);
 	Card_Reinforcement(Card_Reinforcement* sourceCard);
+
 	void play();
-	string type = "reinforcement";
 };
 
 class Card_Blockade : public Card
 {
 	public:
+	string myType = "blockade";
+
 	Card_Blockade(Deck* deck);
 	Card_Blockade(Hand* owner, Deck* deck);
 	Card_Blockade(Card_Blockade* sourceCard);
+
 	void play();
-	string type = "blockade";
 };
 
 class Card_Airlift : public Card
 {
 	public:
+	string myType = "airlift";
+
 	Card_Airlift(Deck* deck);
 	Card_Airlift(Hand* owner, Deck* deck);
 	Card_Airlift(Card_Airlift* sourceCard);
+
 	void play();
-	string type = "airlift";
 };
 
 class Card_Diplomacy : public Card
 {
 	public:
+	string myType = "diplomacy";
+
 	Card_Diplomacy(Deck* deck);
 	Card_Diplomacy(Hand* owner, Deck* deck);
 	Card_Diplomacy(Card_Diplomacy* sourceCard);
+
 	void play();
-	string type = "diplomacy";
 };
 
 
