@@ -559,7 +559,7 @@ bool AggressivePlayerStrategy::issueOrder(bool populateVectors)
             // Use the card on a random territoryToAttack();
 
             std::srand(static_cast<unsigned int>(std::time(nullptr))); // init the random number generator
-            int i = std::rand() % (p->territoriesToAttack.size() + 1); // Generate a random index.
+            int i = std::rand() % (p->territoriesToAttack.size()); // Generate a random index.
 
             cout << p->getPlayerName() << " wants to bomb " << p->territoriesToAttack[i]->territoryName << ", belonging to " << p->territoriesToAttack[i]->occupierName << "." << endl;
 
