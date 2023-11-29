@@ -551,6 +551,16 @@ bool AggressivePlayerStrategy::issueOrder(bool populateVectors)
     }
 
     // Use aggressive cards.
+    for (Card* card : p->getHand()->returnMyCards())
+    {
+        // Look for a card of an accepted type, 
+        if (card->myType == "Bomb") // and others
+        {
+            // Use the card
+
+            break;
+        }
+    }
 
     return true;
 }
@@ -610,6 +620,16 @@ bool BenevolentPlayerStrategy::issueOrder(bool populateVectors)
     // The benevolent player does not attack.
 
     // Which are the nonviolent card? Airlift, reinforcement, blockade, diplomacy?
+    for (Card* card : p->getHand()->returnMyCards())
+    {
+        // Look for a card of an accepted type, 
+        if (card->myType == "Airlift") // and others
+        {
+            // Use the card
+
+            break;
+        }
+    }
 
     return true;
 }
