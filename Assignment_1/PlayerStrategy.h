@@ -37,7 +37,7 @@ public:
 
     virtual vector<Territory *> toDefend() = 0;
 
-    virtual void issueOrder(Order *order) = 0;
+    virtual bool issueOrder() = 0;
 
     // Utility methods.
     vector<Territory *> getAdjacentTerritories(); // Returns a vector of all enemy territories adjacent to the player's.
@@ -61,7 +61,7 @@ public:
 
     vector<Territory *> toDefend();
 
-    void issueOrder(Order *order);
+    bool issueOrder();
 };
 
 // Aggressive Player Strategy.

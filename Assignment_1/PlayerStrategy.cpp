@@ -157,13 +157,245 @@ vector<Territory *> HumanPlayerStrategy::toDefend()
     return p->prioritizeTerritories(ownedTerritories);
 }
 
-// TODO
-void HumanPlayerStrategy::issueOrder(Order *o)
+bool HumanPlayerStrategy::issueOrder()
 {
-    p->getOrdersList()->addOrder(o);
-    // Insert what Chris and Evan did.
-}
+    // update the lists of territories to attack and defend
+	p->toAttack();
+	p->toDefend();
 
+    // create string of players territories to defend
+	string territoryStringDefend = "";
+	for (int i = 0; i < p->territoriesToDefend.size(); i++)
+	{
+		territoryStringDefend += p->territoriesToDefend[i]->territoryName + "( " + std::to_string(i) + " ), ";
+	}
+
+    // create string of territories to attack
+	string territoryStringAttack = "";
+	for (int i = 0; i < p->territoriesToDefend.size(); i++)
+	{
+		territoryStringAttack += p->territoriesToDefend[i]->territoryName + "( " + std::to_string(i) + " ), ";
+	}
+
+	// if player has reinforcement units, they must make a Deploy order!
+	if (p->reinforcementPool > 0)
+	{
+		// logic to create a Deploy order:
+		// user enters which territory and how many units
+		std::cout << "Deploy units to which territory?" << territoryStringDefend << std::endl;
+		string territoryDestination;
+		std::cin >> territoryDestination;
+		int tIndex = std::stoi(territoryDestination);
+
+		if (!(tIndex >= 0 && tIndex < p->territoriesToDefend.size()))
+		{
+			std::cout << "Invalid territory number/index" << std::endl;
+		}
+
+		std::cout << "How many units?" << std::endl;
+		string units;
+		std::cin >> units;
+		int unitsI = std::stoi(units);
+
+		// if the info from user checks out, make the Deploy order
+		if (unitsI > 0 && unitsI <= p->getReinforcmentPool())
+		{
+			Order* newDeploy = new Deploy(p, unitsI, p->territoriesToDefend[tIndex]);
+			(*p).ordersList->addOrder(newDeploy);
+		}
+		else
+		{
+			std::cout << "Invalid number of units (1 - units left in pool) " << std::endl;
+		}
+		return false;
+	}
+	// if no more reinforcements, player can now do advance orders or card orders
+	else
+	{	
+		// see which type of order they want to do (advance, card, or done)
+		std::cout << "issue Advance order or play a card or end your turn ('advance' or 'card' or 'done')" << std::endl;
+		string choice;
+		std::cin >> choice;
+		
+		if (choice == "done")
+		{
+			return true;
+		}
+		// player wants to play an advance order (attack or defend)
+		else if (choice == "advance")
+		{
+			// user enters which territories and how many units
+			std::cout << "Advance units FROM which territory?" << territoryStringDefend << std::endl;
+			string territorySource;
+			std::cin >> territorySource;
+			int tIndexS = std::stoi(territorySource);
+
+			if (!(tIndexS >= 0 && tIndexS < p->territoriesToDefend.size()))
+			{
+				std::cout << "Invalid territory number/index" << std::endl;
+			}
+
+			std::cout << "Advance units TO which territory to DEFEND? (enter 'none' to see ATTACK list)" << territoryStringDefend << std::endl;
+			string territoryDestination;
+			std::cin >> territoryDestination;
+			bool defend = true;
+			int tIndexD;
+			if (territoryDestination == "none")
+			{
+				defend = false;
+				std::cout << "Advance units TO which territory to ATTACK" << territoryStringAttack << std::endl;
+				string territoryDestination;
+				std::cin >> territoryDestination;
+				int tIndexD = std::stoi(territoryDestination);
+
+				if (!(tIndexD >= 0 && tIndexD < p->territoriesToAttack.size()))
+				{
+					std::cout << "Invalid territory number/index" << std::endl;
+				}
+			}
+			else
+			{
+				int tIndexD = std::stoi(territoryDestination);
+
+				if (!(tIndexD >= 0 && tIndexD < p->territoriesToDefend.size()))
+				{
+					std::cout << "Invalid territory number/index" << std::endl;
+				}
+			}
+			
+			std::cout << "How many units?" << std::endl;
+			string units;
+			std::cin >> units;
+			int unitsI = std::stoi(units);
+
+			// if the info from user checks out, make the Advance order
+			if (unitsI > 0 && unitsI <= p->territoriesToDefend[tIndexS]->numOfArmies)
+			{
+				if (defend)
+				{
+					Order* newAdvance = new Advance(p, unitsI, p->territoriesToDefend[tIndexS], p->territoriesToDefend[tIndexD]);
+					p->ordersList->addOrder(newAdvance);
+				}
+				else
+				{
+					Order* newAdvance = new Advance(p, unitsI, p->territoriesToDefend[tIndexS], p->territoriesToAttack[tIndexD]);
+					p->ordersList->addOrder(newAdvance);
+				}
+			}
+			else
+			{
+				std::cout << "Invalid number of units (1 - units left in pool) " << std::endl;
+			}
+			return false;
+		}
+		// player wants to play a card order
+		else if (choice == "card")
+		{
+			vector<Card*> playerCards = p->getHand()->returnMyCards();
+			std::cout << "Okay, which card?\n" << std::endl;
+			for (Card *card : playerCards)
+			{
+				cout << (*card).type << endl;
+			}
+			
+			// string of card type
+			string cardChoice;
+			std::cin >> cardChoice;
+
+			// remove the card from the hand
+			Card* actualCard;
+			for (Card *card : playerCards)
+			{	
+				if ((*card).type == cardChoice)
+				{	
+					(*card).play();
+					p->getHand()->removeCard(card);
+					break;
+				}
+			}
+			// play the darn card
+			if (cardChoice == "bomb")
+			{
+				std::cout << "Bomb which territory?" << territoryStringAttack << std::endl;
+				string territoryDestination;
+				std::cin >> territoryDestination;
+				int tIndexD = std::stoi(territoryDestination);
+
+				if (!(tIndexD >= 0 && tIndexD < p->territoriesToAttack.size()))
+				{
+					std::cout << "Invalid territory number/index" << std::endl;
+				}
+
+				Order* newBomb = new Bomb(p, p->territoriesToAttack[tIndexD]);
+				p->ordersList->addOrder(newBomb);
+			}
+			else if (cardChoice == "airlift")
+			{
+				std::cout << "Airlift how many units?" << std::endl;
+				string units;
+				std::cin >> units;
+				int howMany = std::stoi(units);
+
+				std::cout << "From which territory?" << territoryStringDefend << std::endl;
+				string territorySource;
+				std::cin >> territorySource;
+				int tIndexS = std::stoi(territorySource);
+
+				if (!(tIndexS >= 0 && tIndexS < p->territoriesToDefend.size()))
+				{
+					std::cout << "Invalid territory number/index" << std::endl;
+				}
+
+				std::cout << "To which territory?" << territoryStringDefend << std::endl;
+				string territoryDestination;
+				std::cin >> territoryDestination;
+				int tIndexD = std::stoi(territoryDestination);
+
+				if (!(tIndexD >= 0 && tIndexD < p->territoriesToDefend.size()))
+				{
+					std::cout << "Invalid territory number/index" << std::endl;
+				}
+
+				Order* newAirlift = new Airlift(p, howMany, p->territoriesToDefend[tIndexS], p->territoriesToDefend[tIndexD]);
+				p->ordersList->addOrder(newAirlift);
+			}
+			else if (cardChoice == "reinforcement")
+			{	
+				// i made this up but let's say reinforcement means you get 3 more of them..
+				p->setReinforcementPool(p->getReinforcmentPool() + 3);
+			}
+			else if (cardChoice == "blockade")
+			{	
+				std::cout << "Blockade which territory" << territoryStringDefend << std::endl;
+				string territoryDestination;
+				std::cin >> territoryDestination;
+				int tIndexD = std::stoi(territoryDestination);
+
+				Order* newBlockade = new Blockade(p, p->territoriesToDefend[tIndexD]);
+				p->ordersList->addOrder(newBlockade);
+			}
+			else if (cardChoice == "diplomacy")
+			{
+				std::cout << "Pick one of opponents territories" << territoryStringAttack << std::endl;
+				string territoryDestination;
+				std::cin >> territoryDestination;
+				int tIndexD = std::stoi(territoryDestination);
+
+				Order* newNegotiate = new Negotiate(p, p->territoriesToAttack[tIndexD]);
+				p->ordersList->addOrder(newNegotiate);
+			}
+			else
+			{
+				std::cout << "Hmm that is not a real card" << std::endl;
+			}	
+		}
+		else
+		{
+			std::cout << "Invalid choice!" << std::endl;
+		}
+		return false;
+	}
+}
 
 // Methods for the Aggresive Player Strategy;
 vector<Territory *> AggressivePlayerStrategy::toAttack()
