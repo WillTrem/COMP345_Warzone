@@ -135,22 +135,23 @@ void PlayerStrategy::reinforceTerritories(vector<Territory*> targetTerritories)
 
     if (numTargetTerritories == 1) // If there is only one territory to reinforce, just dump the whole unit pool there.
     {
-        targetTerritories.at(0)->numOfArmies += p->reinforcementPool;
-        cout << p->getPlayerName() << " has deployed " << p->reinforcementPool << " units on their territory " << targetTerritories.at(0)->territoryName << "." << endl;
+        cout << p->getPlayerName() << " wants to deploy " << p->reinforcementPool << " units on their territory " << targetTerritories.at(0)->territoryName << "." << endl;
 
-        p->reinforcementPool = 0;
-
-        // To do: switch this to issuing actual order objects.
+        Order* newDeploy = new Deploy(p, p->reinforcementPool, targetTerritories.at(0));
+        (*p).ordersList->addOrder(newDeploy);
     }
-    else // Else, loop through the territories listed and assign armies until the pool is empty.
+    else // Else, split the number of armies by the number of territories, then assign them to each.
     {
-        while (p->reinforcementPool > 0)
+        int troopsPerTerritory = p->reinforcementPool / numTargetTerritories; // should also be an int.
+        int remainder = p->reinforcementPool % numTargetTerritories; // the remainders goes to the first territory in the list.
+        
+        for (int i = 0; i < numTargetTerritories; i++)
         {
-            targetTerritories.at(i)->numOfArmies++;
-            cout << p->getPlayerName() << " has deployed a unit on their territory " << targetTerritories.at(i)->territoryName << "." << endl;
+            int troopsToAssign = (i == 0) ? troopsPerTerritory + remainder : troopsPerTerritory;
+            cout << p->getPlayerName() << " wants to deploy " << troopsToAssign << " units on their territory " << targetTerritories.at(i)->territoryName << "." << endl;
 
-            p->reinforcementPool--;
-            i = (i + 1) % numTargetTerritories;
+            Order* newDeploy = new Deploy(p, troopsToAssign, targetTerritories.at(i));
+            (*p).ordersList->addOrder(newDeploy);
         }
     }
     return;
@@ -561,6 +562,10 @@ bool BenevolentPlayerStrategy::issueOrder(bool populateVectors)
         p->toAttack();
         p->toDefend();
     }
+
+    // Reinforce the territories in toDefend();
+    reinforceTerritories(p->territoriesToDefend);
+
     
     // Deploy troops to own territories.
     // Move troops to weaker territories when possible?

@@ -116,7 +116,9 @@ void testPlayerStrategies()
     cout << "The Aggresive Player (" << angryBot->getPlayerName() << ") is issuing orders." << endl;
     angryBot->issueOrder();
     
-    //// NiceBot.issueOrder();
+    cout << "\nThe Benevolent Player (" << niceBot->getPlayerName() << ") is issuing orders." << endl;
+    niceBot->issueOrder();
+
     //// NeutralBot.issueOrder();
 
     cout << "\nThe Cheater Player (" << cheaterBot->getPlayerName() << ") is issuing orders (and cheating!!)" << endl;
