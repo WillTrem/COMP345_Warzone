@@ -113,11 +113,13 @@ void testPlayerStrategies()
 
     // Test issueOrder() for all computer players.
     cout << "\n\nNow testing all computer players' issueOrder() method.\n" << endl;
-    //// AngryBot.issueOrder();
+    cout << "The Aggresive Player (" << angryBot->getPlayerName() << ") is issuing orders." << endl;
+    angryBot->issueOrder();
+    
     //// NiceBot.issueOrder();
     //// NeutralBot.issueOrder();
 
-    cout << "The Cheater Player (" << cheaterBot->getPlayerName() << ") is issuing orders (and cheating!!)" << endl;
+    cout << "\nThe Cheater Player (" << cheaterBot->getPlayerName() << ") is issuing orders (and cheating!!)" << endl;
     cheaterBot->issueOrder();
 
 

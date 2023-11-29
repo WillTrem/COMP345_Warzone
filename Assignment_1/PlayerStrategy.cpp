@@ -139,6 +139,8 @@ void PlayerStrategy::reinforceTerritories(vector<Territory*> targetTerritories)
         cout << p->getPlayerName() << " has deployed " << p->reinforcementPool << " units on their territory " << targetTerritories.at(0)->territoryName << "." << endl;
 
         p->reinforcementPool = 0;
+
+        // To do: switch this to issuing actual order objects.
     }
     else // Else, loop through the territories listed and assign armies until the pool is empty.
     {
