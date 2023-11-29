@@ -568,6 +568,8 @@ bool AggressivePlayerStrategy::issueOrder(bool populateVectors)
 
             break; // Should break us out of the loop.
         }
+
+        // Reinforcement (we're not sure what this actually does :x)
     }
 
     return true;
@@ -630,13 +632,101 @@ bool BenevolentPlayerStrategy::issueOrder(bool populateVectors)
     // Which are the nonviolent card? Airlift, reinforcement, blockade, diplomacy?
     for (Card* card : p->getHand()->returnMyCards())
     {
-        // Look for a card of an accepted type, 
-        if (*(card->myType) == "Airlift") // and others
-        {
-            // Use the card
+        // Look for a card of an accepted type...
 
-            break;
+        // Diplomacy
+        if (*(card->myType) == "diplomacy")
+        {
+            // Finc a valid diplomacy target.
+            Territory* target = nullptr;
+            for (Territory* territory : p->territoriesToDefend)
+            {
+                for (Territory* neighbor : territory->neighboringTerritories)
+                {
+                    if (territory->occupier != neighbor->occupier)
+                    {
+                        target = neighbor;
+                        break;
+                    }
+                }
+            }
+
+            if (target != nullptr) // Safety measures.
+            {
+                cout << p->getPlayerName() << " wants to negotiate with " << target->occupierName << "." << endl;
+
+                Order* newNegotiate = new Negotiate(p, target);
+                p->ordersList->addOrder(newNegotiate);
+
+                break;
+            }
         }
+
+        // Blockade
+        if (*(card->myType) == "blockade")
+        {
+            vector<Territory*> ownedTerritories = p->getOwnedTerritories();
+            
+            // Do not perform the blockade if too few territories are owned.
+            if (ownedTerritories.size() > NUM_TO_DEFEND_DEFENSIVE)
+            {
+                // Look for the more vulnerable territory in order to blockade it.
+                sort(ownedTerritories.begin(), ownedTerritories.end(), LessThan_AdjacentEnemyTroops_TroopsPresent());
+
+                // Don't give away a territory in territoriesToDefend().
+                for (int i = ownedTerritories.size() - 1; i >= 0; i--)
+                {
+                    auto it = std::find(p->territoriesToDefend.begin(), p->territoriesToDefend.end(), ownedTerritories.at(i));
+                    if (it == p->territoriesToDefend.end())
+                    {
+                        Territory* target = ownedTerritories.at(i);
+                        
+                        cout << p->getPlayerName() << " wants to blockade their territory " << target->territoryName << "." << endl;
+
+                        Order* newBlockade = new Blockade(p, target);
+                        p->ordersList->addOrder(newBlockade);
+
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (*(card->myType) == "airlift")
+        {
+            vector<Territory*> ownedTerritories = p->getOwnedTerritories();
+
+            // Only check for potential airlifts if territories exist outsde of territoriesToDefend.
+            if (ownedTerritories.size() > NUM_TO_DEFEND_DEFENSIVE)
+            {
+                // Look for a 'safe' territory where troops are present.
+                // Start with the territories surrounded by fewer enemy troops.
+                sort(ownedTerritories.begin(), ownedTerritories.end(), LessThan_AdjacentEnemyTroops());
+
+                for (int i = 0; i < ownedTerritories.size(); i++)
+                {
+                    // Don't take troops away from territories to defend.
+                    auto it = std::find(p->territoriesToDefend.begin(), p->territoriesToDefend.end(), ownedTerritories.at(i));
+                    if (it == p->territoriesToDefend.end())
+                    {
+                        std::srand(static_cast<unsigned int>(std::time(nullptr))); // init the random number generator
+                        int j = std::rand() % (p->territoriesToDefend.size()); // Generate a random index.
+
+                        Territory* source = ownedTerritories.at(i);
+                        Territory* target = p->territoriesToDefend.at(j);
+
+                        cout << p->getPlayerName() << " wants to airlift " << source->numOfArmies << " units from " << source->territoryName << " to " << target->territoryName << "." << endl;
+
+                        Order* newAirlift = new Airlift(p, source->numOfArmies, source, target);
+                        p->ordersList->addOrder(newAirlift);
+
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Reinforcement (we're not sure what this actually does :x)
     }
 
     return true;
@@ -673,7 +763,8 @@ bool NeutralPlayerStrategy::issueOrder(bool populateVectors)
     
     // The neutral player doesn't do shit.
 
-    // Check the total number of troops that the player has across all territories. If that number diminishes, meaning the player got attacked, the neutral player becomes aggressive
+    // Check the total number of troops that the player has across all territories. If that number diminishes, meaning the player got attacked, the neutral player becomes aggressive.
+
     return true;
 }
 
