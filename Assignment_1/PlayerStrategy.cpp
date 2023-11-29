@@ -2,8 +2,8 @@
 
 
 // Constants.
-const int NUM_TO_ATTACK = 5;
-const int NUM_TO_DEFEND = 5;
+const int NUM_TO_ATTACK_DEFENSIVE = 0;
+const int NUM_TO_DEFEND_DEFENSIVE = 4;
 
 const int NUM_TO_ATTACK_AGGRESSIVE = 3;
 const int NUM_TO_DEFEND_AGGRESIVE = 1;
@@ -139,6 +139,10 @@ void PlayerStrategy::reinforceTerritories(vector<Territory*> targetTerritories)
 
         Order* newDeploy = new Deploy(p, p->reinforcementPool, targetTerritories.at(0));
         (*p).ordersList->addOrder(newDeploy);
+
+        // Testing purpose only, remove later.
+        //targetTerritories.at(i)->numOfArmies += p->reinforcementPool;
+        //cout << targetTerritories.at(i)->territoryName << " now has " << targetTerritories.at(i)->numOfArmies << endl;
     }
     else // Else, split the number of armies by the number of territories, then assign them to each.
     {
@@ -152,9 +156,38 @@ void PlayerStrategy::reinforceTerritories(vector<Territory*> targetTerritories)
 
             Order* newDeploy = new Deploy(p, troopsToAssign, targetTerritories.at(i));
             (*p).ordersList->addOrder(newDeploy);
+
+            // Testing purpose only, remove later.
+            //targetTerritories.at(i)->numOfArmies += troopsToAssign;
+            //cout << targetTerritories.at(i)->territoryName << " now has " << targetTerritories.at(i)->numOfArmies << endl;
         }
     }
     return;
+}
+
+void PlayerStrategy::advanceOnToDefendTerritories() // Should we check these recursively?
+{
+    for (Territory* territory : p->territoriesToDefend) // For every territory in territoriesToDefend,
+    {
+        // Loop through the neighbhoring territories.
+        for (Territory* neighbor : territory->neighboringTerritories)
+        {
+            // If they also belong to the player,
+            if (neighbor->occupier == p)
+            {
+                // Are not among the territoriesToDefend, and contain armies,
+                auto it = std::find(p->territoriesToDefend.begin(), p->territoriesToDefend.end(), neighbor);
+                if (it == p->territoriesToDefend.end() && neighbor->numOfArmies > 0)
+                {
+                    // Transfer the units between the two territories.
+                    cout << p->getPlayerName() << " wants to move " << neighbor->numOfArmies << " units from " << neighbor->territoryName << " to " << territory->territoryName << "." << endl;
+                    
+                    Order* newAdvance = new Advance(p, neighbor->numOfArmies, neighbor, territory);
+                    p->ordersList->addOrder(newAdvance);
+                }
+            }
+        }
+    }
 }
 
 
@@ -464,7 +497,6 @@ vector<Territory *> AggressivePlayerStrategy::toDefend()
     // Sort these territories by the number of troops present there.
     sort(candidateTerritories.begin(), candidateTerritories.end(), LessThan_TroopsPresent_SurroundingEnemies());
 
-
     // Get the last NUM_TO_DEFEND_AGGRESIVE territories in the sorted list.
     vector<Territory *> toDefend;
 
@@ -489,34 +521,36 @@ bool AggressivePlayerStrategy::issueOrder(bool populateVectors)
         p->toDefend();
     }
 
-    // Reinforce the territories in toDefend();
-    reinforceTerritories(p->territoriesToDefend);
+    if (p->reinforcementPool > 0)
+    {
+        cout << p->getPlayerName() << " has " << p->reinforcementPool << " troops to deploy." << endl;
+        // Reinforce the territories in toDefend();
+        reinforceTerritories(p->territoriesToDefend);
+    }
+    
+    // If possible, move adjacent troops to the territories in territoriesToDefend.
+    advanceOnToDefendTerritories();
 
+    // Advance on the territories in territoriesToAttack.
+    for (Territory* enemyTerritory : p->territoriesToAttack) // For every territory in territoriesToAttack,
+    {
+        // Loop through the neighbhoring territories.
+        for (Territory* territory : enemyTerritory->neighboringTerritories)
+        {
+            // If they also belong to the player and contain armies,
+            if (territory->occupier == p && territory->numOfArmies > 0)
+            {
+                // Attack the enemy territory.
+                cout << p->getPlayerName() << " wants to send " << territory->numOfArmies << " units from " << territory->territoryName << " to attack " << enemyTerritory->territoryName << ", belonging to " << enemyTerritory->occupierName << "." << endl;
 
+                Order* newAdvance = new Advance(p, territory->numOfArmies, territory, enemyTerritory);
+                p->ordersList->addOrder(newAdvance);
+                // We might however end up with contradictory orders, sending the same troops to different territories.
+            }
+        }
+    }
 
-    //// Check if 'o' is a Deploy object
-    //if (Deploy *deployOrder = dynamic_cast<Deploy *>(o))
-    //{
-    //    // Find the strongest country
-    //    Territory *strongest = getStrongestTerritory();
-    //    Deploy(p, p->getReinforcmentPool(), strongest);
-
-    //    // Replace with the content of toDefend()?
-    //}
-
-    //// Check if 'o' is a Advance object
-    //if (Advance *advanceOrder = dynamic_cast<Advance *>(o))
-    //{
-    //    // Brainstorm about the advance recursively
-    //    // for ();
-    //}
-
-    //// Check if 'o' is a Bomb object
-    //if (Bomb *bombOrder = dynamic_cast<Bomb *>(o))
-    //{
-    //    Territory *aboutToGetBombed = getAdjacentTerritories()[0];
-    //    Bomb(p, aboutToGetBombed);
-    //}
+    // Use aggressive cards.
 
     return true;
 }
@@ -543,10 +577,10 @@ vector<Territory *> BenevolentPlayerStrategy::toDefend()
     // Get the last NUM_TO_DEFEND territories in the sorted list.
     vector<Territory *> toDefend;
 
-    if (ownedTerritories.size() > NUM_TO_DEFEND) // Only do this fancy copy/splicing stuff if the list of owned territories is longer than NUM_TO_DEFEND.
+    if (ownedTerritories.size() > NUM_TO_DEFEND_DEFENSIVE) // Only do this fancy copy/splicing stuff if the list of owned territories is longer than NUM_TO_DEFEND.
     {
         // The most vulnerable territories should be at the end of the list.
-        toDefend.assign(ownedTerritories.end() - NUM_TO_DEFEND, ownedTerritories.end());
+        toDefend.assign(ownedTerritories.end() - NUM_TO_DEFEND_DEFENSIVE, ownedTerritories.end());
     }
     // Else, just return a copy of it.
     else
@@ -563,36 +597,19 @@ bool BenevolentPlayerStrategy::issueOrder(bool populateVectors)
         p->toDefend();
     }
 
-    // Reinforce the territories in toDefend();
-    reinforceTerritories(p->territoriesToDefend);
+    // If possible, reinforce the territories in toDefend();
+    if (p->reinforcementPool > 0)
+    {
+        cout << p->getPlayerName() << " has " << p->reinforcementPool << " troops to deploy." << endl;
+        reinforceTerritories(p->territoriesToDefend);
+    }
 
-    
-    // Deploy troops to own territories.
-    // Move troops to weaker territories when possible?
-    // Only play nonviolent cards.
+    // If possible, move adjacent troops to the territories in toDefend();
+    advanceOnToDefendTerritories();
 
-    //// Check if 'o' is a Deploy object
-    //if (Deploy *deployOrder = dynamic_cast<Deploy *>(o))
-    //{
-    //    // Find the weakest territory
-    //    Territory *weakest = getWeakestTerritory();
-    //    Deploy(p, p->getReinforcmentPool(), weakest);
-    //}
+    // The benevolent player does not attack.
 
-    //// Check if 'o' is a Airlift object
-    //if (Airlift *airliftOrder = dynamic_cast<Airlift *>(o))
-    //{
-    //    // Find the weakest territory
-    //    Territory *weakest = getWeakestTerritory();
-    //    //Airlift(p, p->getReinforcmentPool(), weakest); FIX THIS
-    //}
-
-    //// Check if 'o' is a Blockade object
-    //if (Blockade *blockadeOrder = dynamic_cast<Blockade *>(o))
-    //{
-    //    Territory *aboutToGetBombed = getAdjacentTerritories()[0];
-    //    Bomb(p, aboutToGetBombed);
-    //}
+    // Which are the nonviolent card? Airlift, reinforcement, blockade, diplomacy?
 
     return true;
 }
@@ -619,12 +636,15 @@ vector<Territory *> NeutralPlayerStrategy::toDefend()
 // issueOrder() that does nothing.
 bool NeutralPlayerStrategy::issueOrder(bool populateVectors)
 {
-    if (populateVectors == true)
+    // Not actually needed.
+    /*if (populateVectors == true)
     {
         p->toAttack();
         p->toDefend();
-    }
+    }*/
     
+    // The neutral player doesn't do shit.
+
     // Check the total number of troops that the player has across all territories. If that number diminishes, meaning the player got attacked, the neutral player becomes aggressive
     return true;
 }
@@ -655,12 +675,12 @@ bool CheaterPlayerStrategy::issueOrder(bool populateVectors)
     if (populateVectors == true)
     {
         p->toAttack();
-        p->toDefend();
+        p->toDefend(); // Will be empty.
     }
     
     // No issueOrder method since the cheater player does not use cards!!!
 
-    // Auto conquer the territories in toAttack?
+    // Auto conquer the territories in toAttack. Should this be done as an order??
     for (Territory* territory : p->territoriesToAttack)
     {
         cout << "The cheater player has captured " << territory->territoryName << " from " << territory->occupier->getPlayerName() << "." << endl;

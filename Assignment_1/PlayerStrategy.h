@@ -13,8 +13,8 @@
 using namespace std;
 
 // General constants / tuning params.
-extern const int NUM_TO_ATTACK; // The number of territories AI players will targer/priorize in their attacking phase.
-extern const int NUM_TO_DEFEND; // The number of territories AI players will targer/priorize in their defending phase.
+extern const int NUM_TO_ATTACK_DEFENSIVE; // The number of territories AI players will targer/priorize in their attacking phase.
+extern const int NUM_TO_DEFEND_DEFENSIVE; // The number of territories AI players will targer/priorize in their defending phase.
 
 #ifndef PLAYER_STRATEGY_H
 #define PLAYER_STRATEGY_H
@@ -49,6 +49,8 @@ public:
     Territory *getWeakestTerritory();
 
     void reinforceTerritories(vector<Territory*> targetTerritories);
+
+    void advanceOnToDefendTerritories();
 };
 
 // Human Player Strategy.

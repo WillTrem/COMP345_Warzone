@@ -81,8 +81,8 @@ void testPlayerStrategies()
 
     cout << "\n\nAll players have been assigned their respective strategies.\n" << endl;
 
-    // Test the toAttack() method for all computer players.
-    cout << "\n\nNow testing all computer players' toAttack() method.\n" << endl;
+    // Test the toAttack() method for most computer players.
+    cout << "\n\nNow testing the computer players' toAttack() method.\n" << endl;
     angryBot->toAttack();
     printTerritoriesInVector(angryBot->territoriesToAttack, string("The Aggresive Player wants to attack "));
     cout << endl;
@@ -92,12 +92,9 @@ void testPlayerStrategies()
     neutralBot->toAttack();
     printTerritoriesInVector(neutralBot->territoriesToAttack, string("The Neutral Player wants to attack "));
     cout << endl;
-    cheaterBot->toAttack();
-    printTerritoriesInVector(cheaterBot->territoriesToAttack, string("The Cheater Player wants to attack "));
-    cout << endl;
 
-    // Test the toDefend() method for all computer players.
-    cout << "\n\nNow testing all computer players' toDefend() method.\n" << endl;
+    // Test the toDefend() method for most computer players.
+    cout << "\n\nNow testing the computer players' toDefend() method.\n" << endl;
     angryBot->toDefend();
     printTerritoriesInVector(angryBot->territoriesToDefend, string("The Aggresive Player wants to defend "));
     cout << endl;
@@ -107,21 +104,26 @@ void testPlayerStrategies()
     neutralBot->toDefend();
     printTerritoriesInVector(neutralBot->territoriesToDefend, string("The Neutral Player wants to defend "));
     cout << endl;
-    cheaterBot->toDefend();
-    printTerritoriesInVector(cheaterBot->territoriesToDefend, string("The Cheater Player wants to defend "));
-    cout << endl;
 
-    // Test issueOrder() for all computer players.
-    cout << "\n\nNow testing all computer players' issueOrder() method.\n" << endl;
+    // Test issueOrder() for most computer players.
+    cout << "\n\nNow testing the computer players' issueOrder() method.\n" << endl;
     cout << "The Aggresive Player (" << angryBot->getPlayerName() << ") is issuing orders." << endl;
     angryBot->issueOrder();
-    
     cout << "\nThe Benevolent Player (" << niceBot->getPlayerName() << ") is issuing orders." << endl;
     niceBot->issueOrder();
 
     //// NeutralBot.issueOrder();
 
-    cout << "\nThe Cheater Player (" << cheaterBot->getPlayerName() << ") is issuing orders (and cheating!!)" << endl;
+
+    // Test the cheater bot's methods.
+    cout << "\n\n\nNow testing the cheater bot's methods.\n" << endl;
+    cheaterBot->toAttack();
+    printTerritoriesInVector(cheaterBot->territoriesToAttack, string("The Cheater Player wants to attack "));
+    cout << endl;
+    cheaterBot->toDefend();
+    printTerritoriesInVector(cheaterBot->territoriesToDefend, string("The Cheater Player wants to defend "));
+    cout << endl;
+    cout << "The Cheater Player (" << cheaterBot->getPlayerName() << ") is issuing orders (and cheating!!)" << endl;
     cheaterBot->issueOrder();
 
 
