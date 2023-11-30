@@ -141,7 +141,7 @@ void Deploy::execute()
         this->effect = this->whichPlayer->getPlayerName() + "'s Deploy was not valid..";
     }
 
-    this->executed = true; // should this only happen if valid? or both so it can be removed? (double check)
+    this->executed = true;
     std::cout << "execute() called in a Deploy object" << std::endl;
     std::cout << this->effect << std::endl;
 
@@ -260,7 +260,7 @@ bool Advance::validate()
     return true;
 }
 
-// execute method override   [!!! finish implementing this]
+// execute method override
 void Advance::execute()
 {
     if (this->validate())
@@ -278,7 +278,7 @@ void Advance::execute()
             if (this->whichPlayer->getNegotiate() == true)
             {
                 this->effect = this->whichPlayer->getPlayerName() + "'s Advance was not valid..";
-                this->executed = true; // should this only happen if valid? or both so it can be removed? (double check)
+                this->executed = true;
                 std::cout << "execute() called in an Advance object" << std::endl;
                 std::cout << this->effect << std::endl;
                 return;
@@ -311,10 +311,11 @@ void Advance::execute()
                 this->target->setTerritoryNumberOfArmies(attackerCount);
                 this->source->setTerritoryNumberOfArmies(this->source->numOfArmies - this->howManyUnits);
                 this->effect = this->whichPlayer->getPlayerName() + " captured " + this->target->territoryName;
+                this->target->occupier->removeOwnedTerritory(this->target);
                 this->whichPlayer->addOwnedTerritory(this->target);
-                // will pass in the other players pointer and remove the territory
                 std::cout << "territory captured - ownership transferred to " + this->whichPlayer->getPlayerName() << std::endl;
-                this->whichPlayer->setCapturedTerritoryThisTurn(true); // this Player has captured a territory now and gets a card
+                // this Player has captured a territory now and gets a card
+                this->whichPlayer->setCapturedTerritoryThisTurn(true); 
                 std::cout << "territory captured - flag set true - THIS PLAYER GETS A CARD THIS TURN" << std::endl;
 
             }
@@ -341,7 +342,7 @@ void Advance::execute()
         this->effect = this->whichPlayer->getPlayerName() + "'s Advance was not valid..";
     }
 
-    this->executed = true; // should this only happen if valid? or both so it can be removed? (double check)
+    this->executed = true;
     std::cout << "execute() called in an Advance object" << std::endl;
     std::cout << this->effect << std::endl;
 }
@@ -515,8 +516,8 @@ void Blockade::execute()
     if (this->validate())
     {
         this->target->setTerritoryNumberOfArmies(this->target->numOfArmies * 2);
-        this->target->setOccupierName("Neutral"); // make this a Player?
-        // pass in Neutral player to assign the territory
+        this->whichPlayer->removeOwnedTerritory(this->target);
+        this->target->setOccupierName("neutral");
         std::cout << this->target->territoryName + " ownership transferred to: " + this->target->occupierName << std::endl;
         this->effect = "Blockade succesful";
     }

@@ -306,14 +306,41 @@ void GameEngine::issueOrdersPhase()
 
 void GameEngine::executeOrdersPhase()
 {
-    for (auto player : *players)
-    {
+    // vector to keep track of who has orders left
+    vector<bool> hasOrders(players->size(), true);
 
-        OrdersList *orderList = player->getOrdersList();
-        Order *nextOrder = orderList->getNextOrder();
-        while (nextOrder != nullptr)
+    bool moreOrders = true;
+
+    // round robin order execution
+    while (moreOrders)
+    {   
+        moreOrders = false;
+
+        for (int i = 0; i < players->size(); i++)
+        {   
+            if (hasOrders[i])
+            {
+                OrdersList *orderList = (*players)[i]->getOrdersList();
+                Order *nextOrder = orderList->getNextOrder();
+                
+                if (nextOrder == nullptr)
+                {
+                    hasOrders[i] = false;
+                }
+                else
+                {
+                    nextOrder->execute();
+                }
+            }
+        }
+
+        // check to see if round robin should continue
+        for (int i = 0; i < players->size(); i++)
         {
-            nextOrder->execute();
+            if (hasOrders[i])
+            {
+                moreOrders= true;
+            }
         }
     }
 
@@ -328,7 +355,6 @@ void GameEngine::executeOrdersPhase()
 
         // reset any negotiations
         player->setNegotiate(false);
-
     }
 }
 
