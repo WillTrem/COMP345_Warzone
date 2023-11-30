@@ -30,6 +30,7 @@ public:
     Deck *deck;
     Map *gameMap;
     std::vector<Player *> *players;
+    Player* neutral;
 
     CommandProcessor *commandProcessor;
 

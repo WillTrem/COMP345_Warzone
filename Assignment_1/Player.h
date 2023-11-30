@@ -81,6 +81,7 @@ public:
 
 	// methods added for A2 Part 4 (order implementation)
 	void setCapturedTerritoryThisTurn(bool update);
+	bool getCapturedTerritoryThisTurn();
 	void setNegotiate(bool update);
 	bool getNegotiate();
 

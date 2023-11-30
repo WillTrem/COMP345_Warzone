@@ -43,6 +43,9 @@ GameEngine::GameEngine(GameState *currentState, std::map<GameState, std::list<Co
         commandProcessor = new CommandProcessor();
 
     commandProcessor->gameEngine = this;
+
+    // create neutral player (this player is given territories that are blockaded)
+    this->neutral = new Player("neutral");
 }
 
 /*
@@ -54,6 +57,9 @@ GameEngine::GameEngine(GameState *currentState, std::vector<Player*>* players, M
     deck = new Deck();
     commandProcessor = new CommandProcessor();
     commandProcessor->gameEngine = this;
+
+    // create neutral player (this player is given territories that are blockaded)
+    this->neutral = new Player("neutral");
 }
 
 /**
@@ -75,6 +81,9 @@ GameEngine::GameEngine(const GameEngine &gameEngine) : currentState(gameEngine.c
         commandProcessor = adapter;
     }
     commandProcessor->gameEngine = this;
+
+    // create neutral player (this player is given territories that are blockaded)
+    this->neutral = new Player("neutral");
 }
 
 // Destructor
@@ -94,6 +103,9 @@ GameEngine::~GameEngine()
 
     delete deck;
     deck = nullptr;
+
+    delete neutral;
+    neutral = nullptr;
 }
 
 string GameEngine::gameStateToString(GameState state) const
@@ -303,6 +315,20 @@ void GameEngine::executeOrdersPhase()
         {
             nextOrder->execute();
         }
+    }
+
+    // some housekeeping at the end of each turn
+    for (auto player : *players)
+    {
+        // if a player conquered a territory this turn, they get a card
+        if (player->getCapturedTerritoryThisTurn())
+        {
+            this->deck->draw(player->getHand());
+        }
+
+        // reset any negotiations
+        player->setNegotiate(false);
+
     }
 }
 

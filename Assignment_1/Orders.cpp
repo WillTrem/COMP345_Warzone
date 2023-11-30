@@ -10,12 +10,6 @@
 
 // written by Chris Anglin --- 40216346
 
-// TO-DO: add logic so player gets a card at end of turn if capturedTerritoryThisTurn is true
-//      : make sure relevant orders can only be called by player with those cards
-//      : make Neutral Player?
-//      : make other Player in Negotiate also blocked
-//      : finish testing
-
 #include <iostream>
 #include <string>
 #include <cstdlib>
@@ -698,12 +692,12 @@ void Negotiate::execute()
     if (this->validate())
     {
         this->whichPlayer->setNegotiate(true);
-        // set it true for other player too !
+        this->target->occupier->setNegotiate(true);
         this->effect = "Negotiate succesful";
     }
     else
     {
-        this->effect = "Negotiate not validl";       
+        this->effect = "Negotiate not valid";       
     }
     std::cout << "execute() called in a Negotiate object" << std::endl;
     this->executed = true;
