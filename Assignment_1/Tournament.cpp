@@ -1,6 +1,7 @@
 #pragma once
 #include "Tournament.h"
 #include "GameEngine.h"
+#include "CommandProcessing.h"
 
 // Default constructor
 Tournament::Tournament() {
@@ -90,18 +91,28 @@ void Tournament::setMaxTurns(int maxTurns) {
 
 // Function to play the tournament
 void Tournament::play() {
-	// Setting the players of the tournament
-	gameEngine->players = &players;
+    GameState assignReinforcements = ASSIGN_REINFORCEMENTS;
+
     // For each map
-    for (auto map : maps) {
-		gameEngine->gameMap = map;
+    for (int k = 0; k<maps.size(); k++) {
+		gameEngine->gameMap = maps.at(k);
 		// For each game on that map
         for (int i = 0; i < numberOfGames; i++) {
+	        // Setting the players of the tournament
+            gameEngine->players->clear();
+            for(auto player : players){
+                gameEngine->players->push_back(new Player(*player));
+            }
 
-            //TODO: Finish implementation of play tournament
-			// Basically for each game on a map, run the regular game loop until the game is over
-			// or the max number of turns has been reached. Make sure that the strategies execute their functions
-			// Automatically. Then 
+            for (int j = 0; j< maxTurns; j++){
+                // If a player has won the game
+                if(gameEngine->winner!=nullptr){
+                    results[k][i] = gameEngine->winner->getPlayerName();
+                    gameEngine->currentState = &assignReinforcements;
+                    break;
+                }
+                gameEngine->mainGameLoop();
+            }
         }
     }
 }

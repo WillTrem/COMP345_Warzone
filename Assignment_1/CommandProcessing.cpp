@@ -9,7 +9,7 @@
 
 using namespace std;
 
-// Definition of stateTransitions
+// Definition of stateTransitions (for validation)
 std::map<std::string, std::vector<GameState>> stateTransitions = {
 	{"loadmap", {START, MAP_LOADED}},
 	{"validatemap", {MAP_LOADED}},
@@ -186,13 +186,6 @@ bool Command::gameStart(GameState *&gameState, Map *&gameMap, std::vector<Player
 // Starts a tournament based on the command parameters given 
 bool Command::toggleTournamentMode(GameState *&gameState, Map *&gameMap, std::vector<Player *> *&gamePlayers, Deck *&gameDeck)
 {
-	// if (*gameState != GameState::START)
-	// {
-	// 	std::cout << "You can only toggle tournament mode at the start of the game.\n"
-	// 			  << std::endl;
-	// 	return false;
-	// }
-
 	string token;
 
 	istringstream iss(parameter);
@@ -201,6 +194,9 @@ bool Command::toggleTournamentMode(GameState *&gameState, Map *&gameMap, std::ve
 	int numMaps = -1;
 	Tournament* tournament = new Tournament();
 	tournament->gameEngine = this->gameEngine;
+
+	// Ensures all options have been used in the command
+	int optionsCounter[4] = {0, 0, 0, 0};
 	
 	while (getline(iss, token, ' '))
 	{
@@ -223,6 +219,7 @@ bool Command::toggleTournamentMode(GameState *&gameState, Map *&gameMap, std::ve
 			*/
 			if (option.compare("-M") == 0)
 			{
+				optionsCounter[0]++;
 				numMaps = values.size();
 				if (numMaps >= 1 && numMaps <= 5)
 				{
@@ -246,13 +243,14 @@ bool Command::toggleTournamentMode(GameState *&gameState, Map *&gameMap, std::ve
 			*/
 			else if (option.compare("-P") == 0)
 			{
+				optionsCounter[1]++;
 				if (values.size() >= 2 && values.size() <= 4)
 				{
 					// Verifying for duplicate players 
 					unordered_set<string> uniqueValues(values.begin(), values.end());
 					if (uniqueValues.size() != values.size())
 					{
-						std::cout << "Duplicate players detected. Only put in different players.\n"
+						std::cout << "Duplicate players strategies detected. Only put in different strategies.\n"
 								  << std::endl;
 						return false;
 					}
@@ -302,6 +300,7 @@ bool Command::toggleTournamentMode(GameState *&gameState, Map *&gameMap, std::ve
 			*/
 			else if (option.compare("-G") == 0)
 			{
+				optionsCounter[2]++;
 				if (values.size() == 1)
 				{
 					try
@@ -309,7 +308,6 @@ bool Command::toggleTournamentMode(GameState *&gameState, Map *&gameMap, std::ve
 						int numGames = std::stoi(values[0]);
 						if (numGames >= 1 && numGames <= 5)
 						{
-							// TODO: Set number of games somewhere
 							tournament->setNumberOfGames(numGames);
 						}
 						else
@@ -336,8 +334,8 @@ bool Command::toggleTournamentMode(GameState *&gameState, Map *&gameMap, std::ve
 			/*
 				Number of turns for each game option
 			*/
-			else
-			{
+			else if (option.compare("-D") == 0){
+				optionsCounter[3]++;
 				if (values.size() == 1)
 				{
 					try
@@ -368,12 +366,25 @@ bool Command::toggleTournamentMode(GameState *&gameState, Map *&gameMap, std::ve
 					return false;
 				}
 			}
+			
 
 			option = token;
 			values = {};
 		}
 	}
 
+	// Ensuring all options have been called
+	for(auto option : optionsCounter)
+	{
+		if(option != 1)
+		{
+			std::cout << "All options must be called only once\n"
+					  << std::endl;
+			return false;
+		}
+	}
+
+	gameState = nextState;
 	// Start the tournament
 	tournament->play();
 	return true;

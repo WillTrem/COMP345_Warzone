@@ -228,6 +228,7 @@ void GameEngine::mainGameLoop()
     reinforcementPhase();
     issueOrdersPhase();
     executeOrdersPhase();
+    verifyWinCondition();
 }
 
 void GameEngine::reinforcementPhase()
@@ -367,4 +368,21 @@ std::ostream &operator<<(std::ostream &os, const GameEngine &gameEngine)
 {
     os << "Current state = state " << gameEngine.currentState << std::endl;
     return os;
+}
+
+// Kicks out any players of the game that have no territories left, and declares a winner if only 1 player remains
+bool GameEngine::verifyWinCondition(){
+    // Removes the players that don't have any owned territories left
+    auto newEnd = std::remove_if(players->begin(), players->end(), [](const Player* player) {
+        return player->getOwnedTerritories().size() == 0;
+    });
+    players->erase(newEnd, players->end());
+
+    // Declaring a winner if only 1 player with owned territories is left
+    if(players->size() == 1){
+        *currentState = WIN;
+        winner = players->at(0);
+        return true;
+    }
+    return false;
 }

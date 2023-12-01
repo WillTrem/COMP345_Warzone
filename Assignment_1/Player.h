@@ -68,7 +68,7 @@ public:
 	// Set strategy for the computer player
 	void setStrategy(PlayerStrategy *ps);
 
-	vector<Territory *> getOwnedTerritories();
+	vector<Territory *> getOwnedTerritories() const;
 	void addOwnedTerritory(Territory *territory);
 	Territory *removeOwnedTerritory(Territory *territory);
 

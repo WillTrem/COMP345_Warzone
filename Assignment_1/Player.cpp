@@ -142,7 +142,7 @@ OrdersList *Player::getOrdersList()
 }
 
 // Returns the player's collection of currently owned territories
-vector<Territory *> Player::getOwnedTerritories()
+vector<Territory *> Player::getOwnedTerritories() const
 {
 	return ownedTerritories;
 }
