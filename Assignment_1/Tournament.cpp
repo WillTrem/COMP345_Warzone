@@ -4,7 +4,7 @@
 
 // Default constructor
 Tournament::Tournament() {
-    strategies = {};
+    players = {};
     maps = {};
     numberOfGames = 0;
     maxTurns = 0;
@@ -15,7 +15,7 @@ Tournament::Tournament(int numberOfGames, int maxTurns) : numberOfGames(numberOf
 
 // Copy constructor
   Tournament::Tournament(const Tournament &tournament) {
-    strategies = vector<Player*>(tournament.strategies);
+    players = vector<Player*>(tournament.players);
     maps = vector<Map*>(tournament.maps);
     numberOfGames = tournament.numberOfGames;
     maxTurns = tournament.maxTurns;
@@ -24,9 +24,9 @@ Tournament::Tournament(int numberOfGames, int maxTurns) : numberOfGames(numberOf
 
 // Destructor
 Tournament::~Tournament() {
-    for (auto strategy : strategies) {
-        delete strategy;
-        strategy = nullptr;
+    for (auto player : players) {
+        delete player;
+        player = nullptr;
     }
 
     for (auto map : maps) {
@@ -40,7 +40,7 @@ Tournament::~Tournament() {
 
 // Assignment operator
 Tournament& Tournament::operator=(const Tournament &tournament) {
-    strategies = vector<Player*>(tournament.strategies);
+    players = vector<Player*>(tournament.players);
     maps = vector<Map*>(tournament.maps);
     numberOfGames = tournament.numberOfGames;
     maxTurns = tournament.maxTurns;
@@ -53,8 +53,8 @@ Tournament& Tournament::operator=(const Tournament &tournament) {
 ostream& operator<<(ostream& os, const Tournament& tournament) {
     os << "Tournament: " << endl;
     os << "Strategies: " << endl;
-    for (auto strategy : tournament.strategies) {
-        os << *strategy << endl;
+    for (auto player : tournament.players) {
+        os << *player << endl;
     }
 
     os << "Maps: " << endl;
@@ -68,9 +68,9 @@ ostream& operator<<(ostream& os, const Tournament& tournament) {
     return os;
 }
 
-// Add a strategy to the tournament
-void Tournament::addStrategy(Player* strategy) {
-    strategies.push_back(strategy);
+// Add a player to the tournament
+void Tournament::addPlayer(Player* player) {
+    players.push_back(player);
 }
 
 // Add a map to the tournament
@@ -91,7 +91,7 @@ void Tournament::setMaxTurns(int maxTurns) {
 // Function to play the tournament
 void Tournament::play() {
 	// Setting the players of the tournament
-	gameEngine->players = &strategies;
+	gameEngine->players = &players;
     // For each map
     for (auto map : maps) {
 		gameEngine->gameMap = map;

@@ -5,6 +5,7 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <unordered_set>
 
 using namespace std;
 
@@ -241,23 +242,60 @@ bool Command::toggleTournamentMode(GameState *&gameState, Map *&gameMap, std::ve
 				}
 			}
 			/*
-				Player strategies option
+				Player players option
 			*/
 			else if (option.compare("-P") == 0)
 			{
 				if (values.size() >= 2 && values.size() <= 4)
 				{
+					// Verifying for duplicate players 
+					unordered_set<string> uniqueValues(values.begin(), values.end());
+					if (uniqueValues.size() != values.size())
+					{
+						std::cout << "Duplicate players detected. Only put in different players.\n"
+								  << std::endl;
+						return false;
+					}
+
+					// Parsing the players
 					for(auto strategy : values)
 					{
-						//TODO: Create the new strategy objects based on the values given
+						PlayerStrategy* newStrategy = nullptr;
+						Player* newPlayer = new Player(strategy);
+						if(strategy.compare("aggressive") == 0)
+						{
+							newStrategy = new AggressivePlayerStrategy(newPlayer);							
+						}
+						else if(strategy.compare("benevolent") == 0)
+						{
+							newStrategy = new BenevolentPlayerStrategy(newPlayer);
+						}
+						else if(strategy.compare("random") == 0)
+						{
+							newStrategy = new NeutralPlayerStrategy(newPlayer);
+						}
+						else if(strategy.compare("cheater") == 0)
+						{
+							newStrategy = new CheaterPlayerStrategy(newPlayer);
+						}
+						else
+						{
+							std::cout << "Invalid strategy\n"
+									  << std::endl;
+							return false;
+						}
+						newPlayer->setStrategy(newStrategy);
+						tournament->addPlayer(newPlayer);
 					}
+
 				}
 				else
 				{
-					std::cout << "Invalid number of player strategies (2-4 inclusive)\n"
+					std::cout << "Invalid number of player players (2-4 inclusive)\n"
 							  << std::endl;
 					return false;
 				}
+
 			}
 			/*
 				Number of games option
