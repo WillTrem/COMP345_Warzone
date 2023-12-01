@@ -137,13 +137,16 @@ void Territory::setNeighboringTerritories(vector<Territory *> neighboringTerrito
 }
 
 // checks for adjacency
-bool Territory::isAdjacent(Territory* target)
+bool Territory::isAdjacent(Territory *target)
 {
     bool isItOrIsItNotAdjacent;
 
-    for (Territory* territory: this->neighboringTerritories)
+    for (Territory *territory : this->neighboringTerritories)
     {
-        if (territory->territoryName == target->territoryName) { isItOrIsItNotAdjacent = true; }
+        if (territory->territoryName == target->territoryName)
+        {
+            isItOrIsItNotAdjacent = true;
+        }
     }
 
     return isItOrIsItNotAdjacent;
@@ -401,7 +404,7 @@ void Map::validate()
         {
             if (visitedTerritories[territory->territoryName] == true)
             {
-                cout << "Territory " << territory->territoryName << " has been traversed \n";
+                // cout << "Territory " << territory->territoryName << " has been traversed \n";
             }
             else
             {
@@ -506,7 +509,7 @@ void Map::loadMap(string fileName)
         // We get rid of the first paragraph of the text file since it is of no use
         while (getline(MyReadFile, myText))
         {
-            cout << myText << endl;
+            // cout << myText << endl;
             if (myText.empty() || myText.find_first_not_of(" \t\n\v\f\r") == string::npos)
             {
                 // Break from while loop when empty line is encountered
@@ -635,17 +638,17 @@ void Map::loadMap(string fileName)
             std::cout << "Continent: " << pair.first << ", Number of territories: " << pair.second << std::endl;
         }
 
-        cout << endl;
-        cout << "======================================================\n";
-        cout << " The repository of all territories present on the map \n";
-        cout << "======================================================\n";
-        cout << endl;
+        // cout << endl;
+        // cout << "======================================================\n";
+        // cout << " The repository of all territories present on the map \n";
+        // cout << "======================================================\n";
+        // cout << endl;
 
         // Printing all territories on the map
-        for (Territory *territory : mapTerritories)
-        {
-            cout << "Territory " << territory->territoryName << " is located at (" << territory->coordX << ", " << territory->coordY << ") and it is located on the Continent of " << territory->continentName << "\n";
-        }
+        // for (Territory *territory : mapTerritories)
+        // {
+        //     cout << "Territory " << territory->territoryName << " is located at (" << territory->coordX << ", " << territory->coordY << ") and it is located on the Continent of " << territory->continentName << "\n";
+        // }
 
         // Adding all continents to the world map AND add the respective territories to each continent
         for (const auto &pair : mapContinents)
@@ -677,14 +680,17 @@ void Map::loadMap(string fileName)
     }
     catch (const std::ifstream::failure &ex)
     {
-        std::cerr << "The file is cannot be loaded into a Map.\n" << std::endl;
+        std::cerr << "The file is cannot be loaded into a Map.\n"
+                  << std::endl;
     }
     catch (const std::exception &ex)
     {
-        std::cerr << "The file is cannot be loaded into a Map.\n" << std::endl;
+        std::cerr << "The file is cannot be loaded into a Map.\n"
+                  << std::endl;
     }
     catch (...)
     {
-        std::cerr << "The file is cannot be loaded into a Map.\n" << std::endl;
+        std::cerr << "The file is cannot be loaded into a Map.\n"
+                  << std::endl;
     }
 }

@@ -44,11 +44,11 @@ void testPlayerStrategies()
 
     GameState currentState = GameState::START;
 
-    GameEngine* gameEngine = new GameEngine(&currentState, &stateTransitions, true, "test.txt");
+    GameEngine *gameEngine = new GameEngine(&currentState, &stateTransitions, true, "test.txt");
 
     // Create cards to be drawn from.
     cout << "\nGenerating some cards for testing...\n"
-        << endl;
+         << endl;
     Card_Bomb cardBombTest = Card_Bomb(gameEngine->deck);
     Card_Bomb cardBombTest2 = Card_Bomb(gameEngine->deck);
     Card_Reinforcement cardReinforcementTest = Card_Reinforcement(gameEngine->deck);
@@ -60,31 +60,39 @@ void testPlayerStrategies()
     Card_Diplomacy carDiplomacyTest = Card_Diplomacy(gameEngine->deck);
     Card_Diplomacy carDiplomacyTest2 = Card_Diplomacy(gameEngine->deck);
 
-    cout << "\nGame start up phase.\n" << endl;
+    cout << "\nGame start up phase.\n"
+         << endl;
     gameEngine->startupPhase();
-    
 
     // Tag the players generated from the text file.
-    Player* humanPlayer = gameEngine->players->at(0);
-    Player* angryBot = gameEngine->players->at(1);
-    Player* niceBot = gameEngine->players->at(2);
-    Player* neutralBot = gameEngine->players->at(3);
-    Player* cheaterBot = gameEngine->players->at(4);
+    Player *humanPlayer = gameEngine->players->at(0);
+    Player *angryBot = gameEngine->players->at(1);
+    Player *niceBot = gameEngine->players->at(2);
+    Player *neutralBot = gameEngine->players->at(3);
+    Player *cheaterBot = gameEngine->players->at(4);
 
     // Assign each player their strategy.
-    cout << "\n\n\nNow assigning strategies to the computer players.\n" << endl;
+    cout << "\n\n\nNow assigning strategies to the computer players.\n"
+         << endl;
     humanPlayer->setStrategy(new HumanPlayerStrategy(humanPlayer));
     angryBot->setStrategy(new AggressivePlayerStrategy(angryBot));
     niceBot->setStrategy(new BenevolentPlayerStrategy(niceBot));
     neutralBot->setStrategy(new NeutralPlayerStrategy(neutralBot));
     cheaterBot->setStrategy(new CheaterPlayerStrategy(cheaterBot));
 
-    cout << "\n\nAll players have been assigned their respective strategies.\n" << endl;
+    cout << "\n\nAll players have been assigned their respective strategies.\n"
+         << endl;
+
+    cout << "Updating the neutral players troop count: " << endl;
+    neutralBot->getTotalPlayerArmy();
+    cout << "Is the neutral player attacked: " << endl
+         << bool(neutralBot->isNeutralPlayerAttacked()) << endl;
 
     // Test the toAttack() method for most computer players.
-    cout << "\n\nNow testing the computer players' toAttack() method.\n" << endl;
+    cout << "\n\nNow testing the computer players' toAttack() method.\n"
+         << endl;
     angryBot->toAttack();
-    printTerritoriesInVector(angryBot->territoriesToAttack, string("The Aggresive Player wants to attack "));
+    printTerritoriesInVector(angryBot->territoriesToAttack, string("The Aggressive Player wants to attack "));
     cout << endl;
     niceBot->toAttack();
     printTerritoriesInVector(niceBot->territoriesToAttack, string("The Benevolent Player wants to attack "));
@@ -94,9 +102,10 @@ void testPlayerStrategies()
     cout << endl;
 
     // Test the toDefend() method for most computer players.
-    cout << "\n\nNow testing the computer players' toDefend() method.\n" << endl;
+    cout << "\n\nNow testing the computer players' toDefend() method.\n"
+         << endl;
     angryBot->toDefend();
-    printTerritoriesInVector(angryBot->territoriesToDefend, string("The Aggresive Player wants to defend "));
+    printTerritoriesInVector(angryBot->territoriesToDefend, string("The Aggressive Player wants to defend "));
     cout << endl;
     niceBot->toDefend();
     printTerritoriesInVector(niceBot->territoriesToDefend, string("The Benevolent Player wants to defend "));
@@ -106,17 +115,21 @@ void testPlayerStrategies()
     cout << endl;
 
     // Test issueOrder() for most computer players.
-    cout << "\n\nNow testing the computer players' issueOrder() method.\n" << endl;
-    cout << "The Aggresive Player (" << angryBot->getPlayerName() << ") is issuing orders." << endl;
+    cout << "\n\nNow testing the computer players' issueOrder() method.\n"
+         << endl;
+    cout << "The Aggressive Player (" << angryBot->getPlayerName() << ") is issuing orders." << endl;
     angryBot->issueOrder();
     cout << "\nThe Benevolent Player (" << niceBot->getPlayerName() << ") is issuing orders." << endl;
     niceBot->issueOrder();
     cout << "\nThe Neutral Player (" << neutralBot->getPlayerName() << ") is issuing orders (but won't do much)." << endl;
     neutralBot->issueOrder();
 
+    cout << "Is the neutral player attacked: " << endl
+         << bool(neutralBot->isNeutralPlayerAttacked()) << endl;
 
     // Test the cheater bot's methods.
-    cout << "\n\n\nNow testing the cheater bot's methods.\n" << endl;
+    cout << "\n\n\nNow testing the cheater bot's methods.\n"
+         << endl;
     cheaterBot->toAttack();
     printTerritoriesInVector(cheaterBot->territoriesToAttack, string("The Cheater Player wants to attack "));
     cout << endl;
@@ -126,16 +139,21 @@ void testPlayerStrategies()
     cout << "The Cheater Player (" << cheaterBot->getPlayerName() << ") is issuing orders (and cheating!!)" << endl;
     cheaterBot->issueOrder();
 
+    cout << "Is the neutral player attacked: " << endl
+         << bool(neutralBot->isNeutralPlayerAttacked()) << endl;
 
-    // Test the human player's methods. 
+    // Test the human player's methods.
     // Might need to go before the cheater player's methods, else they will have stolen all of the human's territories.
-    cout << "\n\n\nNow testing the human player's methods.\n" << endl;
+    cout
+        << "\n\n\nNow testing the human player's methods.\n"
+        << endl;
     humanPlayer->toAttack();
     humanPlayer->toDefend();
     humanPlayer->issueOrder();
 }
 
-void printTerritoriesInVector(vector<Territory*> targetVector, string caption)
+// Function to facilitate the testing of the Driver
+void printTerritoriesInVector(vector<Territory *> targetVector, string caption)
 {
     for (auto target : targetVector)
     {

@@ -92,6 +92,7 @@ string Player::getPlayerName()
 
 void Player::setStrategy(PlayerStrategy *strategy)
 {
+	// cout << "Player is set to strategy : " << *strategy << endl;
 	this->ps = strategy;
 }
 
@@ -199,15 +200,15 @@ vector<Territory *> Player::prioritizeTerritories(vector<Territory *> territorie
 }
 
 //// Returns an arbitrary list of territories to Defend
-//vector<Territory *> Player::toDefend()
+// vector<Territory *> Player::toDefend()
 //{
 //	// Prioritize territory to defend
 //	vector<Territory *> ownedTerritories = ps->toDefend();
 //	return prioritizeTerritories(ownedTerritories);
-//}
+// }
 //
 //// Returns an arbitrary list of territories to attack
-//vector<Territory *> Player::toAttack()
+// vector<Territory *> Player::toAttack()
 //{
 //	// We could use the method in PlayerStrategy for this, which ensures there are no repeats in the vector?
 //	// Retrieve all enemy neighboring territories
@@ -227,7 +228,7 @@ vector<Territory *> Player::prioritizeTerritories(vector<Territory *> territorie
 //
 //	// Prioritize territory to attack
 //	return prioritizeTerritories(enemyTerritories);
-//}
+// }
 
 // Call toAttack() from within the player's strategy.
 void Player::toAttack()
@@ -243,7 +244,7 @@ void Player::toDefend()
 
 // Creates a new order and adds it to the player's list of current orders
 bool Player::issueOrder()
-{	
+{
 	bool result = ps->issueOrder();
 	return result;
 }
@@ -257,8 +258,18 @@ void Player::operator=(Player &player)
 	ownedTerritories = player.ownedTerritories;
 }
 
+// Method to get player army count across their territories
+int Player::getTotalPlayerArmy()
+{
+	return totalPlayerArmy;
+}
+
+int Player::getNumberOfTerritories()
+{
+	return totalNumberOfTerritories;
+}
 // Method to update player army count across their territories
-void Player::updateTotalPlayerArmyCount()
+int Player::updateTotalPlayerArmyCount()
 {
 	int numOfTroops = 0;
 	for (Territory *territory : ownedTerritories)
@@ -266,22 +277,36 @@ void Player::updateTotalPlayerArmyCount()
 		numOfTroops = numOfTroops + territory->numOfArmies;
 	}
 	totalPlayerArmy = numOfTroops;
-}
-
-// Method to get player army count across their territories
-int Player::getTotalPlayerArmy()
-{
-	updateTotalPlayerArmyCount();
 	return totalPlayerArmy;
 }
 
-bool Player::isPlayerAttacked()
+int Player::updateTotalPlayerTerritoryCount()
 {
-	if (totalPlayerArmy > getTotalPlayerArmy()) // Compare army before and army after update
+	totalNumberOfTerritories = ownedTerritories.size();
+	return totalNumberOfTerritories;
+}
+
+bool Player::isNeutralPlayerAttacked()
+{
+	int previousTotalPlayerArmy = totalPlayerArmy;
+	cout << "Previous total player army count: " << previousTotalPlayerArmy << endl;
+	int currentTotalPlayerArmy = updateTotalPlayerArmyCount();
+	cout << "Current total player army count: " << currentTotalPlayerArmy << endl;
+
+	int previousTotalNumberOfTerritories = totalNumberOfTerritories;
+	cout << "Previous total player territory count: " << previousTotalNumberOfTerritories << endl;
+	int currentTotalNumberOfTerritories = updateTotalPlayerTerritoryCount();
+	cout << "Current total player territory count: " << currentTotalNumberOfTerritories << endl;
+	if (currentTotalPlayerArmy < previousTotalPlayerArmy || (currentTotalNumberOfTerritories < previousTotalNumberOfTerritories && previousTotalNumberOfTerritories != 0 && currentTotalNumberOfTerritories != 0)) // Compare army before and army after update
 	{
-		return false;
+		cout << "NEUTRAL PLAYER IS ATTACKED!!!" << endl;
+		cout << "NEUTRAL PLAYER IS NOW AGGRESSIVE" << endl;
+		this->setStrategy(new AggressivePlayerStrategy(this));
+		return true;
 	}
-	return true;
+
+	cout << "Player has not been attacked" << endl;
+	return false;
 }
 
 // Stream insertion operator overload for class Player

@@ -49,6 +49,8 @@ private:
 
 public:
 	int totalPlayerArmy = 0;
+	int totalNumberOfTerritories = 0;
+
 	// Default constructor
 	Player();
 
@@ -91,17 +93,23 @@ public:
 	bool issueOrder();
 
 	// Storage for the player's attack and defence targets.
-	vector<Territory*> territoriesToDefend;
-	vector<Territory*> territoriesToAttack;
+	vector<Territory *> territoriesToDefend;
+	vector<Territory *> territoriesToAttack;
 
 	// method for part 1 of assg 3: update total number of player army across all owned territories
-	void updateTotalPlayerArmyCount();
+	int updateTotalPlayerArmyCount();
+
+	// method for part 1 of assg 3: update total number of territory across all owned territories
+	int updateTotalPlayerTerritoryCount();
 
 	// method for part 1 of assg 3: get total number of player army across all owned territories
 	int getTotalPlayerArmy();
 
+	// method for part 1 of assg 3: get total number of territories
+	int getNumberOfTerritories();
+
 	// method for part 1 of assg 3: check if the player is attacked or not
-	bool isPlayerAttacked();
+	bool isNeutralPlayerAttacked();
 
 	// Assignment operator overload
 	void operator=(Player &player);
