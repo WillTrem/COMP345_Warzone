@@ -25,7 +25,7 @@ GameEngine::GameEngine()
     
 }
 
-// Default constructor for GameEngine
+// Constructor for tournament.. pass in bool true and you get a tourney
 GameEngine::GameEngine(bool tournament)
 {
     if (tournament)
