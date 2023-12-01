@@ -24,6 +24,23 @@ GameEngine::GameEngine()
     commandProcessor->gameEngine = this;
 }
 
+// Constructor for tournament.. pass in bool true and you get a tourney
+GameEngine::GameEngine(bool tournament)
+{
+    if (tournament)
+    {
+        currentState = new GameState(START); // Allocate a new GameState on the heap
+        stateTransitions = nullptr;
+
+        deck = new Deck();
+
+        players = new std::vector<Player *>();
+
+        commandProcessor = new CommandProcessor();
+        commandProcessor->gameEngine = this;
+    }
+}
+
 /**
  * Normal constructor
  */

@@ -16,4 +16,5 @@
 #include "LoggingObserverDriver.h"
 #include "GameEngineDriver.h"
 #include "PlayerStrategyDriver.h"
+#include "TournamentDriver.h"
 // TODO: Reference additional headers your program requires here.
