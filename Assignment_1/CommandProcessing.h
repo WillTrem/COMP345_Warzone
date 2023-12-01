@@ -6,6 +6,7 @@
 #include "Cards.h"
 #include "LogObserver.h"
 #include "Tournament.h"
+#include "PlayerStrategy.h"
 
 #include <sstream>
 #include <fstream>

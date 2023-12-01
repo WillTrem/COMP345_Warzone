@@ -30,6 +30,8 @@ public:
     Deck *deck;
     Map *gameMap;
     std::vector<Player *> *players;
+    Player* neutral;
+    Player* winner = nullptr;
 
     CommandProcessor *commandProcessor;
 
@@ -55,6 +57,7 @@ public:
     void reinforcementPhase();
     void issueOrdersPhase();
     void executeOrdersPhase();
+    bool verifyWinCondition();
 
     // Operator overloads
     void operator=(GameState &newState);

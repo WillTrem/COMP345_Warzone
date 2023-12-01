@@ -106,10 +106,16 @@ void Player::setReinforcementPool(int numUnits)
 	reinforcementPool = numUnits;
 }
 
-// for issuing a card to players who have captured a territory
+// set true to keep track of players who have captured a territory (they get a card this turn)
 void Player::setCapturedTerritoryThisTurn(bool update)
 {
 	this->capturedTerritoryThisTurn = update;
+}
+
+// getter for capturedTerritoryThisTurn
+bool Player::getCapturedTerritoryThisTurn()
+{
+	return this->capturedTerritoryThisTurn;
 }
 
 // setter flag to prevent attacks
@@ -137,7 +143,7 @@ OrdersList *Player::getOrdersList()
 }
 
 // Returns the player's collection of currently owned territories
-vector<Territory *> Player::getOwnedTerritories()
+vector<Territory *> Player::getOwnedTerritories() const
 {
 	return ownedTerritories;
 }

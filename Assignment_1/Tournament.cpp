@@ -1,10 +1,11 @@
 #pragma once
 #include "Tournament.h"
 #include "GameEngine.h"
+#include "CommandProcessing.h"
 
 // Default constructor
 Tournament::Tournament() {
-    strategies = {};
+    players = {};
     maps = {};
     numberOfGames = 0;
     maxTurns = 0;
@@ -15,7 +16,7 @@ Tournament::Tournament(int numberOfGames, int maxTurns) : numberOfGames(numberOf
 
 // Copy constructor
   Tournament::Tournament(const Tournament &tournament) {
-    strategies = vector<Player*>(tournament.strategies);
+    players = vector<Player*>(tournament.players);
     maps = vector<Map*>(tournament.maps);
     numberOfGames = tournament.numberOfGames;
     maxTurns = tournament.maxTurns;
@@ -24,9 +25,9 @@ Tournament::Tournament(int numberOfGames, int maxTurns) : numberOfGames(numberOf
 
 // Destructor
 Tournament::~Tournament() {
-    for (auto strategy : strategies) {
-        delete strategy;
-        strategy = nullptr;
+    for (auto player : players) {
+        delete player;
+        player = nullptr;
     }
 
     for (auto map : maps) {
@@ -40,7 +41,7 @@ Tournament::~Tournament() {
 
 // Assignment operator
 Tournament& Tournament::operator=(const Tournament &tournament) {
-    strategies = vector<Player*>(tournament.strategies);
+    players = vector<Player*>(tournament.players);
     maps = vector<Map*>(tournament.maps);
     numberOfGames = tournament.numberOfGames;
     maxTurns = tournament.maxTurns;
@@ -53,8 +54,8 @@ Tournament& Tournament::operator=(const Tournament &tournament) {
 ostream& operator<<(ostream& os, const Tournament& tournament) {
     os << "Tournament: " << endl;
     os << "Strategies: " << endl;
-    for (auto strategy : tournament.strategies) {
-        os << *strategy << endl;
+    for (auto player : tournament.players) {
+        os << *player << endl;
     }
 
     os << "Maps: " << endl;
@@ -68,9 +69,9 @@ ostream& operator<<(ostream& os, const Tournament& tournament) {
     return os;
 }
 
-// Add a strategy to the tournament
-void Tournament::addStrategy(Player* strategy) {
-    strategies.push_back(strategy);
+// Add a player to the tournament
+void Tournament::addPlayer(Player* player) {
+    players.push_back(player);
 }
 
 // Add a map to the tournament
@@ -90,18 +91,28 @@ void Tournament::setMaxTurns(int maxTurns) {
 
 // Function to play the tournament
 void Tournament::play() {
-	// Setting the players of the tournament
-	gameEngine->players = &strategies;
+    GameState assignReinforcements = ASSIGN_REINFORCEMENTS;
+
     // For each map
-    for (auto map : maps) {
-		gameEngine->gameMap = map;
+    for (int k = 0; k<maps.size(); k++) {
+		gameEngine->gameMap = maps.at(k);
 		// For each game on that map
         for (int i = 0; i < numberOfGames; i++) {
+	        // Setting the players of the tournament
+            gameEngine->players->clear();
+            for(auto player : players){
+                gameEngine->players->push_back(new Player(*player));
+            }
 
-            //TODO: Finish implementation of play tournament
-			// Basically for each game on a map, run the regular game loop until the game is over
-			// or the max number of turns has been reached. Make sure that the strategies execute their functions
-			// Automatically. Then 
+            for (int j = 0; j< maxTurns; j++){
+                // If a player has won the game
+                if(gameEngine->winner!=nullptr){
+                    results[k][i] = gameEngine->winner->getPlayerName();
+                    gameEngine->currentState = &assignReinforcements;
+                    break;
+                }
+                gameEngine->mainGameLoop();
+            }
         }
     }
 }

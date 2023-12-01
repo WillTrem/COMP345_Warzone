@@ -12,7 +12,7 @@ class GameEngine; // Forward declaration to avoid circular dependencies for the 
 class Tournament {
     
     public:
-    vector<Player*> strategies;
+    vector<Player*> players;
     vector<Map*> maps;
     int numberOfGames;
     int maxTurns;
@@ -37,8 +37,8 @@ class Tournament {
     // Stream insertion operator
     friend ostream& operator<<(ostream& os, const Tournament& tournament);
 
-    // Add a strategy to the tournament
-    void addStrategy(Player* strategy);
+    // Add a player to the tournament
+    void addPlayer(Player* player);
 
     // Add a map to the tournament
     void addMap(Map* map);

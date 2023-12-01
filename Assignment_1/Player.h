@@ -70,7 +70,7 @@ public:
 	// Set strategy for the computer player
 	void setStrategy(PlayerStrategy *ps);
 
-	vector<Territory *> getOwnedTerritories();
+	vector<Territory *> getOwnedTerritories() const;
 	void addOwnedTerritory(Territory *territory);
 	Territory *removeOwnedTerritory(Territory *territory);
 
@@ -83,6 +83,7 @@ public:
 
 	// methods added for A2 Part 4 (order implementation)
 	void setCapturedTerritoryThisTurn(bool update);
+	bool getCapturedTerritoryThisTurn();
 	void setNegotiate(bool update);
 	bool getNegotiate();
 

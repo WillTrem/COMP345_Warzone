@@ -43,6 +43,9 @@ GameEngine::GameEngine(GameState *currentState, std::map<GameState, std::list<Co
         commandProcessor = new CommandProcessor();
 
     commandProcessor->gameEngine = this;
+
+    // create neutral player (this player is given territories that are blockaded)
+    this->neutral = new Player("neutral");
 }
 
 /*
@@ -54,6 +57,9 @@ GameEngine::GameEngine(GameState *currentState, std::vector<Player*>* players, M
     deck = new Deck();
     commandProcessor = new CommandProcessor();
     commandProcessor->gameEngine = this;
+
+    // create neutral player (this player is given territories that are blockaded)
+    this->neutral = new Player("neutral");
 }
 
 /**
@@ -75,6 +81,9 @@ GameEngine::GameEngine(const GameEngine &gameEngine) : currentState(gameEngine.c
         commandProcessor = adapter;
     }
     commandProcessor->gameEngine = this;
+
+    // create neutral player (this player is given territories that are blockaded)
+    this->neutral = new Player("neutral");
 }
 
 // Destructor
@@ -94,6 +103,9 @@ GameEngine::~GameEngine()
 
     delete deck;
     deck = nullptr;
+
+    delete neutral;
+    neutral = nullptr;
 }
 
 string GameEngine::gameStateToString(GameState state) const
@@ -216,6 +228,7 @@ void GameEngine::mainGameLoop()
     reinforcementPhase();
     issueOrdersPhase();
     executeOrdersPhase();
+    verifyWinCondition();
 }
 
 void GameEngine::reinforcementPhase()
@@ -294,15 +307,55 @@ void GameEngine::issueOrdersPhase()
 
 void GameEngine::executeOrdersPhase()
 {
+    // vector to keep track of who has orders left
+    vector<bool> hasOrders(players->size(), true);
+
+    bool moreOrders = true;
+
+    // round robin order execution
+    while (moreOrders)
+    {   
+        moreOrders = false;
+
+        for (int i = 0; i < players->size(); i++)
+        {   
+            if (hasOrders[i])
+            {
+                OrdersList *orderList = (*players)[i]->getOrdersList();
+                Order *nextOrder = orderList->getNextOrder();
+                
+                if (nextOrder == nullptr)
+                {
+                    hasOrders[i] = false;
+                }
+                else
+                {
+                    nextOrder->execute();
+                }
+            }
+        }
+
+        // check to see if round robin should continue
+        for (int i = 0; i < players->size(); i++)
+        {
+            if (hasOrders[i])
+            {
+                moreOrders= true;
+            }
+        }
+    }
+
+    // some housekeeping at the end of each turn
     for (auto player : *players)
     {
-
-        OrdersList *orderList = player->getOrdersList();
-        Order *nextOrder = orderList->getNextOrder();
-        while (nextOrder != nullptr)
+        // if a player conquered a territory this turn, they get a card
+        if (player->getCapturedTerritoryThisTurn())
         {
-            nextOrder->execute();
+            this->deck->draw(player->getHand());
         }
+
+        // reset any negotiations
+        player->setNegotiate(false);
     }
 }
 
@@ -315,4 +368,21 @@ std::ostream &operator<<(std::ostream &os, const GameEngine &gameEngine)
 {
     os << "Current state = state " << gameEngine.currentState << std::endl;
     return os;
+}
+
+// Kicks out any players of the game that have no territories left, and declares a winner if only 1 player remains
+bool GameEngine::verifyWinCondition(){
+    // Removes the players that don't have any owned territories left
+    auto newEnd = std::remove_if(players->begin(), players->end(), [](const Player* player) {
+        return player->getOwnedTerritories().size() == 0;
+    });
+    players->erase(newEnd, players->end());
+
+    // Declaring a winner if only 1 player with owned territories is left
+    if(players->size() == 1){
+        *currentState = WIN;
+        winner = players->at(0);
+        return true;
+    }
+    return false;
 }
