@@ -22,7 +22,6 @@ GameEngine::GameEngine()
 
     commandProcessor = new CommandProcessor();
     commandProcessor->gameEngine = this;
-    
 }
 
 /**
@@ -49,9 +48,9 @@ GameEngine::GameEngine(GameState *currentState, std::map<GameState, std::list<Co
 }
 
 /*
-* Parametrized constructor (for tournament)
-*/
-GameEngine::GameEngine(GameState *currentState, std::vector<Player*>* players, Map* gameMap) : currentState(currentState), gameMap(gameMap), players(players)
+ * Parametrized constructor (for tournament)
+ */
+GameEngine::GameEngine(GameState *currentState, std::vector<Player *> *players, Map *gameMap) : currentState(currentState), gameMap(gameMap), players(players)
 {
     stateTransitions = nullptr;
     deck = new Deck();
@@ -225,6 +224,7 @@ void GameEngine::startupPhase()
 // General method for the main game loop, assembling its sub-elements.
 void GameEngine::mainGameLoop()
 {
+    verifyNeutralPlayerStatus();
     reinforcementPhase();
     issueOrdersPhase();
     executeOrdersPhase();
@@ -296,10 +296,9 @@ void GameEngine::issueOrdersPhase()
                 playersStillIssuingOrders.erase(
                     std::remove(
                         playersStillIssuingOrders.begin(),
-                         playersStillIssuingOrders.end(),
-                          pIndex),
+                        playersStillIssuingOrders.end(),
+                        pIndex),
                     playersStillIssuingOrders.end());
-
             }
         }
     }
@@ -314,16 +313,16 @@ void GameEngine::executeOrdersPhase()
 
     // round robin order execution
     while (moreOrders)
-    {   
+    {
         moreOrders = false;
 
         for (int i = 0; i < players->size(); i++)
-        {   
+        {
             if (hasOrders[i])
             {
                 OrdersList *orderList = (*players)[i]->getOrdersList();
                 Order *nextOrder = orderList->getNextOrder();
-                
+
                 if (nextOrder == nullptr)
                 {
                     hasOrders[i] = false;
@@ -340,7 +339,7 @@ void GameEngine::executeOrdersPhase()
         {
             if (hasOrders[i])
             {
-                moreOrders= true;
+                moreOrders = true;
             }
         }
     }
@@ -371,18 +370,30 @@ std::ostream &operator<<(std::ostream &os, const GameEngine &gameEngine)
 }
 
 // Kicks out any players of the game that have no territories left, and declares a winner if only 1 player remains
-bool GameEngine::verifyWinCondition(){
+bool GameEngine::verifyWinCondition()
+{
     // Removes the players that don't have any owned territories left
-    auto newEnd = std::remove_if(players->begin(), players->end(), [](const Player* player) {
-        return player->getOwnedTerritories().size() == 0;
-    });
+    auto newEnd = std::remove_if(players->begin(), players->end(), [](const Player *player)
+                                 { return player->getOwnedTerritories().size() == 0; });
     players->erase(newEnd, players->end());
 
     // Declaring a winner if only 1 player with owned territories is left
-    if(players->size() == 1){
+    if (players->size() == 1)
+    {
         *currentState = WIN;
         winner = players->at(0);
         return true;
     }
     return false;
+}
+
+void GameEngine::verifyNeutralPlayerStatus()
+{
+    for (auto player : *players)
+    {
+        if (NeutralPlayerStrategy *neutralStrategy = dynamic_cast<NeutralPlayerStrategy *>(player->getStrategy()))
+        {
+            player->isNeutralPlayerAttacked();
+        }
+    }
 }

@@ -53,5 +53,5 @@ public:
     // Function to play the tournament
     void play();
 
-    void logResults(const std::string &gameNo, const std::list<Player *> &rankedPlayerOrder);
+    void logResults(std::unordered_map<int, std::vector<std::string>> results);
 };

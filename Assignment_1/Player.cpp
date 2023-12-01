@@ -96,6 +96,11 @@ void Player::setStrategy(PlayerStrategy *strategy)
 	this->ps = strategy;
 }
 
+PlayerStrategy *Player::getStrategy()
+{
+	return this->ps;
+}
+
 int Player::getReinforcmentPool()
 {
 	return reinforcementPool;

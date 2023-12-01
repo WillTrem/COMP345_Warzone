@@ -58,6 +58,7 @@ public:
     void issueOrdersPhase();
     void executeOrdersPhase();
     bool verifyWinCondition();
+    void verifyNeutralPlayerStatus();
 
     // Operator overloads
     void operator=(GameState &newState);

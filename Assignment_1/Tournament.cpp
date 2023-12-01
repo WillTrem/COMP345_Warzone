@@ -106,10 +106,19 @@ void Tournament::setMaxTurns(int maxTurns)
 void Tournament::play()
 {
     GameState assignReinforcements = ASSIGN_REINFORCEMENTS;
+    std::unordered_map<int, std::vector<std::string>> gameResults;
+
+    // empty corner of the table
+    gameResults[0].push_back("     ");
+    for (int n = 0; n < numberOfGames; n++)
+    {
+        gameResults[0].push_back("Game " + std::to_string(n));
+    }
 
     // For each map
     for (int k = 0; k < maps.size(); k++)
     {
+        gameResults[k + 1].push_back("Map " + std::to_string(k + 1));
         gameEngine->gameMap = maps.at(k);
         // For each game on that map
         for (int i = 0; i < numberOfGames; i++)
@@ -122,7 +131,8 @@ void Tournament::play()
                 gameEngine->players->push_back(new Player(*player));
             }
 
-            for (int j = 0; j <= maxTurns; j++){
+            for (int j = 0; j <= maxTurns; j++)
+            {
                 // If a player has won the game
                 if (gameEngine->winner != nullptr)
                 {
@@ -138,13 +148,14 @@ void Tournament::play()
                 }
                 gameEngine->mainGameLoop();
             }
-            logResults(i + 1, );
+            gameResults[k + 1].push_back(results[k][i]);
         }
     }
+    // logResults(gameResults);
 }
 
 // rankedPlayerOrder should be in order of winner to loser
-void Tournament::logResults(const std::int &gameNo, const std::list<Player *> &rankedPlayerOrder)
+void Tournament::logResults(std::unordered_map<int, std::vector<std::string>> finalResults)
 {
     {
         std::ofstream file("/Users/zhzha/Desktop/COMP345_Warzone/Assignment_1/GameLog.txt", std::ios::app);
@@ -155,13 +166,39 @@ void Tournament::logResults(const std::int &gameNo, const std::list<Player *> &r
         {
             // Write the log entry to the file
             file << "------------------------------------ TOURNAMENT RESULTS ---------------------------------" << std::endl;
-            file << "|___|___|___|" << std::endl;
 
-            file << "|___|___|___|" << std::endl;
+            file << "Tournament Mode: " << endl;
 
-            file << "| " << placeholder1 << "| " << placeholder2 << "| " << placeholder3 << "|" << std::endl;
+            file << "M: ";
+            for (int i = 0; i < maps.size(); i++)
+            {
+                file << maps[i]->mapName << "     ";
+            }
+            file << endl;
 
-            file << "|___|___|___|" << std::endl;
+            file << "P: ";
+            for (int j = 0; j < players.size(); j++)
+            {
+                file << players[j]->getPlayerName() << "     ";
+            }
+            file << endl;
+
+            file << "G: " << numberOfGames << endl;
+            file << "D: " << maxTurns << endl;
+            file << "----------------------------------------------------------------------------------------" << std::endl;
+            file << endl;
+
+            // ACTUAL RESULT TABLE
+            for (const auto &pair : finalResults)
+            {
+                std::cout << "|";
+                for (const auto &output : pair.second)
+                {
+                    std::cout << "  " << output;
+                }
+                std::cout << std::endl;
+                file << "----------------------------------------------------------------------------------------" << std::endl;
+            }
 
             // Close the file
             file.flush();
