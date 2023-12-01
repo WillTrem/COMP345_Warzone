@@ -40,6 +40,7 @@ public:
     GameEngine(GameState *currentState, std::map<GameState, std::list<Command>> *stateTransitions, bool fromFile = false, string fileName = "test");
     GameEngine(GameState *currentState, std::vector<Player*>* players, Map* gameMap);
     GameEngine(const GameEngine &gameEngine);
+    GameEngine(bool tournament);
 
     ~GameEngine();
 
