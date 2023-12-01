@@ -115,18 +115,24 @@ void Tournament::play()
         for (int i = 0; i < numberOfGames; i++)
         {
             // Setting the players of the tournament
+            gameEngine->winner = nullptr;
             gameEngine->players->clear();
             for (auto player : players)
             {
                 gameEngine->players->push_back(new Player(*player));
             }
 
-            for (int j = 0; j < maxTurns; j++)
-            {
+            for (int j = 0; j <= maxTurns; j++){
                 // If a player has won the game
                 if (gameEngine->winner != nullptr)
                 {
                     results[k][i] = gameEngine->winner->getPlayerName();
+                    gameEngine->currentState = &assignReinforcements;
+                    break;
+                }
+                else if (j == maxTurns)
+                {
+                    results[k][i] = "Draw";
                     gameEngine->currentState = &assignReinforcements;
                     break;
                 }
@@ -166,3 +172,4 @@ void Tournament::logResults(const std::int &gameNo, const std::list<Player *> &r
             std::cerr << "Unable to open GameLog.txt for writing. Error code: " << errno << std::endl;
         }
     }
+}
