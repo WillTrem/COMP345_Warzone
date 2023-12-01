@@ -48,6 +48,8 @@ add_executable (Assignment_1
     "PlayerStrategyDriver.cpp"
     "Tournament.h"
     "Tournament.cpp"
+    "TournamentDriver.h"
+    "TournamentDriver.cpp"
     )
 
 # TODO: Add tests and install targets if needed.
