@@ -121,8 +121,12 @@ void Tournament::play()
                 gameEngine->players->push_back(new Player(*player));
             }
 
+<<<<<<< Updated upstream
             for (int j = 0; j < maxTurns; j++)
             {
+=======
+            for (int j = 0; j <= maxTurns; j++){
+>>>>>>> Stashed changes
                 // If a player has won the game
                 if (gameEngine->winner != nullptr)
                 {
@@ -130,6 +134,13 @@ void Tournament::play()
                     gameEngine->currentState = &assignReinforcements;
                     break;
                 }
+                else if (j == maxTurns)
+                {
+                    results[k][i] = "Draw";
+                    gameEngine->currentState = &assignReinforcements;
+                    break;
+                }
+                
                 gameEngine->mainGameLoop();
             }
             logResults(i + 1, );
