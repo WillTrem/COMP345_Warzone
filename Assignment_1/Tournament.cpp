@@ -152,15 +152,15 @@ void Tournament::play()
             gameResults[k + 1].push_back(results[k][i]);
         }
     }
-    // logResults(gameResults);
+    logResults(gameResults);
 }
 
 // rankedPlayerOrder should be in order of winner to loser
 void Tournament::logResults(std::map<int, std::vector<std::string>> finalResults)
 {
     {
-        std::ofstream file("/Users/zhzha/Desktop/COMP345_Warzone/Assignment_1/GameLog.txt", std::ios::app);
-        // std::ofstream file("Assignment_1/GameLog.txt", std::ios::app);
+        // std::ofstream file("/Users/zhzha/Desktop/COMP345_Warzone/Assignment_1/GameLog.txt", std::ios::app);
+        std::ofstream file("Assignment_1/GameLog.txt", std::ios::app);
         // std::ofstream file("GameLog.txt", std::ios::app);
 
         if (file.is_open())
