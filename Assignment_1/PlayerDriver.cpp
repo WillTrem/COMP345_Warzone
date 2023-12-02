@@ -16,7 +16,7 @@ void testPlayers()
 	Player p2(&p2StartingHand, p2StartingTerritories);
 
 	cout << "P1 issuing order" << endl;
-	p1.issueOrder();
+	p1.issueOrder(true);
 	cout << "P1 next order: " << p1.getOrdersList()->getNextOrder() << endl;
 
 	cout << "P2 hand object: " << p2.getHand() << endl;

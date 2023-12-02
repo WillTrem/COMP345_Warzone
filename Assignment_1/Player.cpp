@@ -254,9 +254,9 @@ void Player::toDefend()
 }
 
 // Creates a new order and adds it to the player's list of current orders
-bool Player::issueOrder()
+bool Player::issueOrder(bool populateVectors)
 {
-	bool result = ps->issueOrder();
+	bool result = ps->issueOrder(populateVectors);
 	return result;
 }
 

@@ -307,8 +307,8 @@ void GameEngine::issueOrdersPhase()
     while (playersStillIssuingOrders.size() > 0)
     {
         for (size_t pIndex = 0; pIndex < players->size(); pIndex++)
-        {
-            if ((*players)[pIndex]->issueOrder())
+        {   
+            if ((*players)[pIndex]->issueOrder(true))
             {
                 playersStillIssuingOrders.erase(
                     std::remove(
@@ -322,7 +322,7 @@ void GameEngine::issueOrdersPhase()
 }
 
 void GameEngine::executeOrdersPhase()
-{
+{   
     // vector to keep track of who has orders left
     vector<bool> hasOrders(players->size(), true);
 

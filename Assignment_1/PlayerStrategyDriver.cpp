@@ -118,11 +118,11 @@ void testPlayerStrategies()
     cout << "\n\nNow testing the computer players' issueOrder() method.\n"
          << endl;
     cout << "The Aggressive Player (" << angryBot->getPlayerName() << ") is issuing orders." << endl;
-    angryBot->issueOrder();
+    angryBot->issueOrder(true);
     cout << "\nThe Benevolent Player (" << niceBot->getPlayerName() << ") is issuing orders." << endl;
-    niceBot->issueOrder();
+    niceBot->issueOrder(true);
     cout << "\nThe Neutral Player (" << neutralBot->getPlayerName() << ") is issuing orders (but won't do much)." << endl;
-    neutralBot->issueOrder();
+    neutralBot->issueOrder(true);
 
     cout << "Is the neutral player attacked: " << endl
          << bool(neutralBot->isNeutralPlayerAttacked()) << endl;
@@ -137,7 +137,7 @@ void testPlayerStrategies()
     printTerritoriesInVector(cheaterBot->territoriesToDefend, string("The Cheater Player wants to defend "));
     cout << endl;
     cout << "The Cheater Player (" << cheaterBot->getPlayerName() << ") is issuing orders (and cheating!!)" << endl;
-    cheaterBot->issueOrder();
+    cheaterBot->issueOrder(true);
 
     cout << "Is the neutral player attacked: " << endl
          << bool(neutralBot->isNeutralPlayerAttacked()) << endl;
@@ -149,7 +149,7 @@ void testPlayerStrategies()
         << endl;
     humanPlayer->toAttack();
     humanPlayer->toDefend();
-    humanPlayer->issueOrder();
+    humanPlayer->issueOrder(true);
 }
 
 // Function to facilitate the testing of the Driver
