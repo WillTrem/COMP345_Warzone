@@ -127,6 +127,7 @@ Territory *PlayerStrategy::getWeakestTerritory()
 
 void PlayerStrategy::reinforceTerritories(vector<Territory *> targetTerritories)
 {
+    
     int numTargetTerritories = targetTerritories.size();
     int i = 0;
 
@@ -516,8 +517,8 @@ bool AggressivePlayerStrategy::issueOrder(bool populateVectors)
     // Do we call toAttack and toDefend here?
     if (populateVectors == true)
     {
-        p->toAttack();
-        p->toDefend();
+        this->toAttack();
+        this->toDefend();
     }
 
     if (p->reinforcementPool > 0)
