@@ -106,7 +106,7 @@ void Tournament::setMaxTurns(int maxTurns)
 void Tournament::play()
 {
     GameState assignReinforcements = ASSIGN_REINFORCEMENTS;
-    std::unordered_map<int, std::vector<std::string>> gameResults;
+    std::map<int, std::vector<std::string>> gameResults;
 
     // empty corner of the table
     gameResults[0].push_back("     ");
@@ -155,7 +155,7 @@ void Tournament::play()
 }
 
 // rankedPlayerOrder should be in order of winner to loser
-void Tournament::logResults(std::unordered_map<int, std::vector<std::string>> finalResults)
+void Tournament::logResults(std::map<int, std::vector<std::string>> finalResults)
 {
     {
         std::ofstream file("/Users/zhzha/Desktop/COMP345_Warzone/Assignment_1/GameLog.txt", std::ios::app);

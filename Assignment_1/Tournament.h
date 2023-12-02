@@ -53,5 +53,5 @@ public:
     // Function to play the tournament
     void play();
 
-    void logResults(std::unordered_map<int, std::vector<std::string>> results);
+    void logResults(std::map<int, std::vector<std::string>> finalResults);
 };
