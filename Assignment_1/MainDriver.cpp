@@ -70,9 +70,9 @@ int main(int argc, char *argv[])
 	// this test function just creates a new GameEngine with the tournament constructor
 	// tournament mode can be tested by passing in a tournament command to the commandprocessor:
     // tournament -M <listofmapfiles> -P <listofplayerstrategies> -G <numberofgames> -D <maxnumberofturns>
-	//testTournament();
+	testTournament();
 
-	testPlayerStrategies();
+	//testPlayerStrategies();
 
 	return 0;
 };

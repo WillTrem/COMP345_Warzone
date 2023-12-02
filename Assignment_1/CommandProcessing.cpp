@@ -309,10 +309,11 @@ bool Command::toggleTournamentMode(GameState *&gameState, Map *&gameMap, std::ve
 						if (numGames >= 1 && numGames <= 5)
 						{
 							tournament->setNumberOfGames(numGames);
+							std::cout << "Number of games set to " << numGames << std::endl;
 						}
 						else
 						{
-							std::cout << "Invalid number of turns (between 1-5 inclusive)\n"
+							std::cout << "Invalid number of games (between 1-5 inclusive)\n"
 									  << std::endl;
 							return false;
 						}
@@ -334,8 +335,11 @@ bool Command::toggleTournamentMode(GameState *&gameState, Map *&gameMap, std::ve
 			/*
 				Number of turns for each game option
 			*/
-			else if (option.compare("-D") == 0){
+			else if (option.compare("-D") == 0)
+			{
+				std::cout << "HELLO2" << std::endl;
 				optionsCounter[3]++;
+				std::cout << "HELLO3" << std::endl;
 				if (values.size() == 1)
 				{
 					try
@@ -370,6 +374,41 @@ bool Command::toggleTournamentMode(GameState *&gameState, Map *&gameMap, std::ve
 
 			option = token;
 			values = {};
+		}
+	}
+
+	// processing the last value after the loop!
+	if (option.compare("-D") == 0)
+	{
+		optionsCounter[3]++;
+		if (values.size() == 1)
+		{
+			try
+			{
+				int numTurns = std::stoi(values[0]);
+				if (numTurns >= 10 && numTurns <= 50)
+				{
+					tournament->setMaxTurns(numTurns);
+				}
+				else
+				{
+					std::cout << "Invalid number of turns (between 10-50 inclusive)\n"
+								<< std::endl;
+					return false;
+				}
+			}
+			catch (const std::exception &e)
+			{
+				std::cout << e.what() << std::endl
+							<< std::endl;
+				return false;
+			}
+		}
+		else
+		{
+			std::cout << "Turns option only takes 1 number (same amount of turns for each game)\n"
+						<< std::endl;
+			return false;
 		}
 	}
 
