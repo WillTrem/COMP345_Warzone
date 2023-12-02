@@ -83,7 +83,7 @@ void testPlayerStrategies()
     cout << "\n\nAll players have been assigned their respective strategies.\n"
          << endl;
 
-    cout << "Updating the neutral players troop count: " << endl;
+    cout << "\n\nUpdating the neutral players troop count: " << endl;
     neutralBot->getTotalPlayerArmy();
     cout << "Is the neutral player attacked: " << endl
          << bool(neutralBot->isNeutralPlayerAttacked()) << endl;
@@ -124,7 +124,7 @@ void testPlayerStrategies()
     cout << "\nThe Neutral Player (" << neutralBot->getPlayerName() << ") is issuing orders (but won't do much)." << endl;
     neutralBot->issueOrder(true);
 
-    cout << "Is the neutral player attacked: " << endl
+    cout << "\n\nIs the neutral player attacked: " << endl
          << bool(neutralBot->isNeutralPlayerAttacked()) << endl;
 
     // Test the cheater bot's methods.
@@ -139,7 +139,7 @@ void testPlayerStrategies()
     cout << "The Cheater Player (" << cheaterBot->getPlayerName() << ") is issuing orders (and cheating!!)" << endl;
     cheaterBot->issueOrder(true);
 
-    cout << "Is the neutral player attacked: " << endl
+    cout << "\n\nIs the neutral player attacked: " << endl
          << bool(neutralBot->isNeutralPlayerAttacked()) << endl;
 
     // Test the human player's methods.

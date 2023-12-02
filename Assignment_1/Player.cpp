@@ -57,11 +57,8 @@ Player::~Player()
 	cout << "Player destructor called" << endl;
 
 	// Delete name.
-	if (this->playerName == nullptr)
-	{
-		delete this->playerName;
-		this->playerName = NULL;
-	}
+	delete playerName;
+	playerName = nullptr;
 
 	// Calling other destructors
 	this->hand->~Hand();
@@ -72,15 +69,16 @@ Player::~Player()
 	// delete ordersList;
 
 	// Setting pointers to null
-	hand = NULL;
-	ordersList = NULL;
+	hand = nullptr;
+	ordersList = nullptr;
 
 	// Repeating the same steps for each of the territories of the player
 	for (int i = 0; i < ownedTerritories.size(); i++)
 	{
 		ownedTerritories.at(i)->~Territory();
 		// delete ownedTerritories.at(i);
-		ownedTerritories.at(i) = NULL;
+		delete ownedTerritories.at(i);
+		ownedTerritories.at(i) = nullptr;
 	}
 }
 

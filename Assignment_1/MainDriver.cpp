@@ -13,10 +13,26 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-	// uncomment line below for PART 4 TESTING:
-	// testOrderExecution();
+	
+	// Assignment 1.
 
-	// testCommandProcessor();
+	// PART 1 test (shawn 40213581)
+	// testLoadMap();
+
+	// Part 2 test
+	// testPlayers();
+
+	// PART 3 test (chris)
+	// testOrdersLists();
+
+	// Part 4 test (Roxane.)
+	// testCards();
+
+	// Part 5 test
+	// testGameEngine();
+	
+	
+	// Assignment 2.	
 
 	// // Parsing arguments
 	// CommandProcessor *commandProcessor = nullptr;
@@ -39,40 +55,28 @@ int main(int argc, char *argv[])
 	// 	commandProcessor = new CommandProcessor();
 	// }
 
-	// // Part 2 (StartUp Phase) Test.
+	// testCommandProcessor();
+
+	// Part 2 (StartUp Phase) Test.
 	// testStartupPhase();
-
-	// cout << "\nHello CMake.\n"
-	// 	 << endl;
-
-	// testLoggingObserver();
-
-	// Assignment 1.
-
-	// PART 1 test (shawn 40213581)
-	// testLoadMap();
-
-	// Part 2 test
-	// testPlayers();
-
-	// PART 3 test (chris)
-	// testOrdersLists();
-
-	// Part 4 test (Roxane.)
-	// testCards();
-
-	// Part 5 test
-	// testGameEngine();
 
 	// testMainGameLoop();
 
+	// testOrderExecution();
+
+	// testLoggingObserver();
+
+	
+	// Assignment 3.	
+
+	//testPlayerStrategies();
 
 	// this test function just creates a new GameEngine with the tournament constructor
 	// tournament mode can be tested by passing in a tournament command to the commandprocessor:
     // tournament -M <listofmapfiles> -P <listofplayerstrategies> -G <numberofgames> -D <maxnumberofturns>
 	testTournament();
 
-	//testPlayerStrategies();
+	
 
 	return 0;
 };
