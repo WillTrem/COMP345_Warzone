@@ -113,6 +113,9 @@ public:
 	// method for part 1 of assg 3: check if the player is attacked or not
 	bool isNeutralPlayerAttacked();
 
+	// reset's things before next game in tournament
+	void reset_player();
+
 	// Assignment operator overload
 	void operator=(Player &player);
 

@@ -128,7 +128,8 @@ void Tournament::play()
             gameEngine->players->clear();
             for (auto player : players)
             {
-                gameEngine->players->push_back(new Player(*player));
+                player->reset_player();
+                gameEngine->players->push_back(player);
             }
 
             for (int j = 0; j <= maxTurns; j++)

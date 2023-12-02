@@ -162,6 +162,18 @@ void Player::addOwnedTerritory(Territory *territory)
 	// Should we check whether the territory is already present there?
 }
 
+void Player::reset_player()
+{
+	hand = new Hand();
+	ownedTerritories = {new Territory(), new Territory(), new Territory()};
+	ordersList = new OrdersList();
+	this->setCapturedTerritoryThisTurn(false);
+	this->setReinforcementPool(0);
+	this->totalPlayerArmy = 0;
+	this->totalNumberOfTerritories = 0;
+	this->setNegotiate(false);
+}
+
 // Pops an existing territory from the player's list of owned territories. Returns its reference.
 Territory *Player::removeOwnedTerritory(Territory *territory)
 {

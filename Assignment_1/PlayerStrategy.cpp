@@ -217,7 +217,7 @@ vector<Territory *> HumanPlayerStrategy::toDefend()
 
 bool HumanPlayerStrategy::issueOrder(bool populateVectors)
 {
-    std::cout << "human" << std::endl;
+
     // update the lists of territories to attack and defend
     if (populateVectors == true)
     {
@@ -512,7 +512,7 @@ vector<Territory *> AggressivePlayerStrategy::toDefend()
 
 bool AggressivePlayerStrategy::issueOrder(bool populateVectors)
 {   
-    std::cout << "aggressive" << std::endl;
+
     // Do we call toAttack and toDefend here?
     if (populateVectors == true)
     {
@@ -610,7 +610,7 @@ vector<Territory *> BenevolentPlayerStrategy::toDefend()
 
 bool BenevolentPlayerStrategy::issueOrder(bool populateVectors)
 {
-    std::cout << "benevolent" << std::endl;
+
     if (populateVectors == true)
     {
         p->toAttack();
@@ -754,7 +754,7 @@ vector<Territory *> NeutralPlayerStrategy::toDefend()
 // issueOrder() that does nothing.
 bool NeutralPlayerStrategy::issueOrder(bool populateVectors)
 {
-    std::cout << "neutral" << std::endl;
+
     // Not actually needed.
     /*if (populateVectors == true)
     {
@@ -791,7 +791,7 @@ vector<Territory *> CheaterPlayerStrategy::toDefend()
 // The Cheater Player issueOrder does not do anything, since it conquers nearby territories no matter what
 bool CheaterPlayerStrategy::issueOrder(bool populateVectors)
 {
-    std::cout << "cheater" << std::endl;
+
     if (populateVectors == true)
     {
         p->toAttack();
